@@ -21,8 +21,16 @@ contract IGOWritable is IIGOWritable, IIGOWritableInternal, Ownable {
         );
 
         uint256 length = tagIdentifiers_.length;
+        uint256 grandTotal = strg.grandTotal;
 
         for (uint256 i; i < length; ++i) {
+            if (tags_[i].maxTagCap > grandTotal) {
+                revert IGOWritable_GreaterThanGrandTotal(
+                    tagIdentifiers_[i],
+                    tags_[i].maxTagCap,
+                    grandTotal
+                );
+            }
             strg.tagIdentifiers.push(tagIdentifiers_[i]);
             strg.tags[tagIdentifiers_[i]] = tags_[i];
         }

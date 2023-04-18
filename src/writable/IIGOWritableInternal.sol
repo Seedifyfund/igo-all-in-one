@@ -17,4 +17,10 @@ interface IIGOWritableInternal {
         uint128 endAt;
         uint256 maxTagCap;
     }
+
+    error IGOWritable_GreaterThanGrandTotal(
+        string tagId,
+        uint256 maxTagAllocation,
+        uint256 grandTotal
+    );
 }
