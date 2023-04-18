@@ -9,11 +9,12 @@ import "../../src/writable/IIGOWritableInternal.sol";
 contract IGO_Test is Test, IIGOWritableInternal {
     IGO public instance;
 
+    uint256 public grandTotal = 50_000_000 ether;
     string[] public tagIdentifiers;
     Tag[] public tags;
 
     function setUp() public {
-        instance = new IGO();
+        instance = new IGO(grandTotal);
 
         tagIdentifiers.push("vpr-base");
         tagIdentifiers.push("vpr-premium1");
@@ -46,8 +47,19 @@ contract IGO_Test is Test, IIGOWritableInternal {
         instance.setTags(tagIdentifiers, tags);
     }
 
+    function test_grandTotal() public {
+        // check grandTotal set in constructor
+        assertEq(instance.grandTotal(), grandTotal);
+
+        instance.updateGrandTotal(1_000_000);
+        assertEq(instance.grandTotal(), 1_000_000);
+
+        vm.expectRevert("IGOWritable: grandTotal < 1_000");
+        instance.updateGrandTotal(999);
+    }
+
     /*//////////////////////////////////////////////////////////////
-                                 BASIC ATTRIBUTES
+                                 SET TAGS
     //////////////////////////////////////////////////////////////*/
     function test_setTags_CheckSavedIdentifiersAndTag() public {
         string[] memory tagIds = instance.tagIdentifiers();
@@ -66,4 +78,6 @@ contract IGO_Test is Test, IIGOWritableInternal {
             assertEq(tag.maxTagCap, tags[i].maxTagCap);
         }
     }
+
+    // TODO: testRevert when tagIdentifiers_.length != tags_.length OR tags_.length != tagIdentifiers_.length
 }
