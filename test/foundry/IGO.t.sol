@@ -79,5 +79,18 @@ contract IGO_Test is Test, IIGOWritableInternal {
         }
     }
 
+    function testRevert_setTags_If_maxTagCap_GreaterThan_grandTotal() public {
+        tags[0].maxTagCap = grandTotal + 1;
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IGOWritable_GreaterThanGrandTotal.selector,
+                tagIdentifiers[0],
+                tags[0].maxTagCap,
+                grandTotal
+            )
+        );
+        instance.setTags(tagIdentifiers, tags);
+    }
+
     // TODO: testRevert when tagIdentifiers_.length != tags_.length OR tags_.length != tagIdentifiers_.length
 }
