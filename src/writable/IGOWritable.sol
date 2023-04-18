@@ -5,13 +5,14 @@ import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 
 import {IGOStorage} from "../IGOStorage.sol";
 
+import {IIGOWritable} from "./IIGOWritable.sol";
 import {IIGOWritableInternal} from "./IIGOWritableInternal.sol";
 
-contract IGOWritable is IIGOWritableInternal, Ownable {
+contract IGOWritable is IIGOWritable, IIGOWritableInternal, Ownable {
     function setTags(
         string[] calldata tagIdentifiers_,
         Tag[] calldata tags_
-    ) external onlyOwner {
+    ) external override onlyOwner {
         IGOStorage.IGOStruct storage strg = IGOStorage.layout();
 
         require(
