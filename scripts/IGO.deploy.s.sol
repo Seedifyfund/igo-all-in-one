@@ -28,7 +28,7 @@ contract IGO_deploy is Script {
         uint256 privateKey = vm.deriveKey(SEED, 0); // address at index 0
         vm.startBroadcast(privateKey);
 
-        IGO token = new IGO();
+        IGO token = new IGO(1_000_000);
 
         vm.stopBroadcast();
     }

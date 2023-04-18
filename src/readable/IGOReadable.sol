@@ -7,6 +7,10 @@ import {IIGOWritableInternal} from "../writable/IIGOWritableInternal.sol";
 import {IGOStorage} from "../IGOStorage.sol";
 
 contract IGOReadable is IIGOReadable, IIGOWritableInternal {
+    function grandTotal() external view override returns (uint256) {
+        return IGOStorage.layout().grandTotal;
+    }
+
     function tagIdentifiers()
         external
         view
