@@ -39,4 +39,19 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
         require(grandTotal_ >= 1_000, "IGOWritable: grandTotal < 1_000");
         IGOStorage.layout().grandTotal = grandTotal_;
     }
+
+    function updateWholeTag(
+        string calldata tagId_,
+        Tag calldata tag_
+    ) external onlyOwner {
+        IGOStorage.IGOStruct storage strg = IGOStorage.layout();
+
+        _isMaxTagAllocationGtGrandTotal(
+            tagId_,
+            tag_.maxTagCap,
+            strg.grandTotal
+        );
+
+        strg.tags[tagId_] = tag_;
+    }
 }
