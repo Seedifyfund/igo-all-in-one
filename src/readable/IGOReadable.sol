@@ -18,7 +18,7 @@ contract IGOReadable is IIGOReadable, IIGOWritableInternal {
 
     function tag(
         string memory tagId
-    ) external view override returns (Tag memory tag) {
-        tag = IGOStorage.layout().tags[tagId];
+    ) external view override returns (Tag memory tag_) {
+        tag_ = IGOStorage.layout().tags[tagId];
     }
 }
