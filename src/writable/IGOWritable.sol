@@ -6,9 +6,10 @@ import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 import {IGOStorage} from "../IGOStorage.sol";
 
 import {IIGOWritable} from "./IIGOWritable.sol";
-import {IIGOWritableInternal} from "./IIGOWritableInternal.sol";
 
-contract IGOWritable is IIGOWritable, IIGOWritableInternal, Ownable {
+import {IGOWritableInternal} from "./IGOWritableInternal.sol";
+
+contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
     function setTags(
         string[] calldata tagIdentifiers_,
         Tag[] calldata tags_
@@ -24,13 +25,11 @@ contract IGOWritable is IIGOWritable, IIGOWritableInternal, Ownable {
         uint256 grandTotal = strg.grandTotal;
 
         for (uint256 i; i < length; ++i) {
-            if (tags_[i].maxTagCap > grandTotal) {
-                revert IGOWritable_GreaterThanGrandTotal(
-                    tagIdentifiers_[i],
-                    tags_[i].maxTagCap,
-                    grandTotal
-                );
-            }
+            _isMaxTagAllocationGtGrandTotal(
+                tagIdentifiers_[i],
+                tags_[i].maxTagCap,
+                grandTotal
+            );
             strg.tagIdentifiers.push(tagIdentifiers_[i]);
             strg.tags[tagIdentifiers_[i]] = tags_[i];
         }
