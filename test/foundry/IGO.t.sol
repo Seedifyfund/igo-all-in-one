@@ -92,5 +92,19 @@ contract IGO_Test is Test, IIGOWritableInternal {
         instance.setTags(tagIdentifiers, tags);
     }
 
-    // TODO: testRevert when tagIdentifiers_.length != tags_.length OR tags_.length != tagIdentifiers_.length
+    function testRevert_setTags_If_tagIdentifiers_LengthNotEqualTo_tags()
+        public
+    {
+        tagIdentifiers.pop();
+        vm.expectRevert("IGOWritable: tags arrays length");
+        instance.setTags(tagIdentifiers, tags);
+    }
+
+    function testRevert_setTags_If_tags_LengthNotEqualTo_tagIdentifiers()
+        public
+    {
+        tags.pop();
+        vm.expectRevert("IGOWritable: tags arrays length");
+        instance.setTags(tagIdentifiers, tags);
+    }
 }
