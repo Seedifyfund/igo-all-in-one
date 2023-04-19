@@ -28,6 +28,11 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
             MerkleProof.verify(proof, strg.tags[tagId].merkleRoot, leaf),
             "IGOWritable.buyTokens: leaf not in merkle tree"
         );
+
+        // update storage
+        strg.raisedInTag[tagId] += amount;
+
+        // transfer tokens
     }
 
     function setTags(

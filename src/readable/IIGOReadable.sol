@@ -6,6 +6,8 @@ import {IIGOWritableInternal} from "../writable/IIGOWritableInternal.sol";
 interface IIGOReadable {
     function grandTotal() external view returns (uint256);
 
+    function raisedInTag(string memory tagId) external view returns (uint256);
+
     function tagIdentifiers() external view returns (string[] memory tagIds);
 
     function tag(

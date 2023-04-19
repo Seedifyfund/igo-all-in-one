@@ -8,6 +8,7 @@ library IGOStorage {
         uint256 grandTotal;
         string[] tagIdentifiers;
         mapping(string => IIGOWritableInternal.Tag) tags;
+        mapping(string => uint256) raisedInTag;
     }
 
     bytes32 public constant IGO_STORAGE = keccak256("igo.storage");
