@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
+import {MerkleProof} from "openzeppelin-contracts/utils/cryptography/MerkleProof.sol";
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 
-import {IGOStorage} from "../IGOStorage.sol";
-
 import {IIGOWritable} from "./IIGOWritable.sol";
+
+import {IGOStorage} from "../IGOStorage.sol";
 
 import {IGOWritableInternal} from "./IGOWritableInternal.sol";
 
@@ -21,6 +22,12 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
         if (state != State.OPENED) {
             revert IGOWritable_NotOpened(tagId, state);
         }
+
+        bytes32 leaf = keccak256(abi.encodePacked(msg.sender, amount));
+        require(
+            MerkleProof.verify(proof, strg.tags[tagId].merkleRoot, leaf),
+            "IGOWritable.buyTokens: leaf not in merkle tree"
+        );
     }
 
     function setTags(
