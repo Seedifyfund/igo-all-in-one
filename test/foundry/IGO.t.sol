@@ -107,4 +107,42 @@ contract IGO_Test is Test, IIGOWritableInternal {
         vm.expectRevert("IGOWritable: tags arrays length");
         instance.setTags(tagIdentifiers, tags);
     }
+
+    /*//////////////////////////////////////////////////////////////
+                                 UPDATE TAGS
+    //////////////////////////////////////////////////////////////*/
+    function test_updateWholeTag() public {
+        Tag memory tag = instance.tag(tagIdentifiers[0]);
+        tag.state = State.STARTED;
+        tag.merkleRoot = bytes32("1");
+        tag.startAt = 1;
+        tag.endAt = 2;
+        tag.maxTagCap = 3;
+
+        instance.updateWholeTag(tagIdentifiers[0], tag);
+
+        Tag memory updatedTag = instance.tag(tagIdentifiers[0]);
+
+        assertEq(uint256(updatedTag.state), uint256(tag.state));
+        assertEq(updatedTag.merkleRoot, tag.merkleRoot);
+        assertEq(updatedTag.startAt, tag.startAt);
+        assertEq(updatedTag.endAt, tag.endAt);
+        assertEq(updatedTag.maxTagCap, tag.maxTagCap);
+    }
+
+    function testRevert_updateWholeTag_If_maxTagCap_GreaterThan_grandTotal()
+        public
+    {
+        Tag memory tag = instance.tag(tagIdentifiers[0]);
+        tag.maxTagCap = grandTotal + 1;
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IGOWritable_GreaterThanGrandTotal.selector,
+                tagIdentifiers[0],
+                tag.maxTagCap,
+                grandTotal
+            )
+        );
+        instance.updateWholeTag(tagIdentifiers[0], tag);
+    }
 }
