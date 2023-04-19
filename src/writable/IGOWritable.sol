@@ -29,6 +29,17 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
             "IGOWritable.buyTokens: leaf not in merkle tree"
         );
 
+        // verify maxTagCap will not be exceeded, after this purchase
+        uint256 maxTagCap = strg.tags[tagId].maxTagCap;
+        uint256 raisedAfterPurchase = amount + strg.raisedInTag[tagId];
+        if (raisedAfterPurchase > maxTagCap) {
+            revert IGOWritable_MaxTagCapReached(
+                tagId,
+                maxTagCap,
+                raisedAfterPurchase - maxTagCap
+            );
+        }
+
         // update storage
         strg.raisedInTag[tagId] += amount;
 

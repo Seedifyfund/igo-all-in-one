@@ -49,6 +49,46 @@ contract IGO_Test_buyTokens is IGOSetUp {
         }
     }
 
+    function testRevert_buyTokens_If_MaxTagCapReached() public {
+        // generate 10 leaves
+        bytes32[] memory leaves = __generateLeaves_WithJS_Script(10);
+        // generate merkle root and proof for leaf at index 0
+        (
+            bytes32 merkleRoot,
+            bytes32[] memory proof
+        ) = __generateMerkleRootAndProofForLeaf(leaves, 0);
+
+        string memory tagIdentifier = tagIdentifiers[0];
+
+        // update merkle root & state
+        tags[0].merkleRoot = merkleRoot;
+        tags[0].state = State.OPENED;
+        tags[0].maxTagCap = 1_000 ether;
+        instance.updateWholeTag(tagIdentifier, tags[0]);
+
+        // buy tokens
+        vm.startPrank(makeAddr("address0"));
+        uint256 toBuy = 1_000 ether;
+        instance.buyTokens(tagIdentifier, toBuy, proof);
+
+        // check maxTagCap reached
+        Tag memory tag_ = instance.tag(tagIdentifier);
+        assertEq(tag_.maxTagCap, tags[0].maxTagCap);
+
+        // revert
+        uint256 raisedAfterPurchase = instance.raisedInTag(tagIdentifier) +
+            toBuy;
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IGOWritable_MaxTagCapReached.selector,
+                tagIdentifier,
+                tags[0].maxTagCap,
+                raisedAfterPurchase - tags[0].maxTagCap
+            )
+        );
+        instance.buyTokens(tagIdentifier, 1_000 ether, proof);
+    }
+
     function __generateLeaves_WithJS_Script(
         uint256 leavesAmount
     ) private returns (bytes32[] memory leaves) {
@@ -59,7 +99,7 @@ contract IGO_Test_buyTokens is IGOSetUp {
             addresses[i] = makeAddr(
                 string.concat("address", Strings.toString(i))
             );
-            allocations[i] = i * 1_000 ether;
+            allocations[i] = (i + 1) * 1_000 ether;
         }
 
         bytes memory packedAddresses = abi.encode(addresses);
