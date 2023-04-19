@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.17;
 
 import "forge-std/Script.sol";
 import "../src/IGO.sol";
@@ -14,7 +14,7 @@ import "../src/IGO.sol";
 * forge verify-contract \
     --chain 97 \
     --num-of-optimizations 20000 \
-    --compiler-version v0.8.18+commit.87f61d96 \
+    --compiler-version v0.8.17+commit.87f61d96 \
     --watch 0xb7DEBdA47C1014763188E69fc823B973eC1749D6 \
     IGO $BSC_KEY
 *
@@ -28,7 +28,7 @@ contract IGO_deploy is Script {
         uint256 privateKey = vm.deriveKey(SEED, 0); // address at index 0
         vm.startBroadcast(privateKey);
 
-        IGO token = new IGO();
+        IGO token = new IGO(1_000_000);
 
         vm.stopBroadcast();
     }
