@@ -11,6 +11,9 @@ optimizer_runs = 20_000
 [profile.ci]
 verbosity = 4
 
+[profile.ci.fuzz]
+runs = 10
+
 [rpc_endpoints]
 fantom-testnet = "https://rpc.ankr.com/fantom_testnet"
 mumbai = "${MUMBAI_RPC}"
