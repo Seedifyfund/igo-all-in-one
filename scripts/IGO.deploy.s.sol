@@ -2,7 +2,7 @@
 pragma solidity ^0.8.17;
 
 import "forge-std/Script.sol";
-import "../src/IGO.sol";
+import {IGO} from "../src/IGO.sol";
 
 /**
 * @dev forge script IGO_deploy \

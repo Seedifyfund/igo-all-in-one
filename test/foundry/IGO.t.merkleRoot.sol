@@ -7,8 +7,8 @@ import {Strings} from "openzeppelin-contracts/utils/Strings.sol";
 
 import "forge-std/Test.sol";
 
-import "../../src/IGO.sol";
-import "../../src/writable/IIGOWritableInternal.sol";
+import {IGO} from "../../src/IGO.sol";
+import {IIGOWritableInternal} from "../../src/writable/IIGOWritableInternal.sol";
 
 contract IGO_Test_merkleRoot is Test, IIGOWritableInternal {
     IGO public instance;
