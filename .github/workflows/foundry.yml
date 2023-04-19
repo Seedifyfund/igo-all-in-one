@@ -23,7 +23,7 @@ jobs:
               run: forge install solidstate-network/solidstate-solidity foundry-rs/forge-std Openzeppelin/openzeppelin-contracts rari-capital/solmate --no-commit
 
             - name: Install packages (ehters required)
-              run: rm package.json && rm yarn.lock && yarn add ethers --immutable --immutable-cache --check-cache
+              run: rm package.json && rm yarn.lock && yarn add ethers@5.7.2 merkletreejs --immutable --immutable-cache --check-cache
 
             - name: Run Forge build
               run: |
