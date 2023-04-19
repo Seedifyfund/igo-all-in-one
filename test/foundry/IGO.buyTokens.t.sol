@@ -3,25 +3,20 @@ pragma solidity ^0.8.17;
 
 import {IGOSetUp} from "./setUp/IGOSetUp.t.sol";
 
-contract IGO_Test is IGOSetUp {
+contract IGO_Test_buyTokens is IGOSetUp {
     /*//////////////////////////////////////////////////////////////
                                  REVERT
     //////////////////////////////////////////////////////////////*/
-    function test_setTags_CheckSavedIdentifiersAndTag() public {
-        string[] memory tagIds = instance.tagIdentifiers();
-        Tag memory tag;
+    function testRevert_buyTokens_If_NotOpened() public {
+        bytes32[] memory proof = new bytes32[](10);
 
-        assertEq(tagIds.length, tagIdentifiers.length);
-
-        for (uint256 i; i < tagIds.length; ++i) {
-            assertEq(tagIds[i], tagIdentifiers[i]);
-            // check tags data
-            tag = instance.tag(tagIds[i]);
-            assertEq(uint256(tag.state), uint256(tags[i].state));
-            assertEq(tag.merkleRoot, tags[i].merkleRoot);
-            assertEq(tag.startAt, tags[i].startAt);
-            assertEq(tag.endAt, tags[i].endAt);
-            assertEq(tag.maxTagCap, tags[i].maxTagCap);
-        }
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IGOWritable_NotOpened.selector,
+                tagIdentifiers[0],
+                State.NOT_STARTED
+            )
+        );
+        instance.buyTokens(tagIdentifiers[0], 1_000_000 ether, proof);
     }
 }

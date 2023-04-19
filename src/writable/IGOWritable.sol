@@ -10,6 +10,19 @@ import {IIGOWritable} from "./IIGOWritable.sol";
 import {IGOWritableInternal} from "./IGOWritableInternal.sol";
 
 contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
+    function buyTokens(
+        string memory tagId,
+        uint256 amount,
+        bytes32[] calldata proof
+    ) external {
+        IGOStorage.IGOStruct storage strg = IGOStorage.layout();
+
+        State state = strg.tags[tagId].state;
+        if (state != State.OPENED) {
+            revert IGOWritable_NotOpened(tagId, state);
+        }
+    }
+
     function setTags(
         string[] calldata tagIdentifiers_,
         Tag[] calldata tags_
