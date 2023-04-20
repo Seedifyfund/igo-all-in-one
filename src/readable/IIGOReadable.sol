@@ -13,4 +13,6 @@ interface IIGOReadable {
     function tag(
         string memory tagId
     ) external view returns (IIGOWritableInternal.Tag memory tag);
+
+    function token() external view returns (address);
 }

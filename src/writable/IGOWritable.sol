@@ -86,6 +86,10 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
         IGOStorage.layout().grandTotal = grandTotal_;
     }
 
+    function updateToken(address token_) external onlyOwner {
+        IGOStorage.layout().token = token_;
+    }
+
     function updateWholeTag(
         string calldata tagId_,
         Tag calldata tag_
