@@ -33,7 +33,7 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
         uint256 maxTagCap = strg.tags[tagId].maxTagCap;
         uint256 raisedAfterPurchase = amount + strg.raisedInTag[tagId];
         if (raisedAfterPurchase > maxTagCap) {
-            revert IGOWritable_MaxTagCapReached(
+            revert IGOWritable_MaxTagCapExceeded(
                 tagId,
                 maxTagCap,
                 raisedAfterPurchase - maxTagCap

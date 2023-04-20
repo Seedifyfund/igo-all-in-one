@@ -23,7 +23,7 @@ contract IGO_Test_buyTokens is IGOSetUp {
         instance.buyTokens(tagIdentifiers[0], 1_000_000 ether, proof);
     }
 
-    function testRevert_buyTokens_If_LeafNotInMerkleTree() public {
+    function testRevert_buyTokens_If_UserNotAddedToMerkleTreeAtAll() public {
         // generate 10 leaves
         bytes32[] memory leaves = __generateLeaves_WithJS_Script(10);
         // generate merkle root and proof for leaf at index 7
@@ -49,7 +49,12 @@ contract IGO_Test_buyTokens is IGOSetUp {
         }
     }
 
-    function testRevert_buyTokens_If_MaxTagCapReached() public {
+    // TODO: test merkle proof invalidity in more cases
+    function testRevert_buyTokens_If_UserNotRegisteredToBuyInTagId() public {}
+
+    function testRevert_buyTokens_If_UserNotClaimingTheRightAmount() public {}
+
+    function testRevert_buyTokens_If_MaxTagCapExceeded() public {
         // generate 10 leaves
         bytes32[] memory leaves = __generateLeaves_WithJS_Script(10);
         // generate merkle root and proof for leaf at index 0
@@ -80,7 +85,7 @@ contract IGO_Test_buyTokens is IGOSetUp {
             toBuy;
         vm.expectRevert(
             abi.encodeWithSelector(
-                IGOWritable_MaxTagCapReached.selector,
+                IGOWritable_MaxTagCapExceeded.selector,
                 tagIdentifier,
                 tags[0].maxTagCap,
                 raisedAfterPurchase - tags[0].maxTagCap
@@ -126,6 +131,18 @@ contract IGO_Test_buyTokens is IGOSetUp {
         instance.buyTokens(tagIdentifiers[0], toBuy, proof);
     }
 
+    /*//////////////////////////////////////////////////////////////
+                                 SUCCESS
+    //////////////////////////////////////////////////////////////*/
+    //////////////// TODO: Tets success in a more complete scenario ////////////////
+    /// @dev tagIdentifier must be part of leaves, to ensure `msg.sender` can only participant to computed tag
+    /// grand total to 3_000,
+    /// magTagCap of tagIdentifier[0] is 1_000 ether,
+    /// magTagCap of tagIdentifier[1] is 2_000 ether,
+    /// makeAddress('0') buys 1_000 ether in tagIdentifier[0],
+    /// makeAddress('1') buy 2_000 ether in tagIdentifier[1],
+    /// verify totalRaised & raisedInTag
+
     function __generateLeaves_WithJS_Script(
         uint256 leavesAmount
     ) private returns (bytes32[] memory leaves) {
@@ -136,7 +153,7 @@ contract IGO_Test_buyTokens is IGOSetUp {
             addresses[i] = makeAddr(
                 string.concat("address", Strings.toString(i))
             );
-            allocations[i] = (i + 1) * 1_000 ether;
+            allocations[i] = 1_000 ether;
         }
 
         bytes memory packedAddresses = abi.encode(addresses);
