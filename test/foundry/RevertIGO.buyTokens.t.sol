@@ -1,12 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
-import {Strings2} from "murky/differential_testing/test/utils/Strings2.sol";
-import {Strings} from "openzeppelin-contracts/utils/Strings.sol";
-
 import {IGOSetUp} from "./setUp/IGOSetUp.t.sol";
+import {FFI_Merkletreejs} from "./utils/FFI_Merkletreejs.sol";
 
-contract IGO_Test_buyTokens is IGOSetUp {
+contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
     /*//////////////////////////////////////////////////////////////
                                  REVERT
     //////////////////////////////////////////////////////////////*/
@@ -129,60 +127,5 @@ contract IGO_Test_buyTokens is IGOSetUp {
             )
         );
         instance.buyTokens(tagIdentifiers[0], toBuy, proof);
-    }
-
-    /*//////////////////////////////////////////////////////////////
-                                 SUCCESS
-    //////////////////////////////////////////////////////////////*/
-    //////////////// TODO: Tets success in a more complete scenario ////////////////
-    /// @dev tagIdentifier must be part of leaves, to ensure `msg.sender` can only participant to computed tag
-    /// grand total to 3_000,
-    /// magTagCap of tagIdentifier[0] is 1_000 ether,
-    /// magTagCap of tagIdentifier[1] is 2_000 ether,
-    /// makeAddress('0') buys 1_000 ether in tagIdentifier[0],
-    /// makeAddress('1') buy 2_000 ether in tagIdentifier[1],
-    /// verify totalRaised & raisedInTag
-
-    function __generateLeaves_WithJS_Script(
-        uint256 leavesAmount
-    ) private returns (bytes32[] memory leaves) {
-        address[] memory addresses = new address[](leavesAmount);
-        uint256[] memory allocations = new uint256[](leavesAmount);
-
-        for (uint256 i; i < leavesAmount; ++i) {
-            addresses[i] = makeAddr(
-                string.concat("address", Strings.toString(i))
-            );
-            allocations[i] = 1_000 ether;
-        }
-
-        bytes memory packedAddresses = abi.encode(addresses);
-        bytes memory packedAllocations = abi.encode(allocations);
-
-        string[] memory cmd = new string[](4);
-        cmd[0] = "node";
-        cmd[1] = "scripts/generateLeaves.js";
-        cmd[2] = Strings2.toHexString(packedAddresses);
-        cmd[3] = Strings2.toHexString(packedAllocations);
-        bytes memory res = vm.ffi(cmd);
-
-        leaves = abi.decode(res, (bytes32[]));
-    }
-
-    function __generateMerkleRootAndProofForLeaf(
-        bytes32[] memory leaves,
-        uint256 leafIndex
-    ) private returns (bytes32 merkleRoot, bytes32[] memory proof) {
-        bytes memory packed = abi.encode(leaves);
-
-        string[] memory cmd = new string[](4);
-        cmd[0] = "node";
-        cmd[1] = "scripts/generateMerkleRootAndProof.js";
-        cmd[2] = Strings2.toHexString(packed);
-        cmd[3] = Strings.toString(leafIndex);
-
-        bytes memory res = vm.ffi(cmd);
-
-        (merkleRoot, proof) = abi.decode(res, (bytes32, bytes32[]));
     }
 }
