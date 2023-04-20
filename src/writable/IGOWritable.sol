@@ -56,7 +56,11 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
         strg.raisedInTag[tagId] += amount;
 
         // transfer tokens
-        IERC20(strg.token).transferFrom(msg.sender, address(this), amount);
+        IERC20(strg.token).transferFrom(
+            msg.sender,
+            strg.treasuryWallet,
+            amount
+        );
     }
 
     function setTags(
@@ -91,6 +95,10 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
 
     function updateToken(address token_) external onlyOwner {
         IGOStorage.layout().token = token_;
+    }
+
+    function updateTreasuryWallet(address addr) external onlyOwner {
+        IGOStorage.layout().treasuryWallet = addr;
     }
 
     function updateWholeTag(

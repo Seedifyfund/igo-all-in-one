@@ -15,4 +15,6 @@ interface IIGOReadable {
     ) external view returns (IIGOWritableInternal.Tag memory tag);
 
     function token() external view returns (address);
+
+    function treasuryWallet() external returns (address);
 }

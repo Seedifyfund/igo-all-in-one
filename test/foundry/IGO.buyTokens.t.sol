@@ -32,6 +32,8 @@ contract IGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
         // buy tokens
         vm.startPrank(buyer);
         uint256 balanceBeforeBuy = token.balanceOf(buyer);
+        address treasuryWallet = address(instance.treasuryWallet());
+        assertEq(token.balanceOf(treasuryWallet), 0);
 
         uint256 toBuy = 1_000 ether;
         token.increaseAllowance(address(instance), toBuy);
@@ -39,7 +41,7 @@ contract IGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
 
         uint256 balanceAfterBuy = token.balanceOf(buyer);
         assertEq(balanceAfterBuy, balanceBeforeBuy - toBuy);
-        assertEq(token.balanceOf(address(instance)), toBuy);
+        assertEq(token.balanceOf(treasuryWallet), toBuy);
     }
 
     //////////////// TODO: Tets success in a more complete scenario ////////////////

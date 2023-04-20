@@ -14,13 +14,15 @@ contract IGOSetUp is Test, IIGOWritableInternal {
     ERC20_Mock public token;
     IGO public instance;
 
+    address public treasuryWallet = makeAddr("treasuryWallet");
+
     uint256 public grandTotal = 50_000_000 ether;
     string[] public tagIdentifiers;
     Tag[] public tags;
 
     function setUp() public {
         token = new ERC20_Mock();
-        instance = new IGO(address(token), grandTotal);
+        instance = new IGO(address(token), treasuryWallet, grandTotal);
 
         tagIdentifiers.push("vpr-base");
         tagIdentifiers.push("vpr-premium1");

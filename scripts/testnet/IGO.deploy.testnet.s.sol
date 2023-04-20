@@ -32,7 +32,7 @@ contract IGO_deploy_testnet is Script {
         vm.startBroadcast(privateKey);
 
         ERC20_Mock token = new ERC20_Mock();
-        IGO igo = new IGO(address(token), 1_000_000);
+        IGO igo = new IGO(address(token), vm.addr(privateKey), 1_000_000);
 
         vm.stopBroadcast();
     }
