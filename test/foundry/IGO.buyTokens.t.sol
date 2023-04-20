@@ -11,7 +11,8 @@ contract IGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
 
     function test_buyTokens_TokenSuccessfullyTrasfered() public {
         address buyer = makeAddr("address0");
-        deal(address(token), buyer, 1_100 ether);
+        uint256 toBuy = 1_000 ether;
+        deal(address(token), buyer, toBuy + 100 ether);
 
         // generate 10 leaves
         bytes32[] memory leaves = __generateLeaves_WithJS_Script(10);
@@ -35,7 +36,6 @@ contract IGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
         address treasuryWallet = address(instance.treasuryWallet());
         assertEq(token.balanceOf(treasuryWallet), 0);
 
-        uint256 toBuy = 1_000 ether;
         token.increaseAllowance(address(instance), toBuy);
         instance.buyTokens(tagIdentifier, toBuy, proof);
 

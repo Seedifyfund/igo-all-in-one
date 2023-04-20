@@ -53,6 +53,10 @@ contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
     function testRevert_buyTokens_If_UserNotClaimingTheRightAmount() public {}
 
     function testRevert_buyTokens_If_MaxTagCapExceeded() public {
+        address buyer = makeAddr("address0");
+        uint256 toBuy = 1_000 ether;
+        deal(address(token), buyer, toBuy + 100 ether);
+
         // generate 10 leaves
         bytes32[] memory leaves = __generateLeaves_WithJS_Script(10);
         // generate merkle root and proof for leaf at index 0
@@ -71,7 +75,7 @@ contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
 
         // buy tokens
         vm.startPrank(makeAddr("address0"));
-        uint256 toBuy = 1_000 ether;
+        token.increaseAllowance(address(instance), toBuy);
         instance.buyTokens(tagIdentifier, toBuy, proof);
 
         // check maxTagCap reached
@@ -95,6 +99,9 @@ contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
     function testRevert_buyTokens_If_GrandTotalExceeded() public {
         uint256 grandTotal_ = 1_000 ether;
         instance.updateGrandTotal(grandTotal_);
+        address buyer = makeAddr("address0");
+        uint256 toBuy = grandTotal_;
+        deal(address(token), buyer, toBuy + 100 ether);
 
         // generate 10 leaves
         bytes32[] memory leaves = __generateLeaves_WithJS_Script(10);
@@ -114,7 +121,7 @@ contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
 
         // buy tokens
         vm.startPrank(makeAddr("address0"));
-        uint256 toBuy = 1_000 ether;
+        token.increaseAllowance(address(instance), toBuy);
         instance.buyTokens(tagIdentifiers[1], toBuy, proof);
 
         // revert

@@ -16,5 +16,5 @@ interface IIGOReadable {
 
     function token() external view returns (address);
 
-    function treasuryWallet() external returns (address);
+    function treasuryWallet() external view returns (address);
 }

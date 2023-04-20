@@ -36,7 +36,7 @@ contract IGOReadable is IIGOReadable, IIGOWritableInternal {
         return IGOStorage.layout().token;
     }
 
-    function treasuryWallet() external returns (address) {
+    function treasuryWallet() external view returns (address) {
         return IGOStorage.layout().treasuryWallet;
     }
 }
