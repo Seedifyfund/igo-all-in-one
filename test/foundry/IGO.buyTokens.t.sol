@@ -33,7 +33,6 @@ contract IGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
         // buy tokens
         vm.startPrank(buyer);
         uint256 balanceBeforeBuy = token.balanceOf(buyer);
-        address treasuryWallet = address(instance.treasuryWallet());
         assertEq(token.balanceOf(treasuryWallet), 0);
 
         token.increaseAllowance(address(instance), toBuy);
@@ -52,4 +51,23 @@ contract IGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
     /// makeAddress('0') buys 1_000 ether in tagIdentifier[0],
     /// makeAddress('1') buy 2_000 ether in tagIdentifier[1],
     /// verify totalRaised & raisedInTag
+
+    function test_recoverLostERC20() public {
+        address sender = makeAddr("address0");
+        uint256 lost = 1_000 ether;
+        deal(address(token), sender, lost + 100 ether);
+
+        vm.startPrank(sender);
+        token.increaseAllowance(address(instance), lost);
+        token.transfer(address(instance), lost);
+        vm.stopPrank();
+
+        assertEq(token.balanceOf(address(instance)), lost);
+        assertEq(token.balanceOf(treasuryWallet), 0);
+
+        // forge deployer is the owner
+        instance.recoverLostERC20(address(token), treasuryWallet);
+        assertEq(token.balanceOf(address(instance)), 0);
+        assertEq(token.balanceOf(treasuryWallet), lost);
+    }
 }

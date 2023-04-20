@@ -118,4 +118,9 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
 
         strg.tags[tagId_] = tag_;
     }
+
+    function recoverLostERC20(address token, address to) external onlyOwner {
+        uint256 amount = IERC20(token).balanceOf(address(this));
+        IERC20(token).safeTransfer(to, amount);
+    }
 }
