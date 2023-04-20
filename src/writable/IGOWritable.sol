@@ -5,6 +5,7 @@ import {IERC20} from "openzeppelin-contracts/token/ERC20/IERC20.sol";
 
 import {MerkleProof} from "openzeppelin-contracts/utils/cryptography/MerkleProof.sol";
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
+import {SafeERC20} from "openzeppelin-contracts/token/ERC20/utils/SafeERC20.sol";
 
 import {IIGOWritable} from "./IIGOWritable.sol";
 
@@ -13,6 +14,8 @@ import {IGOStorage} from "../IGOStorage.sol";
 import {IGOWritableInternal} from "./IGOWritableInternal.sol";
 
 contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
+    using SafeERC20 for IERC20;
+
     function buyTokens(
         string memory tagId,
         uint256 amount,
@@ -56,7 +59,7 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
         strg.raisedInTag[tagId] += amount;
 
         // transfer tokens
-        IERC20(strg.token).transferFrom(
+        IERC20(strg.token).safeTransferFrom(
             msg.sender,
             strg.treasuryWallet,
             amount
