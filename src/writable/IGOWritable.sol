@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
+import {IERC20} from "openzeppelin-contracts/token/ERC20/IERC20.sol";
+
 import {MerkleProof} from "openzeppelin-contracts/utils/cryptography/MerkleProof.sol";
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 
@@ -54,6 +56,7 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
         strg.raisedInTag[tagId] += amount;
 
         // transfer tokens
+        IERC20(strg.token).transferFrom(msg.sender, address(this), amount);
     }
 
     function setTags(

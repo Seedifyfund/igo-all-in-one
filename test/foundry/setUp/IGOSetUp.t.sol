@@ -3,10 +3,15 @@ pragma solidity ^0.8.17;
 
 import "forge-std/Test.sol";
 
+import {IERC20} from "openzeppelin-contracts/token/ERC20/IERC20.sol";
+
 import {IGO} from "../../../src/IGO.sol";
 import {IIGOWritableInternal} from "../../../src/writable/IIGOWritableInternal.sol";
 
+import {ERC20_Mock} from "../../mock/ERC20_Mock.sol";
+
 contract IGOSetUp is Test, IIGOWritableInternal {
+    ERC20_Mock public token;
     IGO public instance;
 
     uint256 public grandTotal = 50_000_000 ether;
@@ -14,7 +19,8 @@ contract IGOSetUp is Test, IIGOWritableInternal {
     Tag[] public tags;
 
     function setUp() public {
-        instance = new IGO(grandTotal);
+        token = new ERC20_Mock();
+        instance = new IGO(address(token), grandTotal);
 
         tagIdentifiers.push("vpr-base");
         tagIdentifiers.push("vpr-premium1");
