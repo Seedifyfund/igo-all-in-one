@@ -24,9 +24,14 @@ interface IIGOWritableInternal {
         uint256 grandTotal
     );
     error IGOWritable_NotOpened(string tagId, State state);
+    // TODO: update to IGOWritable_MaxTagCapExceeded
     error IGOWritable_MaxTagCapReached(
         string tagId,
         uint256 maxTagCap,
+        uint256 exceedsBy
+    );
+    error IGOWritable_GrandTotalExceeded(
+        uint256 grandTotal,
         uint256 exceedsBy
     );
 }

@@ -89,6 +89,43 @@ contract IGO_Test_buyTokens is IGOSetUp {
         instance.buyTokens(tagIdentifier, 1_000 ether, proof);
     }
 
+    function testRevert_buyTokens_If_GrandTotalExceeded() public {
+        uint256 grandTotal_ = 1_000 ether;
+        instance.updateGrandTotal(grandTotal_);
+
+        // generate 10 leaves
+        bytes32[] memory leaves = __generateLeaves_WithJS_Script(10);
+        // generate merkle root and proof for leaf at index 0
+        (
+            bytes32 merkleRoot,
+            bytes32[] memory proof
+        ) = __generateMerkleRootAndProofForLeaf(leaves, 0);
+
+        // update merkle root & state for first two tag
+        for (uint256 i; i < 2; ++i) {
+            tags[i].merkleRoot = merkleRoot;
+            tags[i].state = State.OPENED;
+            tags[i].maxTagCap = 1_000 ether;
+            instance.updateWholeTag(tagIdentifiers[i], tags[i]);
+        }
+
+        // buy tokens
+        vm.startPrank(makeAddr("address0"));
+        uint256 toBuy = 1_000 ether;
+        instance.buyTokens(tagIdentifiers[1], toBuy, proof);
+
+        // revert
+        uint256 totalAfterPurchase = instance.grandTotal() + toBuy;
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IGOWritable_GrandTotalExceeded.selector,
+                grandTotal_,
+                totalAfterPurchase - instance.grandTotal()
+            )
+        );
+        instance.buyTokens(tagIdentifiers[0], toBuy, proof);
+    }
+
     function __generateLeaves_WithJS_Script(
         uint256 leavesAmount
     ) private returns (bytes32[] memory leaves) {

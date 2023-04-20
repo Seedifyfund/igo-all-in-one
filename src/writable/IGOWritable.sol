@@ -40,7 +40,17 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
             );
         }
 
+        uint256 grandTotal = strg.grandTotal;
+        uint256 totalAfterPurchase = amount + strg.totalRaised;
+        if (totalAfterPurchase > grandTotal) {
+            revert IGOWritable_GrandTotalExceeded(
+                grandTotal,
+                totalAfterPurchase - grandTotal
+            );
+        }
+
         // update storage
+        strg.totalRaised += amount;
         strg.raisedInTag[tagId] += amount;
 
         // transfer tokens

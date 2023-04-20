@@ -6,6 +6,7 @@ import {IIGOWritableInternal} from "./writable/IIGOWritableInternal.sol";
 library IGOStorage {
     struct IGOStruct {
         uint256 grandTotal;
+        uint256 totalRaised;
         string[] tagIdentifiers;
         mapping(string => IIGOWritableInternal.Tag) tags;
         mapping(string => uint256) raisedInTag;
