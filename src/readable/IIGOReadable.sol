@@ -11,11 +11,11 @@ interface IIGOReadable {
         view
         returns (address token, address treasuryWallet, uint256 grandTotal);
 
-    function tagIdentifiers() external view returns (string[] memory tagIds);
-
     function tag(
         string memory tagId
     ) external view returns (IIGOWritableInternal.Tag memory tag);
+
+    function tagIds() external view returns (string[] memory tagIds);
 
     function totalRaised() external view returns (uint256);
 }

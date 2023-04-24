@@ -21,7 +21,7 @@ contract IGO_Test is IGOSetUp {
                                  SET TAGS
     //////////////////////////////////////////////////////////////*/
     function test_setTags_CheckSavedIdentifiersAndTag() public {
-        string[] memory tagIds = instance.tagIdentifiers();
+        string[] memory tagIds = instance.tagIds();
         Tag memory tag;
 
         assertEq(tagIds.length, tagIdentifiers.length);
@@ -59,9 +59,7 @@ contract IGO_Test is IGOSetUp {
         instance.setTags(tagIdentifiers, tags);
     }
 
-    function testRevert_setTags_If_tags_LengthNotEqualTo_tagIdentifiers()
-        public
-    {
+    function testRevert_setTags_If_tags_LengthNotEqualTo_tagIds() public {
         tags.pop();
         vm.expectRevert("IGOWritable: tags arrays length");
         instance.setTags(tagIdentifiers, tags);
