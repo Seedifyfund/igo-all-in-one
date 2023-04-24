@@ -30,7 +30,10 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
             revert IGOWritable_NotOpened(tagId, state);
         }
 
-        // TODO: verify allocation.account == msg.sender
+        require(
+            msg.sender == allocation.account,
+            "msg.sender: NOT_AUTHORIZED"
+        );
 
         require(
             MerkleProof.verify(

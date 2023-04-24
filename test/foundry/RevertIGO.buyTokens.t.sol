@@ -33,6 +33,18 @@ contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
         instance.buyTokens(allocation, proof);
     }
 
+    function testRevert_buyTokens_If_MsgSenderNotAuthorized() public {
+        allocations.push(allocation);
+        bytes32[] memory proof = new bytes32[](10);
+
+        tags[0].state = State.OPENED;
+        instance.updateWholeTag(allocation.tagId, tags[0]);
+
+        vm.startPrank(makeAddr("address23950"));
+        vm.expectRevert("msg.sender: NOT_AUTHORIZED");
+        instance.buyTokens(allocation, proof);
+    }
+
     function testRevert_buyTokens_If_UserNotAddedToMerkleTreeAtAll() public {
         allocation.amount = 1_000 ether;
 
@@ -42,10 +54,10 @@ contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
             10
         );
         // generate merkle root and proof for leaf at index 7
-        (
-            bytes32 merkleRoot,
-            bytes32[] memory proof
-        ) = __generateMerkleRootAndProofForLeaf(leaves, 7);
+        (bytes32 merkleRoot, ) = __generateMerkleRootAndProofForLeaf(
+            leaves,
+            7
+        );
 
         // update merkle root & state
         tags[0].merkleRoot = merkleRoot;
@@ -54,9 +66,11 @@ contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
 
         // msg.sender is not in any leaves of the tree so it will not generate
         // any correct proof
+        bytes32[] memory proof;
         for (uint256 i; i < leaves.length; ++i) {
             (, proof) = __generateMerkleRootAndProofForLeaf(leaves, i);
 
+            vm.prank(allocation.account);
             vm.expectRevert("ALLOCATION_NOT_FOUND");
             instance.buyTokens(allocation, proof);
         }
