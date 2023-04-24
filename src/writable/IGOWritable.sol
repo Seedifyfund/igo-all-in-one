@@ -19,7 +19,7 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
     function buyTokens(
         Allocation calldata allocation,
         bytes32[] calldata proof
-    ) external onlyStage(Stage.OPENED, allocation.tagId) {
+    ) external onlyTagAtStage(Stage.OPENED, allocation.tagId) {
         string calldata tagId = allocation.tagId;
         uint256 amount = allocation.amount;
         IGOStorage.SetUp memory setUp = IGOStorage.layout().setUp;

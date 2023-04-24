@@ -6,10 +6,10 @@ import {IIGOWritableInternal} from "./IIGOWritableInternal.sol";
 import {IGOStorage} from "../IGOStorage.sol";
 
 contract IGOWritableInternal is IIGOWritableInternal {
-    modifier onlyStage(Stage stage, string memory tagId) {
+    modifier onlyTagAtStage(Stage stage, string memory tagId) {
         Stage expected = IGOStorage.layout().tags.data[tagId].stage;
         if (expected != stage) {
-            revert IGOWritableInternal_InvalidStage(tagId, stage, expected);
+            revert IGOWritableInternal_InvalidTagStage(tagId, stage, expected);
         }
         _;
     }
@@ -27,5 +27,11 @@ contract IGOWritableInternal is IIGOWritableInternal {
             );
         }
         return false;
+    }
+
+    function _nextStageForTag(string memory tagId) internal {
+        IGOStorage.layout().tags.data[tagId].stage = Stage(
+            uint256(IGOStorage.layout().tags.data[tagId].stage) + 1
+        );
     }
 }

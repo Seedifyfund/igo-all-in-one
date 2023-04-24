@@ -20,12 +20,12 @@ contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
     /*//////////////////////////////////////////////////////////////
                                  REVERT
     //////////////////////////////////////////////////////////////*/
-    function testRevert_buyTokens_If_NotOpened() public {
+    function testRevert_buyTokens_If_TagNotOpened() public {
         bytes32[] memory proof = new bytes32[](10);
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                IGOWritableInternal_InvalidStage.selector,
+                IGOWritableInternal_InvalidTagStage.selector,
                 allocation.tagId,
                 Stage.OPENED,
                 Stage.NOT_STARTED
