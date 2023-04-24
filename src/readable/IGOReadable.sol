@@ -8,13 +8,13 @@ import {IGOStorage} from "../IGOStorage.sol";
 
 contract IGOReadable is IIGOReadable, IIGOWritableInternal {
     function grandTotal() external view override returns (uint256) {
-        return IGOStorage.layout().grandTotal;
+        return IGOStorage.layout().setUp.grandTotal;
     }
 
     function raisedInTag(
         string memory tagId
     ) external view override returns (uint256) {
-        return IGOStorage.layout().raisedInTag[tagId];
+        return IGOStorage.layout().ledger.raisedInTag[tagId];
     }
 
     function tagIdentifiers()
@@ -23,20 +23,20 @@ contract IGOReadable is IIGOReadable, IIGOWritableInternal {
         override
         returns (string[] memory tagIds)
     {
-        tagIds = IGOStorage.layout().tagIdentifiers;
+        tagIds = IGOStorage.layout().tags.ids;
     }
 
     function tag(
         string memory tagId
     ) external view override returns (Tag memory tag_) {
-        tag_ = IGOStorage.layout().tags[tagId];
+        tag_ = IGOStorage.layout().tags.data[tagId];
     }
 
     function token() external view override returns (address) {
-        return IGOStorage.layout().token;
+        return IGOStorage.layout().setUp.token;
     }
 
     function treasuryWallet() external view returns (address) {
-        return IGOStorage.layout().treasuryWallet;
+        return IGOStorage.layout().setUp.treasuryWallet;
     }
 }
