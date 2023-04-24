@@ -57,9 +57,7 @@ contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
         for (uint256 i; i < leaves.length; ++i) {
             (, proof) = __generateMerkleRootAndProofForLeaf(leaves, i);
 
-            vm.expectRevert(
-                "IGOWritable.buyTokens: allocation not in merkle tree"
-            );
+            vm.expectRevert("ALLOCATION_NOT_FOUND");
             instance.buyTokens(allocation, proof);
         }
     }

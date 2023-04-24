@@ -38,7 +38,7 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
                 strg.tags[tagId].merkleRoot,
                 keccak256(abi.encode(allocation))
             ),
-            "IGOWritable.buyTokens: allocation not in merkle tree"
+            "ALLOCATION_NOT_FOUND"
         );
 
         // verify maxTagCap will not be exceeded, after this purchase
