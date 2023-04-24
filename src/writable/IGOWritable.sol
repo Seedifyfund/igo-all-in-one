@@ -26,8 +26,8 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
         IGOStorage.Tags storage tags = IGOStorage.layout().tags;
         IGOStorage.Ledger storage ledger = IGOStorage.layout().ledger;
 
-        State state = tags.data[tagId].state;
-        if (state != State.OPENED) {
+        Stage state = tags.data[tagId].stage;
+        if (state != Stage.OPENED) {
             revert IGOWritable_NotOpened(tagId, state);
         }
 

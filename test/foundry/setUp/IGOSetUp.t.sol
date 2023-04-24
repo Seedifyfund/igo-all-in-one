@@ -40,7 +40,7 @@ contract IGOSetUp is Test, IIGOWritableInternal {
 
             tags.push(
                 Tag(
-                    State.NOT_STARTED,
+                    Stage.NOT_STARTED,
                     bytes32(0),
                     uint128(block.timestamp) + lastStart,
                     uint128(block.timestamp) + lastEnd,

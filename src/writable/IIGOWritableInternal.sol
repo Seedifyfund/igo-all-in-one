@@ -2,7 +2,7 @@
 pragma solidity ^0.8.17;
 
 interface IIGOWritableInternal {
-    enum State {
+    enum Stage {
         NOT_STARTED,
         OPENED,
         COMPLETED,
@@ -16,7 +16,7 @@ interface IIGOWritableInternal {
     }
 
     struct Tag {
-        State state;
+        Stage stage;
         // contains wallet and allocation per wallet
         bytes32 merkleRoot;
         uint128 startAt;
@@ -29,7 +29,7 @@ interface IIGOWritableInternal {
         uint256 maxTagAllocation,
         uint256 grandTotal
     );
-    error IGOWritable_NotOpened(string tagId, State state);
+    error IGOWritable_NotOpened(string tagId, Stage state);
     // TODO: update to IGOWritable_MaxTagCapExceeded
     error IGOWritable_MaxTagCapExceeded(
         string tagId,

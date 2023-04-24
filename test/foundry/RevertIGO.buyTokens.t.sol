@@ -27,7 +27,7 @@ contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
             abi.encodeWithSelector(
                 IGOWritable_NotOpened.selector,
                 allocation.tagId,
-                State.NOT_STARTED
+                Stage.NOT_STARTED
             )
         );
         instance.buyTokens(allocation, proof);
@@ -37,7 +37,7 @@ contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
         allocations.push(allocation);
         bytes32[] memory proof = new bytes32[](10);
 
-        tags[0].state = State.OPENED;
+        tags[0].stage = Stage.OPENED;
         instance.updateWholeTag(allocation.tagId, tags[0]);
 
         vm.startPrank(makeAddr("address23950"));
@@ -61,7 +61,7 @@ contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
 
         // update merkle root & state
         tags[0].merkleRoot = merkleRoot;
-        tags[0].state = State.OPENED;
+        tags[0].stage = Stage.OPENED;
         instance.updateWholeTag(allocation.tagId, tags[0]);
 
         // msg.sender is not in any leaves of the tree so it will not generate
@@ -103,7 +103,7 @@ contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
 
         // update merkle root & state
         tags[0].merkleRoot = merkleRoot;
-        tags[0].state = State.OPENED;
+        tags[0].stage = Stage.OPENED;
         tags[0].maxTagCap = allocation.amount;
         instance.updateWholeTag(allocation.tagId, tags[0]);
 
@@ -170,7 +170,7 @@ contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
         // update merkle root & state for first two tag
         for (uint256 i; i < 2; ++i) {
             tags[i].merkleRoot = merkleRoot;
-            tags[i].state = State.OPENED;
+            tags[i].stage = Stage.OPENED;
             tags[i].maxTagCap = 1_000 ether;
             instance.updateWholeTag(tagIdentifiers[i], tags[i]);
         }

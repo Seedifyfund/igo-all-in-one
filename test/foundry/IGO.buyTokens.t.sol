@@ -33,7 +33,7 @@ contract IGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
 
         // update merkle root & state
         tags[0].merkleRoot = merkleRoot;
-        tags[0].state = State.OPENED;
+        tags[0].stage = Stage.OPENED;
         tags[0].maxTagCap = 1_000 ether;
         instance.updateWholeTag(allocation.tagId, tags[0]);
 
