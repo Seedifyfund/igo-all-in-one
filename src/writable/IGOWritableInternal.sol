@@ -6,6 +6,14 @@ import {IIGOWritableInternal} from "./IIGOWritableInternal.sol";
 import {IGOStorage} from "../IGOStorage.sol";
 
 contract IGOWritableInternal is IIGOWritableInternal {
+    modifier onlyStage(Stage stage, string memory tagId) {
+        Stage expected = IGOStorage.layout().tags.data[tagId].stage;
+        if (expected != stage) {
+            revert IGOWritableInternal_InvalidStage(tagId, stage, expected);
+        }
+        _;
+    }
+
     function _isMaxTagAllocationGtGrandTotal(
         string calldata tagId_,
         uint256 maxTagAllocation_,

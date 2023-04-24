@@ -25,8 +25,9 @@ contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                IGOWritable_NotOpened.selector,
+                IGOWritableInternal_InvalidStage.selector,
                 allocation.tagId,
+                Stage.OPENED,
                 Stage.NOT_STARTED
             )
         );

@@ -19,17 +19,12 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
     function buyTokens(
         Allocation calldata allocation,
         bytes32[] calldata proof
-    ) external {
+    ) external onlyStage(Stage.OPENED, allocation.tagId) {
         string calldata tagId = allocation.tagId;
         uint256 amount = allocation.amount;
         IGOStorage.SetUp memory setUp = IGOStorage.layout().setUp;
         IGOStorage.Tags storage tags = IGOStorage.layout().tags;
         IGOStorage.Ledger storage ledger = IGOStorage.layout().ledger;
-
-        Stage state = tags.data[tagId].stage;
-        if (state != Stage.OPENED) {
-            revert IGOWritable_NotOpened(tagId, state);
-        }
 
         require(
             msg.sender == allocation.account,
