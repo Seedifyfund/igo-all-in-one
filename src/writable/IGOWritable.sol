@@ -17,10 +17,12 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
     using SafeERC20 for IERC20;
 
     function buyTokens(
-        string memory tagId,
-        uint256 amount,
+        Allocation calldata allocation,
         bytes32[] calldata proof
     ) external {
+        string calldata tagId = allocation.tagId;
+        // TODO: consumes same or more gas than using allocation.amount directly?
+        uint256 amount = allocation.amount;
         IGOStorage.IGOStruct storage strg = IGOStorage.layout();
 
         State state = strg.tags[tagId].state;
@@ -28,10 +30,15 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
             revert IGOWritable_NotOpened(tagId, state);
         }
 
-        bytes32 leaf = keccak256(abi.encodePacked(msg.sender, amount));
+        // TODO: verify allocation.account == msg.sender
+
         require(
-            MerkleProof.verify(proof, strg.tags[tagId].merkleRoot, leaf),
-            "IGOWritable.buyTokens: leaf not in merkle tree"
+            MerkleProof.verify(
+                proof,
+                strg.tags[tagId].merkleRoot,
+                keccak256(abi.encode(allocation))
+            ),
+            "IGOWritable.buyTokens: allocation not in merkle tree"
         );
 
         // verify maxTagCap will not be exceeded, after this purchase

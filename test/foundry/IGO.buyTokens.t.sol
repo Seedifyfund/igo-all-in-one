@@ -12,23 +12,29 @@ contract IGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
     function test_buyTokens_TokenSuccessfullyTrasfered() public {
         address buyer = makeAddr("address0");
         uint256 toBuy = 1_000 ether;
+        Allocation memory allocation = Allocation({
+            tagId: tagIdentifiers[0],
+            account: buyer,
+            amount: toBuy
+        });
         deal(address(token), buyer, toBuy + 100 ether);
 
         // generate 10 leaves
-        bytes32[] memory leaves = __generateLeaves_WithJS_Script(10);
+        bytes32[] memory leaves = __generateLeaves_WithJS_Script(
+            tagIdentifiers,
+            10
+        );
         // generate merkle root and proof for leaf at index 0
         (
             bytes32 merkleRoot,
             bytes32[] memory proof
         ) = __generateMerkleRootAndProofForLeaf(leaves, 0);
 
-        string memory tagIdentifier = tagIdentifiers[0];
-
         // update merkle root & state
         tags[0].merkleRoot = merkleRoot;
         tags[0].state = State.OPENED;
         tags[0].maxTagCap = 1_000 ether;
-        instance.updateWholeTag(tagIdentifier, tags[0]);
+        instance.updateWholeTag(allocation.tagId, tags[0]);
 
         // buy tokens
         vm.startPrank(buyer);
@@ -36,7 +42,7 @@ contract IGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
         assertEq(token.balanceOf(treasuryWallet), 0);
 
         token.increaseAllowance(address(instance), toBuy);
-        instance.buyTokens(tagIdentifier, toBuy, proof);
+        instance.buyTokens(allocation, proof);
 
         uint256 balanceAfterBuy = token.balanceOf(buyer);
         assertEq(balanceAfterBuy, balanceBeforeBuy - toBuy);
