@@ -34,6 +34,40 @@ contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
         instance.buyTokens(allocation, proof);
     }
 
+    function testRevert_buyTokens_If_TagCompledted() public {
+        bytes32[] memory proof = new bytes32[](10);
+
+        tags[0].stage = Stage.COMPLETED;
+        instance.updateWholeTag(allocation.tagId, tags[0]);
+
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IGOWritableInternal_InvalidTagStage.selector,
+                allocation.tagId,
+                Stage.OPENED,
+                Stage.COMPLETED
+            )
+        );
+        instance.buyTokens(allocation, proof);
+    }
+
+    function testRevert_buyTokens_If_TagPaused() public {
+        bytes32[] memory proof = new bytes32[](10);
+
+        tags[0].stage = Stage.PAUSED;
+        instance.updateWholeTag(allocation.tagId, tags[0]);
+
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IGOWritableInternal_InvalidTagStage.selector,
+                allocation.tagId,
+                Stage.OPENED,
+                Stage.PAUSED
+            )
+        );
+        instance.buyTokens(allocation, proof);
+    }
+
     function testRevert_buyTokens_If_MsgSenderNotAuthorized() public {
         allocations.push(allocation);
         bytes32[] memory proof = new bytes32[](10);
