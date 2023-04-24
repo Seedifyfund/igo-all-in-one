@@ -7,7 +7,10 @@ import {IGOReadable} from "./readable/IGOReadable.sol";
 import {IGOWritable} from "./writable/IGOWritable.sol";
 
 contract IGO is IGOReadable, IGOWritable {
-    constructor(uint256 grandTotal_) {
-        IGOStorage.layout().grandTotal = grandTotal_;
+    constructor(address token, address treasuryWallet, uint256 grandTotal_) {
+        IGOStorage.IGOStruct storage strg = IGOStorage.layout();
+        strg.token = token;
+        strg.treasuryWallet = treasuryWallet;
+        strg.grandTotal = grandTotal_;
     }
 }

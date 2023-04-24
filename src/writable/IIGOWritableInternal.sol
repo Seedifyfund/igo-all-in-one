@@ -4,7 +4,7 @@ pragma solidity ^0.8.17;
 interface IIGOWritableInternal {
     enum State {
         NOT_STARTED,
-        STARTED,
+        OPENED,
         COMPLETED,
         PAUSED
     }
@@ -22,5 +22,16 @@ interface IIGOWritableInternal {
         string tagId,
         uint256 maxTagAllocation,
         uint256 grandTotal
+    );
+    error IGOWritable_NotOpened(string tagId, State state);
+    // TODO: update to IGOWritable_MaxTagCapExceeded
+    error IGOWritable_MaxTagCapExceeded(
+        string tagId,
+        uint256 maxTagCap,
+        uint256 exceedsBy
+    );
+    error IGOWritable_GrandTotalExceeded(
+        uint256 grandTotal,
+        uint256 exceedsBy
     );
 }

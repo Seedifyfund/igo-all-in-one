@@ -8,4 +8,8 @@ interface IIGOWritable {
         string[] calldata tagIdentifiers_,
         IIGOWritableInternal.Tag[] calldata tags_
     ) external;
+
+    function updateToken(address token_) external;
+
+    function updateTreasuryWallet(address addr) external;
 }

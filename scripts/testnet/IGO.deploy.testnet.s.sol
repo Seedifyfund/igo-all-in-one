@@ -2,10 +2,13 @@
 pragma solidity ^0.8.17;
 
 import "forge-std/Script.sol";
-import {IGO} from "../src/IGO.sol";
+
+import {IGO} from "../../src/IGO.sol";
+
+import {ERC20_Mock} from "../../test/mock/ERC20_Mock.sol";
 
 /**
-* @dev forge script IGO_deploy \
+* @dev forge script IGO_deploy_testnet \
         --rpc-url $BSC_RPC --broadcast \
         --verify --etherscan-api-key $BSC_KEY \
         -vvvv --optimize --optimizer-runs 20000 -w
@@ -21,14 +24,15 @@ import {IGO} from "../src/IGO.sol";
 * @dev VRFCoordinatorV2Interface: https://docs.chain.link/docs/vrf-contracts/
 */
 
-contract IGO_deploy is Script {
+contract IGO_deploy_testnet is Script {
     function run() external {
         ///@dev Configure .env file
         string memory SEED = vm.envString("SEED");
         uint256 privateKey = vm.deriveKey(SEED, 0); // address at index 0
         vm.startBroadcast(privateKey);
 
-        IGO token = new IGO(1_000_000);
+        ERC20_Mock token = new ERC20_Mock();
+        IGO igo = new IGO(address(token), vm.addr(privateKey), 1_000_000);
 
         vm.stopBroadcast();
     }
