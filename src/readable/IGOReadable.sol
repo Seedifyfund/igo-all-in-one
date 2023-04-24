@@ -7,36 +7,34 @@ import {IIGOWritableInternal} from "../writable/IIGOWritableInternal.sol";
 import {IGOStorage} from "../IGOStorage.sol";
 
 contract IGOReadable is IIGOReadable, IIGOWritableInternal {
-    function grandTotal() external view override returns (uint256) {
-        return IGOStorage.layout().grandTotal;
-    }
-
     function raisedInTag(
         string memory tagId
     ) external view override returns (uint256) {
-        return IGOStorage.layout().raisedInTag[tagId];
+        return IGOStorage.layout().ledger.raisedInTag[tagId];
     }
 
-    function tagIdentifiers()
+    function setUp()
         external
         view
-        override
-        returns (string[] memory tagIds)
+        returns (address token, address treasuryWallet, uint256 grandTotal)
     {
-        tagIds = IGOStorage.layout().tagIdentifiers;
+        IGOStorage.SetUp memory setUp_ = IGOStorage.layout().setUp;
+        token = setUp_.token;
+        treasuryWallet = setUp_.treasuryWallet;
+        grandTotal = setUp_.grandTotal;
     }
 
     function tag(
         string memory tagId
     ) external view override returns (Tag memory tag_) {
-        tag_ = IGOStorage.layout().tags[tagId];
+        tag_ = IGOStorage.layout().tags.data[tagId];
     }
 
-    function token() external view override returns (address) {
-        return IGOStorage.layout().token;
+    function tagIds() external view override returns (string[] memory tagIds) {
+        tagIds = IGOStorage.layout().tags.ids;
     }
 
-    function treasuryWallet() external view returns (address) {
-        return IGOStorage.layout().treasuryWallet;
+    function totalRaised() external view returns (uint256) {
+        return IGOStorage.layout().ledger.totalRaised;
     }
 }

@@ -20,7 +20,7 @@ contract IGOSetUp is Test, IIGOWritableInternal {
     string[] public tagIdentifiers;
     Tag[] public tags;
 
-    function setUp() public {
+    function setUp() public virtual {
         token = new ERC20_Mock();
         instance = new IGO(address(token), treasuryWallet, grandTotal);
 

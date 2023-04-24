@@ -6,31 +6,42 @@ import "forge-std/Test.sol";
 import {Strings2} from "murky/differential_testing/test/utils/Strings2.sol";
 import {Strings} from "openzeppelin-contracts/utils/Strings.sol";
 
-contract FFI_Merkletreejs is Test {
+import {IIGOWritableInternal} from "../../../src/writable/IIGOWritableInternal.sol";
+
+contract FFI_Merkletreejs is Test, IIGOWritableInternal {
     function __generateLeaves_WithJS_Script(
+        string[] memory tagIdentifiers,
         uint256 leavesAmount
     ) internal returns (bytes32[] memory leaves) {
-        address[] memory addresses = new address[](leavesAmount);
-        uint256[] memory allocations = new uint256[](leavesAmount);
+        Allocation[] memory allocations = new Allocation[](leavesAmount);
 
         for (uint256 i; i < leavesAmount; ++i) {
-            addresses[i] = makeAddr(
-                string.concat("address", Strings.toString(i))
+            allocations[i] = Allocation(
+                tagIdentifiers[i % tagIdentifiers.length],
+                makeAddr(string.concat("address", Strings.toString(i))),
+                1_000 ether
             );
-            allocations[i] = 1_000 ether;
         }
 
-        bytes memory packedAddresses = abi.encode(addresses);
-        bytes memory packedAllocations = abi.encode(allocations);
+        return __generateLeaves(abi.encode(allocations));
+    }
 
-        string[] memory cmd = new string[](4);
+    function __generateLeaves_WithJS_Script(
+        Allocation[] memory allocations
+    ) internal returns (bytes32[] memory leaves) {
+        return __generateLeaves(abi.encode(allocations));
+    }
+
+    function __generateLeaves(
+        bytes memory packedAllocations
+    ) private returns (bytes32[] memory) {
+        string[] memory cmd = new string[](3);
         cmd[0] = "node";
         cmd[1] = "scripts/generateLeaves.js";
-        cmd[2] = Strings2.toHexString(packedAddresses);
-        cmd[3] = Strings2.toHexString(packedAllocations);
+        cmd[2] = Strings2.toHexString(packedAllocations);
         bytes memory res = vm.ffi(cmd);
 
-        leaves = abi.decode(res, (bytes32[]));
+        return abi.decode(res, (bytes32[]));
     }
 
     function __generateMerkleRootAndProofForLeaf(

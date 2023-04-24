@@ -9,6 +9,12 @@ interface IIGOWritableInternal {
         PAUSED
     }
 
+    struct Allocation {
+        string tagId;
+        address account;
+        uint256 amount;
+    }
+
     struct Tag {
         State state;
         // contains wallet and allocation per wallet

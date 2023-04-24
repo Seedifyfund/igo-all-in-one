@@ -6,10 +6,12 @@ import {IGOSetUp} from "./setUp/IGOSetUp.t.sol";
 contract IGO_Test is IGOSetUp {
     function test_grandTotal() public {
         // check grandTotal set in constructor
-        assertEq(instance.grandTotal(), grandTotal);
+        (, , uint256 grandTotal_) = instance.setUp();
+        assertEq(grandTotal_, grandTotal);
 
         instance.updateGrandTotal(1_000_000);
-        assertEq(instance.grandTotal(), 1_000_000);
+        (, , grandTotal_) = instance.setUp();
+        assertEq(grandTotal_, 1_000_000);
 
         vm.expectRevert("IGOWritable: grandTotal < 1_000");
         instance.updateGrandTotal(999);
@@ -19,7 +21,7 @@ contract IGO_Test is IGOSetUp {
                                  SET TAGS
     //////////////////////////////////////////////////////////////*/
     function test_setTags_CheckSavedIdentifiersAndTag() public {
-        string[] memory tagIds = instance.tagIdentifiers();
+        string[] memory tagIds = instance.tagIds();
         Tag memory tag;
 
         assertEq(tagIds.length, tagIdentifiers.length);
@@ -57,9 +59,7 @@ contract IGO_Test is IGOSetUp {
         instance.setTags(tagIdentifiers, tags);
     }
 
-    function testRevert_setTags_If_tags_LengthNotEqualTo_tagIdentifiers()
-        public
-    {
+    function testRevert_setTags_If_tags_LengthNotEqualTo_tagIds() public {
         tags.pop();
         vm.expectRevert("IGOWritable: tags arrays length");
         instance.setTags(tagIdentifiers, tags);

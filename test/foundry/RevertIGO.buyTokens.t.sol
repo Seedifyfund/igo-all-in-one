@@ -5,6 +5,18 @@ import {IGOSetUp} from "./setUp/IGOSetUp.t.sol";
 import {FFI_Merkletreejs} from "./utils/FFI_Merkletreejs.sol";
 
 contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
+    Allocation[] public allocations;
+    Allocation public allocation;
+
+    function setUp() public override {
+        super.setUp();
+        allocation = Allocation({
+            tagId: tagIdentifiers[0],
+            account: msg.sender,
+            amount: 1_000_000 ether
+        });
+    }
+
     /*//////////////////////////////////////////////////////////////
                                  REVERT
     //////////////////////////////////////////////////////////////*/
@@ -14,36 +26,53 @@ contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
         vm.expectRevert(
             abi.encodeWithSelector(
                 IGOWritable_NotOpened.selector,
-                tagIdentifiers[0],
+                allocation.tagId,
                 State.NOT_STARTED
             )
         );
-        instance.buyTokens(tagIdentifiers[0], 1_000_000 ether, proof);
+        instance.buyTokens(allocation, proof);
+    }
+
+    function testRevert_buyTokens_If_MsgSenderNotAuthorized() public {
+        allocations.push(allocation);
+        bytes32[] memory proof = new bytes32[](10);
+
+        tags[0].state = State.OPENED;
+        instance.updateWholeTag(allocation.tagId, tags[0]);
+
+        vm.startPrank(makeAddr("address23950"));
+        vm.expectRevert("msg.sender: NOT_AUTHORIZED");
+        instance.buyTokens(allocation, proof);
     }
 
     function testRevert_buyTokens_If_UserNotAddedToMerkleTreeAtAll() public {
-        // generate 10 leaves
-        bytes32[] memory leaves = __generateLeaves_WithJS_Script(10);
-        // generate merkle root and proof for leaf at index 7
-        (
-            bytes32 merkleRoot,
-            bytes32[] memory proof
-        ) = __generateMerkleRootAndProofForLeaf(leaves, 7);
+        allocation.amount = 1_000 ether;
 
-        string memory tagIdentifier = tagIdentifiers[0];
+        // generate 10 leaves
+        bytes32[] memory leaves = __generateLeaves_WithJS_Script(
+            tagIdentifiers,
+            10
+        );
+        // generate merkle root and proof for leaf at index 7
+        (bytes32 merkleRoot, ) = __generateMerkleRootAndProofForLeaf(
+            leaves,
+            7
+        );
 
         // update merkle root & state
         tags[0].merkleRoot = merkleRoot;
         tags[0].state = State.OPENED;
-        instance.updateWholeTag(tagIdentifier, tags[0]);
+        instance.updateWholeTag(allocation.tagId, tags[0]);
 
         // msg.sender is not in any leaves of the tree so it will not generate
         // any correct proof
+        bytes32[] memory proof;
         for (uint256 i; i < leaves.length; ++i) {
             (, proof) = __generateMerkleRootAndProofForLeaf(leaves, i);
 
-            vm.expectRevert("IGOWritable.buyTokens: leaf not in merkle tree");
-            instance.buyTokens(tagIdentifier, 1_000 ether, proof);
+            vm.prank(allocation.account);
+            vm.expectRevert("ALLOCATION_NOT_FOUND");
+            instance.buyTokens(allocation, proof);
         }
     }
 
@@ -53,63 +82,90 @@ contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
     function testRevert_buyTokens_If_UserNotClaimingTheRightAmount() public {}
 
     function testRevert_buyTokens_If_MaxTagCapExceeded() public {
-        address buyer = makeAddr("address0");
-        uint256 toBuy = 1_000 ether;
-        deal(address(token), buyer, toBuy + 100 ether);
+        allocation.account = makeAddr("address0");
+        allocation.amount = 1_000 ether;
+        deal(
+            address(token),
+            allocation.account,
+            allocation.amount + 100 ether
+        );
 
         // generate 10 leaves
-        bytes32[] memory leaves = __generateLeaves_WithJS_Script(10);
+        bytes32[] memory leaves = __generateLeaves_WithJS_Script(
+            tagIdentifiers,
+            10
+        );
         // generate merkle root and proof for leaf at index 0
         (
             bytes32 merkleRoot,
             bytes32[] memory proof
         ) = __generateMerkleRootAndProofForLeaf(leaves, 0);
 
-        string memory tagIdentifier = tagIdentifiers[0];
-
         // update merkle root & state
         tags[0].merkleRoot = merkleRoot;
         tags[0].state = State.OPENED;
-        tags[0].maxTagCap = 1_000 ether;
-        instance.updateWholeTag(tagIdentifier, tags[0]);
+        tags[0].maxTagCap = allocation.amount;
+        instance.updateWholeTag(allocation.tagId, tags[0]);
 
         // buy tokens
-        vm.startPrank(makeAddr("address0"));
-        token.increaseAllowance(address(instance), toBuy);
-        instance.buyTokens(tagIdentifier, toBuy, proof);
+        vm.startPrank(allocation.account);
+        token.increaseAllowance(address(instance), allocation.amount);
+        instance.buyTokens(allocation, proof);
 
         // check maxTagCap reached
-        Tag memory tag_ = instance.tag(tagIdentifier);
+        Tag memory tag_ = instance.tag(allocation.tagId);
         assertEq(tag_.maxTagCap, tags[0].maxTagCap);
 
         // revert
-        uint256 raisedAfterPurchase = instance.raisedInTag(tagIdentifier) +
-            toBuy;
+        uint256 raisedAfterPurchase = instance.raisedInTag(allocation.tagId) +
+            allocation.amount;
         vm.expectRevert(
             abi.encodeWithSelector(
                 IGOWritable_MaxTagCapExceeded.selector,
-                tagIdentifier,
+                allocation.tagId,
                 tags[0].maxTagCap,
                 raisedAfterPurchase - tags[0].maxTagCap
             )
         );
-        instance.buyTokens(tagIdentifier, 1_000 ether, proof);
+        instance.buyTokens(allocation, proof);
     }
 
     function testRevert_buyTokens_If_GrandTotalExceeded() public {
         uint256 grandTotal_ = 1_000 ether;
         instance.updateGrandTotal(grandTotal_);
-        address buyer = makeAddr("address0");
-        uint256 toBuy = grandTotal_;
-        deal(address(token), buyer, toBuy + 100 ether);
+
+        allocations.push(
+            Allocation({
+                tagId: tagIdentifiers[0],
+                account: makeAddr("address0"),
+                amount: grandTotal_
+            })
+        );
+        allocations.push(
+            Allocation({
+                tagId: tagIdentifiers[1],
+                account: makeAddr("address1"),
+                amount: 1 ether
+            })
+        );
+
+        deal(
+            address(token),
+            allocations[0].account,
+            allocations[0].amount + 100 ether
+        );
 
         // generate 10 leaves
-        bytes32[] memory leaves = __generateLeaves_WithJS_Script(10);
+        bytes32[] memory leaves = __generateLeaves_WithJS_Script(allocations);
         // generate merkle root and proof for leaf at index 0
         (
             bytes32 merkleRoot,
-            bytes32[] memory proof
+            bytes32[] memory proof0
         ) = __generateMerkleRootAndProofForLeaf(leaves, 0);
+        (, bytes32[] memory proof1) = __generateMerkleRootAndProofForLeaf(
+            leaves,
+            1
+        );
 
         // update merkle root & state for first two tag
         for (uint256 i; i < 2; ++i) {
@@ -120,19 +176,21 @@ contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
         }
 
         // buy tokens
-        vm.startPrank(makeAddr("address0"));
-        token.increaseAllowance(address(instance), toBuy);
-        instance.buyTokens(tagIdentifiers[1], toBuy, proof);
+        vm.startPrank(allocations[0].account);
+        token.increaseAllowance(address(instance), allocations[0].amount);
+        instance.buyTokens(allocations[0], proof0);
 
         // revert
-        uint256 totalAfterPurchase = instance.grandTotal() + toBuy;
+        changePrank(allocations[1].account);
+        (, , uint256 grTotal) = instance.setUp();
+        uint256 totalAfterPurchase = grTotal + allocations[1].amount;
         vm.expectRevert(
             abi.encodeWithSelector(
                 IGOWritable_GrandTotalExceeded.selector,
                 grandTotal_,
-                totalAfterPurchase - instance.grandTotal()
+                totalAfterPurchase - grTotal
             )
         );
-        instance.buyTokens(tagIdentifiers[0], toBuy, proof);
+        instance.buyTokens(allocations[1], proof1);
     }
 }

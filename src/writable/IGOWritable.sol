@@ -17,26 +17,37 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
     using SafeERC20 for IERC20;
 
     function buyTokens(
-        string memory tagId,
-        uint256 amount,
+        Allocation calldata allocation,
         bytes32[] calldata proof
     ) external {
-        IGOStorage.IGOStruct storage strg = IGOStorage.layout();
+        string calldata tagId = allocation.tagId;
+        uint256 amount = allocation.amount;
+        IGOStorage.SetUp memory setUp = IGOStorage.layout().setUp;
+        IGOStorage.Tags storage tags = IGOStorage.layout().tags;
+        IGOStorage.Ledger storage ledger = IGOStorage.layout().ledger;
 
-        State state = strg.tags[tagId].state;
+        State state = tags.data[tagId].state;
         if (state != State.OPENED) {
             revert IGOWritable_NotOpened(tagId, state);
         }
 
-        bytes32 leaf = keccak256(abi.encodePacked(msg.sender, amount));
         require(
-            MerkleProof.verify(proof, strg.tags[tagId].merkleRoot, leaf),
-            "IGOWritable.buyTokens: leaf not in merkle tree"
+            msg.sender == allocation.account,
+            "msg.sender: NOT_AUTHORIZED"
+        );
+
+        require(
+            MerkleProof.verify(
+                proof,
+                tags.data[tagId].merkleRoot,
+                keccak256(abi.encode(allocation))
+            ),
+            "ALLOCATION_NOT_FOUND"
         );
 
         // verify maxTagCap will not be exceeded, after this purchase
-        uint256 maxTagCap = strg.tags[tagId].maxTagCap;
-        uint256 raisedAfterPurchase = amount + strg.raisedInTag[tagId];
+        uint256 maxTagCap = tags.data[tagId].maxTagCap;
+        uint256 raisedAfterPurchase = amount + ledger.raisedInTag[tagId];
         if (raisedAfterPurchase > maxTagCap) {
             revert IGOWritable_MaxTagCapExceeded(
                 tagId,
@@ -45,8 +56,8 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
             );
         }
 
-        uint256 grandTotal = strg.grandTotal;
-        uint256 totalAfterPurchase = amount + strg.totalRaised;
+        uint256 grandTotal = setUp.grandTotal;
+        uint256 totalAfterPurchase = amount + ledger.totalRaised;
         if (totalAfterPurchase > grandTotal) {
             revert IGOWritable_GrandTotalExceeded(
                 grandTotal,
@@ -55,13 +66,13 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
         }
 
         // update storage
-        strg.totalRaised += amount;
-        strg.raisedInTag[tagId] += amount;
+        ledger.totalRaised += amount;
+        ledger.raisedInTag[tagId] += amount;
 
         // transfer tokens
-        IERC20(strg.token).safeTransferFrom(
+        IERC20(setUp.token).safeTransferFrom(
             msg.sender,
-            strg.treasuryWallet,
+            setUp.treasuryWallet,
             amount
         );
     }
@@ -70,7 +81,7 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
         string[] calldata tagIdentifiers_,
         Tag[] calldata tags_
     ) external override onlyOwner {
-        IGOStorage.IGOStruct storage strg = IGOStorage.layout();
+        IGOStorage.Tags storage tags = IGOStorage.layout().tags;
 
         require(
             tagIdentifiers_.length == tags_.length,
@@ -78,7 +89,7 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
         );
 
         uint256 length = tagIdentifiers_.length;
-        uint256 grandTotal = strg.grandTotal;
+        uint256 grandTotal = IGOStorage.layout().setUp.grandTotal;
 
         for (uint256 i; i < length; ++i) {
             _isMaxTagAllocationGtGrandTotal(
@@ -86,37 +97,37 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
                 tags_[i].maxTagCap,
                 grandTotal
             );
-            strg.tagIdentifiers.push(tagIdentifiers_[i]);
-            strg.tags[tagIdentifiers_[i]] = tags_[i];
+            tags.ids.push(tagIdentifiers_[i]);
+            tags.data[tagIdentifiers_[i]] = tags_[i];
         }
     }
 
     function updateGrandTotal(uint256 grandTotal_) external onlyOwner {
         require(grandTotal_ >= 1_000, "IGOWritable: grandTotal < 1_000");
-        IGOStorage.layout().grandTotal = grandTotal_;
+        IGOStorage.layout().setUp.grandTotal = grandTotal_;
     }
 
     function updateToken(address token_) external onlyOwner {
-        IGOStorage.layout().token = token_;
+        IGOStorage.layout().setUp.token = token_;
     }
 
     function updateTreasuryWallet(address addr) external onlyOwner {
-        IGOStorage.layout().treasuryWallet = addr;
+        IGOStorage.layout().setUp.treasuryWallet = addr;
     }
 
     function updateWholeTag(
         string calldata tagId_,
         Tag calldata tag_
     ) external onlyOwner {
-        IGOStorage.IGOStruct storage strg = IGOStorage.layout();
+        IGOStorage.Tags storage tags = IGOStorage.layout().tags;
 
         _isMaxTagAllocationGtGrandTotal(
             tagId_,
             tag_.maxTagCap,
-            strg.grandTotal
+            IGOStorage.layout().setUp.grandTotal
         );
 
-        strg.tags[tagId_] = tag_;
+        tags.data[tagId_] = tag_;
     }
 
     function recoverLostERC20(address token, address to) external onlyOwner {
