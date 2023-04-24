@@ -4,9 +4,12 @@ pragma solidity ^0.8.17;
 import {IIGOWritableInternal} from "../writable/IIGOWritableInternal.sol";
 
 interface IIGOReadable {
-    function grandTotal() external view returns (uint256);
-
     function raisedInTag(string memory tagId) external view returns (uint256);
+
+    function setUp()
+        external
+        view
+        returns (address token, address treasuryWallet, uint256 grandTotal);
 
     function tagIdentifiers() external view returns (string[] memory tagIds);
 
@@ -14,7 +17,5 @@ interface IIGOReadable {
         string memory tagId
     ) external view returns (IIGOWritableInternal.Tag memory tag);
 
-    function token() external view returns (address);
-
-    function treasuryWallet() external view returns (address);
+    function totalRaised() external view returns (uint256);
 }

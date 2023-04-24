@@ -6,10 +6,12 @@ import {IGOSetUp} from "./setUp/IGOSetUp.t.sol";
 contract IGO_Test is IGOSetUp {
     function test_grandTotal() public {
         // check grandTotal set in constructor
-        assertEq(instance.grandTotal(), grandTotal);
+        (, , uint256 grandTotal_) = instance.setUp();
+        assertEq(grandTotal_, grandTotal);
 
         instance.updateGrandTotal(1_000_000);
-        assertEq(instance.grandTotal(), 1_000_000);
+        (, , grandTotal_) = instance.setUp();
+        assertEq(grandTotal_, 1_000_000);
 
         vm.expectRevert("IGOWritable: grandTotal < 1_000");
         instance.updateGrandTotal(999);

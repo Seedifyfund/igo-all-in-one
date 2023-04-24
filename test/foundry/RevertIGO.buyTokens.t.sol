@@ -182,13 +182,13 @@ contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
 
         // revert
         changePrank(allocations[1].account);
-        uint256 totalAfterPurchase = instance.grandTotal() +
-            allocations[1].amount;
+        (, , uint256 grTotal) = instance.setUp();
+        uint256 totalAfterPurchase = grTotal + allocations[1].amount;
         vm.expectRevert(
             abi.encodeWithSelector(
                 IGOWritable_GrandTotalExceeded.selector,
                 grandTotal_,
-                totalAfterPurchase - instance.grandTotal()
+                totalAfterPurchase - grTotal
             )
         );
         instance.buyTokens(allocations[1], proof1);

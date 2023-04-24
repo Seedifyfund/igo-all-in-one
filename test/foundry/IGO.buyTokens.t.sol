@@ -6,7 +6,8 @@ import {FFI_Merkletreejs} from "./utils/FFI_Merkletreejs.sol";
 
 contract IGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
     function test_token() public {
-        assertEq(instance.token(), address(token));
+        (address token_, , ) = instance.setUp();
+        assertEq(token_, address(token));
     }
 
     function test_buyTokens_TokenSuccessfullyTrasfered() public {
