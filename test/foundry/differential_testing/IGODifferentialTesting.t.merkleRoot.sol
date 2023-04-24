@@ -7,38 +7,41 @@ import {Strings} from "openzeppelin-contracts/utils/Strings.sol";
 
 import "forge-std/Test.sol";
 
-contract IGO_DifferentialTesting_merkleRoot is Test {
-    function testFuzzDifferential_generateLeaves_WithJSScript_CompareToSolidityLeaf(
-        address[] memory addresses,
-        uint256[] memory allocations
-    ) public {
-        vm.assume(addresses.length > 1);
-        vm.assume(addresses.length == allocations.length);
+import {IIGOWritableInternal} from "../../../src/writable/IIGOWritableInternal.sol";
 
-        bytes memory packedAddresses = abi.encode(addresses);
+contract IGO_DifferentialTesting_merkleRoot is Test, IIGOWritableInternal {
+    function testFuzzDifferential_generateLeaves_WithJSScript_CompareToSolidityLeaf(
+        Allocation[] memory allocations
+    ) public {
+        vm.assume(allocations.length > 1);
+
+        uint256 size = allocations.length;
+        string[5] memory tagIds = [
+            "igo-phase1",
+            "igo-phase2",
+            "vpr-base",
+            "vpr-premium1",
+            "vpr-premium2"
+        ];
+        for (uint256 i; i < size; ++i) {
+            allocations[i].tagId = tagIds[i % tagIds.length];
+        }
+
         bytes memory packedAllocations = abi.encode(allocations);
-        // emit log_named_bytes("packed", packedAddresses);
         // emit log_named_bytes("packed", packedAllocations);
 
-        string[] memory cmd = new string[](4);
+        string[] memory cmd = new string[](3);
         cmd[0] = "node";
         cmd[1] = "scripts/generateLeaves.js";
-        cmd[2] = Strings2.toHexString(packedAddresses);
-        cmd[3] = Strings2.toHexString(packedAllocations);
+        cmd[2] = Strings2.toHexString(packedAllocations);
         bytes memory res = vm.ffi(cmd);
 
         bytes32[] memory leaves = abi.decode(res, (bytes32[]));
-        // emit log_named_uint("leaves.length", leaves.length);
-        // emit log_named_bytes32("leaves[0]", leaves[0]);
-        bytes32 leaf = keccak256(
-            abi.encodePacked(addresses[0], allocations[0])
-        );
-        // emit log_named_bytes32("leaf - addresses[0] allocations[0]", leaf);
 
         uint256 loops = leaves.length > 10 ? 10 : leaves.length;
-
+        bytes32 leaf;
         for (uint256 i; i < loops; ++i) {
-            leaf = keccak256(abi.encodePacked(addresses[i], allocations[i]));
+            leaf = keccak256(abi.encode(allocations[i]));
             assertEq(leaves[i], leaf);
         }
     }
