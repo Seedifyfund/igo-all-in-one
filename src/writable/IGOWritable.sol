@@ -63,6 +63,7 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
         // update storage
         ledger.totalRaised += amount;
         ledger.raisedInTag[tagId] += amount;
+        if (ledger.raisedInTag[tagId] == maxTagCap) _nextStageForTag(tagId);
 
         // transfer tokens
         IERC20(setUp.token).safeTransferFrom(

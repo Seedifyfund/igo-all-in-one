@@ -50,6 +50,31 @@ contract IGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
         assertEq(token.balanceOf(treasuryWallet), toBuy);
     }
 
+    function test_buyTokens_TagStageToCompleted() public {
+        address buyer = makeAddr("address0");
+        uint256 toBuy = 1_000 ether;
+        Allocation memory allocation = Allocation({
+            tagId: tagIdentifiers[0],
+            account: buyer,
+            amount: toBuy
+        });
+        deal(address(token), buyer, toBuy + 100 ether);
+
+        bytes32[] memory proof = __generateUpdate_LeafRootProof(
+            10, // amounts of leaves
+            0, // proof index
+            tags[0],
+            Stage.OPENED,
+            1_000 ether, // max tag cap
+            allocation.tagId
+        );
+
+        __buyTokens(buyer, toBuy, allocation, proof);
+
+        Tag memory tag = instance.tag(allocation.tagId);
+        assertEq(uint256(tag.stage), uint256(Stage.COMPLETED));
+    }
+
     //////////////// TODO: Tets success in a more complete scenario ////////////////
     /// @dev tagIdentifier must be part of leaves, to ensure `msg.sender` can only participant to computed tag
     /// grand total to 3_000,
@@ -76,5 +101,45 @@ contract IGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
         instance.recoverLostERC20(address(token), treasuryWallet);
         assertEq(token.balanceOf(address(instance)), 0);
         assertEq(token.balanceOf(treasuryWallet), lost);
+    }
+
+    function __generateUpdate_LeafRootProof(
+        uint256 amountOfLeaves,
+        uint256 proofIndex,
+        Tag memory tag,
+        Stage tagStage,
+        uint256 maxTagCap,
+        string memory tagId
+    ) private returns (bytes32[] memory) {
+        // generate 10 leaves
+        bytes32[] memory leaves = __generateLeaves_WithJS_Script(
+            tagIdentifiers,
+            amountOfLeaves
+        );
+        // generate merkle root and proof for leaf at index 0
+        (
+            bytes32 merkleRoot,
+            bytes32[] memory proof
+        ) = __generateMerkleRootAndProofForLeaf(leaves, proofIndex);
+
+        // update merkle root & stage
+        tag.merkleRoot = merkleRoot;
+        tag.stage = tagStage;
+        tag.maxTagCap = maxTagCap;
+        instance.updateWholeTag(tagId, tag);
+
+        return proof;
+    }
+
+    function __buyTokens(
+        address buyer,
+        uint256 toBuy,
+        Allocation memory allocation,
+        bytes32[] memory proof
+    ) private {
+        vm.startPrank(buyer);
+        token.increaseAllowance(address(instance), toBuy);
+        instance.buyTokens(allocation, proof);
+        vm.stopPrank();
     }
 }

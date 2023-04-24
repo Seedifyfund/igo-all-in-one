@@ -27,8 +27,8 @@ contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
             abi.encodeWithSelector(
                 IGOWritableInternal_InvalidTagStage.selector,
                 allocation.tagId,
-                Stage.OPENED,
-                Stage.NOT_STARTED
+                Stage.NOT_STARTED,
+                Stage.OPENED
             )
         );
         instance.buyTokens(allocation, proof);
@@ -44,8 +44,8 @@ contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
             abi.encodeWithSelector(
                 IGOWritableInternal_InvalidTagStage.selector,
                 allocation.tagId,
-                Stage.OPENED,
-                Stage.COMPLETED
+                Stage.COMPLETED,
+                Stage.OPENED
             )
         );
         instance.buyTokens(allocation, proof);
@@ -61,8 +61,8 @@ contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
             abi.encodeWithSelector(
                 IGOWritableInternal_InvalidTagStage.selector,
                 allocation.tagId,
-                Stage.OPENED,
-                Stage.PAUSED
+                Stage.PAUSED,
+                Stage.OPENED
             )
         );
         instance.buyTokens(allocation, proof);
@@ -139,7 +139,7 @@ contract RevertIGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
         // update merkle root & state
         tags[0].merkleRoot = merkleRoot;
         tags[0].stage = Stage.OPENED;
-        tags[0].maxTagCap = allocation.amount;
+        tags[0].maxTagCap = allocation.amount + 1;
         instance.updateWholeTag(allocation.tagId, tags[0]);
 
         // buy tokens

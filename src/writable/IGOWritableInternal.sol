@@ -6,10 +6,14 @@ import {IIGOWritableInternal} from "./IIGOWritableInternal.sol";
 import {IGOStorage} from "../IGOStorage.sol";
 
 contract IGOWritableInternal is IIGOWritableInternal {
-    modifier onlyTagAtStage(Stage stage, string memory tagId) {
-        Stage expected = IGOStorage.layout().tags.data[tagId].stage;
-        if (expected != stage) {
-            revert IGOWritableInternal_InvalidTagStage(tagId, stage, expected);
+    modifier onlyTagAtStage(Stage expected, string memory tagId) {
+        Stage current = IGOStorage.layout().tags.data[tagId].stage;
+        if (current != expected) {
+            revert IGOWritableInternal_InvalidTagStage(
+                tagId,
+                current,
+                expected
+            );
         }
         _;
     }
