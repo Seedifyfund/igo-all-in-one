@@ -10,10 +10,9 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
     function testRevert_buyTokens_If_TagNotOpened() public {
         vm.expectRevert(
             abi.encodeWithSelector(
-                IGOWritableInternal_InvalidTagStage.selector,
+                IGOWritableInternal_TagNotOpened.selector,
                 allocations[0].tagId,
-                Stage.NOT_STARTED,
-                Stage.OPENED
+                Stage.NOT_STARTED
             )
         );
         instance.buyTokens(allocations[0], new bytes32[](10));
@@ -25,10 +24,9 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                IGOWritableInternal_InvalidTagStage.selector,
+                IGOWritableInternal_TagNotOpened.selector,
                 allocations[0].tagId,
-                Stage.COMPLETED,
-                Stage.OPENED
+                Stage.COMPLETED
             )
         );
         instance.buyTokens(allocations[0], new bytes32[](10));
@@ -40,10 +38,9 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                IGOWritableInternal_InvalidTagStage.selector,
+                IGOWritableInternal_TagNotOpened.selector,
                 allocations[0].tagId,
-                Stage.PAUSED,
-                Stage.OPENED
+                Stage.PAUSED
             )
         );
         instance.buyTokens(allocations[0], new bytes32[](10));
