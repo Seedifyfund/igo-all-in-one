@@ -2,52 +2,44 @@
 pragma solidity ^0.8.17;
 
 import {IGOSetUp} from "./setUp/IGOSetUp.t.sol";
-import {FFI_Merkletreejs} from "./utils/FFI_Merkletreejs.sol";
 
-contract IGO_Test_buyTokens is IGOSetUp, FFI_Merkletreejs {
+contract IGO_Test_buyTokens is IGOSetUp {
     function test_token() public {
         (address token_, , ) = instance.setUp();
         assertEq(token_, address(token));
     }
 
-    function test_buyTokens_TokenSuccessfullyTrasfered() public {
-        address buyer = makeAddr("address0");
-        uint256 toBuy = 1_000 ether;
-        Allocation memory allocation = Allocation({
-            tagId: tagIdentifiers[0],
-            account: buyer,
-            amount: toBuy
-        });
-        deal(address(token), buyer, toBuy + 100 ether);
+    function test_buyTokens_TokenSuccessfullyTransfered() public {
+        _setUpTestData();
 
-        // generate 10 leaves
-        bytes32[] memory leaves = __generateLeaves_WithJS_Script(
-            tagIdentifiers,
-            10
-        );
-        // generate merkle root and proof for leaf at index 0
-        (
-            bytes32 merkleRoot,
-            bytes32[] memory proof
-        ) = __generateMerkleRootAndProofForLeaf(leaves, 0);
-
-        // update merkle root & state
-        tags[0].merkleRoot = merkleRoot;
-        tags[0].state = State.OPENED;
-        tags[0].maxTagCap = 1_000 ether;
-        instance.updateWholeTag(allocation.tagId, tags[0]);
-
-        // buy tokens
-        vm.startPrank(buyer);
-        uint256 balanceBeforeBuy = token.balanceOf(buyer);
+        // before buying tokens
+        uint256 balanceBeforeBuy = token.balanceOf(allocations[0].account);
         assertEq(token.balanceOf(treasuryWallet), 0);
 
-        token.increaseAllowance(address(instance), toBuy);
-        instance.buyTokens(allocation, proof);
+        _buyTokens(
+            allocations[0].account,
+            allocations[0].amount,
+            allocations[0],
+            lastProof
+        );
 
-        uint256 balanceAfterBuy = token.balanceOf(buyer);
-        assertEq(balanceAfterBuy, balanceBeforeBuy - toBuy);
-        assertEq(token.balanceOf(treasuryWallet), toBuy);
+        uint256 balanceAfterBuy = token.balanceOf(allocations[0].account);
+        assertEq(balanceAfterBuy, balanceBeforeBuy - allocations[0].amount);
+        assertEq(token.balanceOf(treasuryWallet), allocations[0].amount);
+    }
+
+    function test_buyTokens_TagStageToCompleted() public {
+        _setUpTestData();
+
+        _buyTokens(
+            allocations[0].account,
+            allocations[0].amount,
+            allocations[0],
+            lastProof
+        );
+
+        Tag memory tag = instance.tag(allocations[0].tagId);
+        assertEq(uint256(tag.stage), uint256(Stage.COMPLETED));
     }
 
     //////////////// TODO: Tets success in a more complete scenario ////////////////

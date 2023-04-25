@@ -8,46 +8,24 @@ import {Strings} from "openzeppelin-contracts/utils/Strings.sol";
 
 import {IIGOWritableInternal} from "../../../src/writable/IIGOWritableInternal.sol";
 
+import {IGO} from "../../../src/IGO.sol";
+
 contract FFI_Merkletreejs is Test, IIGOWritableInternal {
-    function __generateLeaves_WithJS_Script(
-        string[] memory tagIdentifiers,
-        uint256 leavesAmount
-    ) internal returns (bytes32[] memory leaves) {
-        Allocation[] memory allocations = new Allocation[](leavesAmount);
+    bytes32[] public leaves;
+    bytes32 public merkleRoot;
+    bytes32[] public lastProof;
 
-        for (uint256 i; i < leavesAmount; ++i) {
-            allocations[i] = Allocation(
-                tagIdentifiers[i % tagIdentifiers.length],
-                makeAddr(string.concat("address", Strings.toString(i))),
-                1_000 ether
-            );
-        }
-
-        return __generateLeaves(abi.encode(allocations));
-    }
-
-    function __generateLeaves_WithJS_Script(
-        Allocation[] memory allocations
-    ) internal returns (bytes32[] memory leaves) {
-        return __generateLeaves(abi.encode(allocations));
-    }
-
-    function __generateLeaves(
-        bytes memory packedAllocations
-    ) private returns (bytes32[] memory) {
+    function _generateLeaves(Allocation[] memory allocations) internal {
         string[] memory cmd = new string[](3);
         cmd[0] = "node";
         cmd[1] = "scripts/generateLeaves.js";
-        cmd[2] = Strings2.toHexString(packedAllocations);
+        cmd[2] = Strings2.toHexString(abi.encode(allocations));
         bytes memory res = vm.ffi(cmd);
 
-        return abi.decode(res, (bytes32[]));
+        leaves = abi.decode(res, (bytes32[]));
     }
 
-    function __generateMerkleRootAndProofForLeaf(
-        bytes32[] memory leaves,
-        uint256 leafIndex
-    ) internal returns (bytes32 merkleRoot, bytes32[] memory proof) {
+    function _generateMerkleRootAndProofForLeaf(uint256 leafIndex) internal {
         bytes memory packed = abi.encode(leaves);
 
         string[] memory cmd = new string[](4);
@@ -58,6 +36,6 @@ contract FFI_Merkletreejs is Test, IIGOWritableInternal {
 
         bytes memory res = vm.ffi(cmd);
 
-        (merkleRoot, proof) = abi.decode(res, (bytes32, bytes32[]));
+        (merkleRoot, lastProof) = abi.decode(res, (bytes32, bytes32[]));
     }
 }

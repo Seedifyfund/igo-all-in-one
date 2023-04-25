@@ -30,7 +30,7 @@ contract IGO_Test is IGOSetUp {
             assertEq(tagIds[i], tagIdentifiers[i]);
             // check tags data
             tag = instance.tag(tagIds[i]);
-            assertEq(uint256(tag.state), uint256(tags[i].state));
+            assertEq(uint256(tag.stage), uint256(tags[i].stage));
             assertEq(tag.merkleRoot, tags[i].merkleRoot);
             assertEq(tag.startAt, tags[i].startAt);
             assertEq(tag.endAt, tags[i].endAt);
@@ -70,7 +70,7 @@ contract IGO_Test is IGOSetUp {
     //////////////////////////////////////////////////////////////*/
     function test_updateWholeTag() public {
         Tag memory tag = instance.tag(tagIdentifiers[0]);
-        tag.state = State.OPENED;
+        tag.stage = Stage.OPENED;
         tag.merkleRoot = bytes32("1");
         tag.startAt = 1;
         tag.endAt = 2;
@@ -80,7 +80,7 @@ contract IGO_Test is IGOSetUp {
 
         Tag memory updatedTag = instance.tag(tagIdentifiers[0]);
 
-        assertEq(uint256(updatedTag.state), uint256(tag.state));
+        assertEq(uint256(updatedTag.stage), uint256(tag.stage));
         assertEq(updatedTag.merkleRoot, tag.merkleRoot);
         assertEq(updatedTag.startAt, tag.startAt);
         assertEq(updatedTag.endAt, tag.endAt);

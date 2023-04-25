@@ -6,6 +6,18 @@ import {IIGOWritableInternal} from "./IIGOWritableInternal.sol";
 import {IGOStorage} from "../IGOStorage.sol";
 
 contract IGOWritableInternal is IIGOWritableInternal {
+    modifier onlyTagAtStage(Stage expected, string memory tagId) {
+        Stage current = IGOStorage.layout().tags.data[tagId].stage;
+        if (current != expected) {
+            revert IGOWritableInternal_InvalidTagStage(
+                tagId,
+                current,
+                expected
+            );
+        }
+        _;
+    }
+
     function _isMaxTagAllocationGtGrandTotal(
         string calldata tagId_,
         uint256 maxTagAllocation_,
@@ -19,5 +31,11 @@ contract IGOWritableInternal is IIGOWritableInternal {
             );
         }
         return false;
+    }
+
+    function _nextStageForTag(string memory tagId) internal {
+        IGOStorage.layout().tags.data[tagId].stage = Stage(
+            uint256(IGOStorage.layout().tags.data[tagId].stage) + 1
+        );
     }
 }

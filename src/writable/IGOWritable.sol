@@ -19,17 +19,12 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
     function buyTokens(
         Allocation calldata allocation,
         bytes32[] calldata proof
-    ) external {
+    ) external onlyTagAtStage(Stage.OPENED, allocation.tagId) {
         string calldata tagId = allocation.tagId;
         uint256 amount = allocation.amount;
         IGOStorage.SetUp memory setUp = IGOStorage.layout().setUp;
         IGOStorage.Tags storage tags = IGOStorage.layout().tags;
         IGOStorage.Ledger storage ledger = IGOStorage.layout().ledger;
-
-        State state = tags.data[tagId].state;
-        if (state != State.OPENED) {
-            revert IGOWritable_NotOpened(tagId, state);
-        }
 
         require(
             msg.sender == allocation.account,
@@ -68,6 +63,7 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
         // update storage
         ledger.totalRaised += amount;
         ledger.raisedInTag[tagId] += amount;
+        if (ledger.raisedInTag[tagId] == maxTagCap) _nextStageForTag(tagId);
 
         // transfer tokens
         IERC20(setUp.token).safeTransferFrom(
@@ -77,6 +73,10 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
         );
     }
 
+    /**
+     * @dev If a tag with an identifier already exists, it will be
+     *      overwritten, otherwise it will be created.
+     */
     function setTags(
         string[] calldata tagIdentifiers_,
         Tag[] calldata tags_
