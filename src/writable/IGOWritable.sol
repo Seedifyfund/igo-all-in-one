@@ -73,6 +73,10 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
         );
     }
 
+    /**
+     * @dev If a tag with an identifier already exists, it will be
+     *      overwritten, otherwise it will be created.
+     */
     function setTags(
         string[] calldata tagIdentifiers_,
         Tag[] calldata tags_
