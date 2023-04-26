@@ -28,7 +28,13 @@ contract IGOSetUp is Test, IIGOWritableInternal, FFI_Merkletreejs {
 
     function setUp() public virtual {
         token = new ERC20_Mock();
-        instance = new IGO_Mock(address(token), treasuryWallet, grandTotal);
+        instance = new IGO_Mock(
+            address(token),
+            treasuryWallet,
+            grandTotal,
+            new string[](0),
+            new Tag[](0)
+        );
 
         __createDefaultTags();
 

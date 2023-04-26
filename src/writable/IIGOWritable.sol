@@ -9,8 +9,8 @@ interface IIGOWritable {
     function pauseIGO() external;
 
     function setTags(
-        string[] calldata tagIdentifiers_,
-        IIGOWritableInternal.Tag[] calldata tags_
+        string[] memory tagIdentifiers_,
+        IIGOWritableInternal.Tag[] memory tags_
     ) external;
 
     function updateToken(address token_) external;
