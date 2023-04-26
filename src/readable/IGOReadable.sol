@@ -7,6 +7,10 @@ import {IIGOWritableInternal} from "../writable/IIGOWritableInternal.sol";
 import {IGOStorage} from "../IGOStorage.sol";
 
 contract IGOReadable is IIGOReadable, IIGOWritableInternal {
+    function igoStage() external view override returns (Stage) {
+        return IGOStorage.layout().ledger.stage;
+    }
+
     function raisedInTag(
         string memory tagId
     ) external view override returns (uint256) {
@@ -30,8 +34,13 @@ contract IGOReadable is IIGOReadable, IIGOWritableInternal {
         tag_ = IGOStorage.layout().tags.data[tagId];
     }
 
-    function tagIds() external view override returns (string[] memory tagIds) {
-        tagIds = IGOStorage.layout().tags.ids;
+    function tagIds()
+        external
+        view
+        override
+        returns (string[] memory tagIds_)
+    {
+        tagIds_ = IGOStorage.layout().tags.ids;
     }
 
     function totalRaised() external view returns (uint256) {

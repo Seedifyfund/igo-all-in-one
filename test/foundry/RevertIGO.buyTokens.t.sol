@@ -9,6 +9,7 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
     //////////////////////////////////////////////////////////////*/
     function testRevert_buyTokens_PauseIGOOverridesTagStage() public {
         instance.pauseIGO();
+        assertEq(uint256(instance.igoStage()), uint256(Stage.PAUSED));
 
         vm.expectRevert(
             abi.encodeWithSelector(

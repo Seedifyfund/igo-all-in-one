@@ -16,6 +16,7 @@ contract IGO_Test_requireOpenedIGO is IGOSetUp {
 
     function test_requireOpenedIGO() public {
         instance.openIGO();
+        assertEq(uint256(instance.igoStage()), uint256(Stage.OPENED));
         instance.exposed_requireOpenedIGO();
     }
 }
