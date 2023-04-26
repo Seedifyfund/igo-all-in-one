@@ -82,12 +82,7 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
         _increaseMaxTagCapBy(1);
 
         // buy tokens
-        _buyTokens(
-            allocations[0].account,
-            allocations[0].amount,
-            allocations[0],
-            lastProof
-        );
+        _buyTokens(allocations[0], lastProof);
 
         // check maxTagCap reached
         Tag memory tag_ = instance.tag(allocations[0].tagId);
@@ -125,12 +120,7 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
         instance.updateWholeTag(tagIdentifiers[1], tags[1]);
 
         // buy tokens
-        _buyTokens(
-            allocations[0].account,
-            allocations[0].amount,
-            allocations[0],
-            proof0
-        );
+        _buyTokens(allocations[0], proof0);
 
         // revert
         vm.startPrank(allocations[1].account);
