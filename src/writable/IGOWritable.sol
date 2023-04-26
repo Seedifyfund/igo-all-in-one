@@ -26,6 +26,7 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
         uint256 maxTagCap = IGOStorage.layout().tags.data[tagId].maxTagCap;
         uint256 grandTotal = IGOStorage.layout().setUp.grandTotal;
         // check given parameters
+        _requireOpenedIGO();
         _requireOpenedTag(allocation.tagId);
         _requireAuthorizedAccount(allocation.account);
         _requireValidAllocation(allocation, proof);
@@ -47,6 +48,10 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
             setUp.treasuryWallet,
             amount
         );
+    }
+
+    function openIGO() external override onlyOwner {
+        IGOStorage.layout().ledger.stage = Stage.OPENED;
     }
 
     /**

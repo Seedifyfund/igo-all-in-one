@@ -8,6 +8,8 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
                                  REVERT
     //////////////////////////////////////////////////////////////*/
     function testRevert_buyTokens_If_TagNotOpened() public {
+        instance.openIGO();
+
         vm.expectRevert(
             abi.encodeWithSelector(
                 IGOWritableInternal_TagNotOpened.selector,
@@ -19,6 +21,8 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
     }
 
     function testRevert_buyTokens_If_TagCompledted() public {
+        instance.openIGO();
+
         tags[0].stage = Stage.COMPLETED;
         instance.updateWholeTag(allocations[0].tagId, tags[0]);
 
@@ -33,6 +37,8 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
     }
 
     function testRevert_buyTokens_If_TagPaused() public {
+        instance.openIGO();
+
         tags[0].stage = Stage.PAUSED;
         instance.updateWholeTag(allocations[0].tagId, tags[0]);
 
@@ -47,6 +53,8 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
     }
 
     function testRevert_buyTokens_If_MsgSenderNotAuthorized() public {
+        instance.openIGO();
+
         tags[0].stage = Stage.OPENED;
         instance.updateWholeTag(allocations[0].tagId, tags[0]);
 

@@ -24,6 +24,7 @@ interface IIGOWritableInternal {
         uint256 maxTagCap;
     }
 
+    error IGOWritableInternal_IGONotOpened(Stage current);
     error IGOWritableInternal_TagNotOpened(string tagId, Stage current);
     error IGOWritable_GreaterThanGrandTotal(
         string tagId,
