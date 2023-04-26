@@ -15,6 +15,7 @@ import {IGOWritableInternal} from "./IGOWritableInternal.sol";
 contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
     using SafeERC20 for IERC20;
 
+    //////////////////////////// EXTERNAL ////////////////////////////
     function buyTokens(
         uint256 amount,
         Allocation calldata allocation,
@@ -61,35 +62,6 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
         IGOStorage.layout().ledger.stage = Stage.PAUSED;
     }
 
-    /**
-     * @dev If a tag with an identifier already exists, it will be
-     *      overwritten, otherwise it will be created.
-     */
-    function setTags(
-        string[] calldata tagIdentifiers_,
-        Tag[] calldata tags_
-    ) external override onlyOwner {
-        IGOStorage.Tags storage tags = IGOStorage.layout().tags;
-
-        require(
-            tagIdentifiers_.length == tags_.length,
-            "IGOWritable: tags arrays length"
-        );
-
-        uint256 length = tagIdentifiers_.length;
-        uint256 grandTotal = IGOStorage.layout().setUp.grandTotal;
-
-        for (uint256 i; i < length; ++i) {
-            _isMaxTagAllocationGtGrandTotal(
-                tagIdentifiers_[i],
-                tags_[i].maxTagCap,
-                grandTotal
-            );
-            tags.ids.push(tagIdentifiers_[i]);
-            tags.data[tagIdentifiers_[i]] = tags_[i];
-        }
-    }
-
     function updateGrandTotal(uint256 grandTotal_) external onlyOwner {
         require(grandTotal_ >= 1_000, "IGOWritable: grandTotal < 1_000");
         IGOStorage.layout().setUp.grandTotal = grandTotal_;
@@ -121,5 +93,35 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
     function recoverLostERC20(address token, address to) external onlyOwner {
         uint256 amount = IERC20(token).balanceOf(address(this));
         IERC20(token).safeTransfer(to, amount);
+    }
+
+    //////////////////////////// PUBLIC ////////////////////////////
+    /**
+     * @dev If a tag with an identifier already exists, it will be
+     *      overwritten, otherwise it will be created.
+     */
+    function setTags(
+        string[] memory tagIdentifiers_,
+        Tag[] memory tags_
+    ) public override onlyOwner {
+        IGOStorage.Tags storage tags = IGOStorage.layout().tags;
+
+        require(
+            tagIdentifiers_.length == tags_.length,
+            "IGOWritable: tags arrays length"
+        );
+
+        uint256 length = tagIdentifiers_.length;
+        uint256 grandTotal = IGOStorage.layout().setUp.grandTotal;
+
+        for (uint256 i; i < length; ++i) {
+            _isMaxTagAllocationGtGrandTotal(
+                tagIdentifiers_[i],
+                tags_[i].maxTagCap,
+                grandTotal
+            );
+            tags.ids.push(tagIdentifiers_[i]);
+            tags.data[tagIdentifiers_[i]] = tags_[i];
+        }
     }
 }

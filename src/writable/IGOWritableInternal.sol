@@ -95,7 +95,7 @@ contract IGOWritableInternal is IIGOWritableInternal {
     }
 
     function _isMaxTagAllocationGtGrandTotal(
-        string calldata tagId_,
+        string memory tagId_,
         uint256 maxTagAllocation_,
         uint256 grandTotal_
     ) internal pure returns (bool) {
