@@ -7,12 +7,12 @@ import {SafeERC20} from "openzeppelin-contracts/token/ERC20/utils/SafeERC20.sol"
 
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 
-import {IRestrictedWritable} from "./IRestrictedWritable.sol";
 import {IStageInternal} from "../shared/IStageInternal.sol";
-
-import {RestrictedWritableInternal} from "./RestrictedWritableInternal.sol";
+import {IRestrictedWritable} from "./IRestrictedWritable.sol";
 
 import {IGOStorage} from "../../IGOStorage.sol";
+
+import {RestrictedWritableInternal} from "./RestrictedWritableInternal.sol";
 
 /**
  * @notice Inherits from `IStageInternal` will create `error[5005]: Linearization of inheritance graph impossible`

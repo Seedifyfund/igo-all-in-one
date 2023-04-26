@@ -9,8 +9,8 @@ import {IIGOWritable} from "./IIGOWritable.sol";
 
 import {IGOStorage} from "../IGOStorage.sol";
 
-import {IGOWritableInternal} from "./IGOWritableInternal.sol";
 import {RestrictedWritable} from "./restricted/RestrictedWritable.sol";
+import {IGOWritableInternal} from "./IGOWritableInternal.sol";
 
 contract IGOWritable is IIGOWritable, IGOWritableInternal, RestrictedWritable {
     using SafeERC20 for IERC20;
