@@ -9,12 +9,18 @@ import {IERC20} from "openzeppelin-contracts/token/ERC20/IERC20.sol";
 
 import {IGO_Mock} from "../../mock/IGO_Mock.sol";
 import {IIGOWritableInternal} from "../../../src/writable/IIGOWritableInternal.sol";
+import {IRestrictedWritableInternal} from "../../../src/writable/restricted/IRestrictedWritableInternal.sol";
 
 import {ERC20_Mock} from "../../mock/ERC20_Mock.sol";
 
 import {FFI_Merkletreejs} from "../utils/FFI_Merkletreejs.sol";
 
-contract IGOSetUp is Test, IIGOWritableInternal, FFI_Merkletreejs {
+contract IGOSetUp is
+    Test,
+    IIGOWritableInternal,
+    IRestrictedWritableInternal,
+    FFI_Merkletreejs
+{
     ERC20_Mock public token;
     IGO_Mock public instance;
 

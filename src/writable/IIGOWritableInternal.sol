@@ -15,15 +15,6 @@ interface IIGOWritableInternal {
         uint256 amount;
     }
 
-    struct Tag {
-        Stage stage;
-        // contains wallet and allocation per wallet
-        bytes32 merkleRoot;
-        uint128 startAt;
-        uint128 endAt;
-        uint256 maxTagCap;
-    }
-
     error IGOWritableInternal_IGONotOpened(Stage current);
     error IGOWritableInternal_TagNotOpened(string tagId, Stage current);
     error IGOWritable_AllocationExceeded(
@@ -38,11 +29,5 @@ interface IIGOWritableInternal {
     error IGOWritable_GrandTotalExceeded(
         uint256 grandTotal,
         uint256 exceedsBy
-    );
-    // set tags
-    error IGOWritable_GreaterThanGrandTotal(
-        string tagId,
-        uint256 maxTagAllocation,
-        uint256 grandTotal
     );
 }

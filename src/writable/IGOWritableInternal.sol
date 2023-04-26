@@ -93,19 +93,4 @@ contract IGOWritableInternal is IIGOWritableInternal {
             "ALLOCATION_NOT_FOUND"
         );
     }
-
-    function _isMaxTagAllocationGtGrandTotal(
-        string memory tagId_,
-        uint256 maxTagAllocation_,
-        uint256 grandTotal_
-    ) internal pure returns (bool) {
-        if (maxTagAllocation_ > grandTotal_) {
-            revert IGOWritable_GreaterThanGrandTotal(
-                tagId_,
-                maxTagAllocation_,
-                grandTotal_
-            );
-        }
-        return false;
-    }
 }

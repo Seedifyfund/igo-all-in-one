@@ -3,17 +3,4 @@ pragma solidity ^0.8.17;
 
 import {IIGOWritableInternal} from "./IIGOWritableInternal.sol";
 
-interface IIGOWritable {
-    function openIGO() external;
-
-    function pauseIGO() external;
-
-    function setTags(
-        string[] memory tagIdentifiers_,
-        IIGOWritableInternal.Tag[] memory tags_
-    ) external;
-
-    function updateToken(address token_) external;
-
-    function updateTreasuryWallet(address addr) external;
-}
+interface IIGOWritable {}

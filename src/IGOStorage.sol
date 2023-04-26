@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
+import {IRestrictedWritableInternal} from "./writable/restricted/IRestrictedWritableInternal.sol";
 import {IIGOWritableInternal} from "./writable/IIGOWritableInternal.sol";
 
 library IGOStorage {
@@ -14,7 +15,7 @@ library IGOStorage {
     // Updated by owner and users interactions
     struct Tags {
         string[] ids;
-        mapping(string => IIGOWritableInternal.Tag) data;
+        mapping(string => IRestrictedWritableInternal.Tag) data;
     }
 
     // Only updated by users interactions

@@ -3,7 +3,7 @@ pragma solidity ^0.8.17;
 
 import "forge-std/Script.sol";
 
-import {IIGOWritableInternal} from "../../src/writable/IIGOWritableInternal.sol";
+import {IRestrictedWritableInternal} from "../../src/writable/restricted/IRestrictedWritableInternal.sol";
 import {IGO} from "../../src/IGO.sol";
 
 import {ERC20_Mock} from "../../test/mock/ERC20_Mock.sol";
@@ -38,7 +38,7 @@ contract IGO_deploy_testnet is Script {
             vm.addr(privateKey),
             1_000_000,
             new string[](0),
-            new IIGOWritableInternal.Tag[](0)
+            new IRestrictedWritableInternal.Tag[](0)
         );
 
         vm.stopBroadcast();
