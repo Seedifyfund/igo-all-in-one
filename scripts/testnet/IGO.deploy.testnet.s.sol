@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
+import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
+
 import "forge-std/Script.sol";
 
-import {IIGOWritableInternal} from "../../src/writable/IIGOWritableInternal.sol";
+import {IRestrictedWritableInternal} from "../../src/writable/restricted/IRestrictedWritableInternal.sol";
 import {IGO} from "../../src/IGO.sol";
-
-import {ERC20_Mock} from "../../test/mock/ERC20_Mock.sol";
 
 /**
 * @dev forge script IGO_deploy_testnet \
@@ -32,15 +32,17 @@ contract IGO_deploy_testnet is Script {
         uint256 privateKey = vm.deriveKey(SEED, 0); // address at index 0
         vm.startBroadcast(privateKey);
 
-        ERC20_Mock token = new ERC20_Mock();
+        ERC20 token = new ERC20("Mock", "MCK");
         IGO igo = new IGO(
             address(token),
             vm.addr(privateKey),
             1_000_000,
             new string[](0),
-            new IIGOWritableInternal.Tag[](0)
+            new IRestrictedWritableInternal.Tag[](0)
         );
 
         vm.stopBroadcast();
     }
+
+    function test() public {}
 }
