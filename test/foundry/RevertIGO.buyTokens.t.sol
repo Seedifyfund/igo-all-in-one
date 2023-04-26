@@ -127,7 +127,7 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
 
     function testRevert_buyTokens_If_GrandTotalExceeded() public {
         _setUpTestData();
-        uint256 grandTotal_ = allocations[0].amount;
+        uint256 grandTotal_ = allocations[0].amount + 1;
         instance.updateGrandTotal(grandTotal_);
 
         bytes32[] memory proof0;
@@ -145,13 +145,13 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
 
         // revert
         vm.startPrank(allocations[1].account);
-        (, , uint256 grTotal) = instance.setUp();
-        uint256 totalAfterPurchase = grTotal + allocations[1].amount;
+        uint256 totalRaised = instance.totalRaised();
+        uint256 totalAfterPurchase = allocations[1].amount + totalRaised;
         vm.expectRevert(
             abi.encodeWithSelector(
                 IGOWritable_GrandTotalExceeded.selector,
                 grandTotal_,
-                totalAfterPurchase - grTotal
+                totalAfterPurchase - grandTotal_
             )
         );
         instance.buyTokens(allocations[1], proof1);
