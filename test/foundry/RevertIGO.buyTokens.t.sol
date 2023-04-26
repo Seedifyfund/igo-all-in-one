@@ -4,6 +4,8 @@ pragma solidity ^0.8.17;
 import {IGOSetUp} from "./setUp/IGOSetUp.t.sol";
 
 contract RevertIGO_Test_buyTokens is IGOSetUp {
+    uint256 constant amount = 10 ether;
+
     /*//////////////////////////////////////////////////////////////
                                  REVERT
     //////////////////////////////////////////////////////////////*/
@@ -17,7 +19,7 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
                 Stage.PAUSED
             )
         );
-        instance.buyTokens(allocations[0], lastProof);
+        instance.buyTokens(amount, allocations[0], lastProof);
     }
 
     function testRevert_buyTokens_If_TagNotOpened() public {
@@ -30,7 +32,7 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
                 Stage.NOT_STARTED
             )
         );
-        instance.buyTokens(allocations[0], new bytes32[](10));
+        instance.buyTokens(amount, allocations[0], new bytes32[](10));
     }
 
     function testRevert_buyTokens_If_TagCompledted() public {
@@ -46,7 +48,7 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
                 Stage.COMPLETED
             )
         );
-        instance.buyTokens(allocations[0], new bytes32[](10));
+        instance.buyTokens(amount, allocations[0], new bytes32[](10));
     }
 
     function testRevert_buyTokens_If_TagPaused() public {
@@ -62,7 +64,7 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
                 Stage.PAUSED
             )
         );
-        instance.buyTokens(allocations[0], new bytes32[](10));
+        instance.buyTokens(amount, allocations[0], new bytes32[](10));
     }
 
     function testRevert_buyTokens_If_MsgSenderNotAuthorized() public {
@@ -73,7 +75,7 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
 
         vm.startPrank(makeAddr("address23950"));
         vm.expectRevert("msg.sender: NOT_AUTHORIZED");
-        instance.buyTokens(allocations[0], new bytes32[](10));
+        instance.buyTokens(amount, allocations[0], new bytes32[](10));
     }
 
     function testRevert_buyTokens_If_UserNotAddedToMerkleTreeAtAll() public {
@@ -89,7 +91,7 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
             vm.prank(msg.sender);
             // reverts with "ALLOCATION_NOT_FOUND", but issue when using string
             vm.expectRevert();
-            instance.buyTokens(allocations[i], lastProof);
+            instance.buyTokens(amount, allocations[i], lastProof);
         }
     }
 
@@ -131,19 +133,21 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
 
     function testRevert_buyTokens_If_MaxTagCapExceeded() public {
         _setUpTestData();
-        _increaseMaxTagCapBy(1);
+        uint256 maxTagCap_ = allocations[0].amount / 2;
+        tags[0].maxTagCap = maxTagCap_;
+        instance.updateTag(tagIdentifiers[0], tags[0]);
 
         // buy tokens
-        _buyTokens(allocations[0], lastProof);
+        _buyTokens(maxTagCap_ - 1, allocations[0], lastProof);
 
         // check maxTagCap reached
         Tag memory tag_ = instance.tag(allocations[0].tagId);
-        assertEq(tag_.maxTagCap, allocations[0].amount + 1);
+        assertEq(tag_.maxTagCap, maxTagCap_);
 
         // revert
         uint256 raisedAfterPurchase = instance.raisedInTag(
             allocations[0].tagId
-        ) + allocations[0].amount;
+        ) + maxTagCap_;
         vm.startPrank(allocations[0].account);
         vm.expectRevert(
             abi.encodeWithSelector(
@@ -153,7 +157,7 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
                 raisedAfterPurchase - tag_.maxTagCap
             )
         );
-        instance.buyTokens(allocations[0], lastProof);
+        instance.buyTokens(maxTagCap_, allocations[0], lastProof);
     }
 
     function testRevert_buyTokens_If_GrandTotalExceeded() public {
@@ -185,6 +189,6 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
                 totalAfterPurchase - grandTotal_
             )
         );
-        instance.buyTokens(allocations[1], proof1);
+        instance.buyTokens(allocations[1].amount, allocations[1], proof1);
     }
 }
