@@ -43,4 +43,6 @@ contract IGO_deploy_testnet is Script {
 
         vm.stopBroadcast();
     }
+
+    function test() public {}
 }

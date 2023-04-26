@@ -138,4 +138,6 @@ contract IGOSetUp is
         instance.buyTokens(allocation.amount, allocation, proof);
         vm.stopPrank();
     }
+
+    function test() public {}
 }
