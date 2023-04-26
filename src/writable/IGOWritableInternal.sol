@@ -8,6 +8,10 @@ import {IIGOWritableInternal} from "./IIGOWritableInternal.sol";
 import {IGOStorage} from "../IGOStorage.sol";
 
 contract IGOWritableInternal is IIGOWritableInternal {
+    function _closeIGO() internal {
+        IGOStorage.layout().ledger.stage = Stage.COMPLETED;
+    }
+
     function _nextStageForTag(string memory tagId) internal {
         IGOStorage.layout().tags.data[tagId].stage = Stage(
             uint256(IGOStorage.layout().tags.data[tagId].stage) + 1

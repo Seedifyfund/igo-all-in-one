@@ -32,6 +32,15 @@ contract IGO_Test_buyTokens is IGOSetUp {
         assertEq(uint256(tag.stage), uint256(Stage.COMPLETED));
     }
 
+    function test_buyTokens_IGOStageToCompleted() public {
+        instance.updateGrandTotal(allocations[0].amount);
+
+        _setUpTestData();
+        _buyTokens(allocations[0], lastProof);
+
+        assertEq(uint256(instance.igoStage()), uint256(Stage.COMPLETED));
+    }
+
     //////////////// TODO: Tets success in a more complete scenario ////////////////
     /// @dev tagIdentifier must be part of leaves, to ensure `msg.sender` can only participant to computed tag
     /// grand total to 3_000,
