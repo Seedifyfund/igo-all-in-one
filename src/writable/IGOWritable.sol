@@ -16,12 +16,12 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
     using SafeERC20 for IERC20;
 
     function buyTokens(
+        uint256 amount,
         Allocation calldata allocation,
         bytes32[] calldata proof
     ) external {
         // `Allocation` struct data in local variables (save gas)
         string calldata tagId = allocation.tagId;
-        uint256 amount = allocation.amount;
         // local variables (save gas)
         uint256 maxTagCap = IGOStorage.layout().tags.data[tagId].maxTagCap;
         uint256 grandTotal = IGOStorage.layout().setUp.grandTotal;
@@ -30,6 +30,7 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
         _requireOpenedTag(allocation.tagId);
         _requireAuthorizedAccount(allocation.account);
         _requireValidAllocation(allocation, proof);
+        _requireAllocationNotExceeded(amount, allocation);
         _requireTagCapNotExceeded(tagId, maxTagCap, amount);
         _requireGrandTotalNotExceeded(amount, grandTotal);
 
@@ -40,6 +41,7 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
         // update storage
         ledger.totalRaised += amount;
         ledger.raisedInTag[tagId] += amount;
+        ledger.claimedBy[allocation.account] += amount;
         if (ledger.totalRaised == grandTotal) _closeIGO();
         if (ledger.raisedInTag[tagId] == maxTagCap) _closeTag(tagId);
 

@@ -26,10 +26,9 @@ interface IIGOWritableInternal {
 
     error IGOWritableInternal_IGONotOpened(Stage current);
     error IGOWritableInternal_TagNotOpened(string tagId, Stage current);
-    error IGOWritable_GreaterThanGrandTotal(
-        string tagId,
-        uint256 maxTagAllocation,
-        uint256 grandTotal
+    error IGOWritable_AllocationExceeded(
+        uint256 allocation,
+        uint256 exceedsBy
     );
     error IGOWritable_MaxTagCapExceeded(
         string tagId,
@@ -39,5 +38,11 @@ interface IIGOWritableInternal {
     error IGOWritable_GrandTotalExceeded(
         uint256 grandTotal,
         uint256 exceedsBy
+    );
+    // set tags
+    error IGOWritable_GreaterThanGrandTotal(
+        string tagId,
+        uint256 maxTagAllocation,
+        uint256 grandTotal
     );
 }

@@ -106,12 +106,23 @@ contract IGOSetUp is Test, IIGOWritableInternal, FFI_Merkletreejs {
     }
 
     function _buyTokens(
+        uint256 amount,
         Allocation memory allocation,
         bytes32[] memory proof
     ) internal {
         vm.startPrank(allocation.account);
         token.increaseAllowance(address(instance), allocation.amount);
-        instance.buyTokens(allocation, proof);
+        instance.buyTokens(amount, allocation, proof);
+        vm.stopPrank();
+    }
+
+    function _buyTokens(
+        Allocation memory allocation,
+        bytes32[] memory proof
+    ) internal {
+        vm.startPrank(allocation.account);
+        token.increaseAllowance(address(instance), allocation.amount);
+        instance.buyTokens(allocation.amount, allocation, proof);
         vm.stopPrank();
     }
 }

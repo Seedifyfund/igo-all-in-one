@@ -23,6 +23,28 @@ contract IGO_Test_buyTokens is IGOSetUp {
         assertEq(token.balanceOf(treasuryWallet), allocations[0].amount);
     }
 
+    function test_buyTokens_UserBuyTheirAllocation_InMultipleTx() public {
+        _setUpTestData();
+        vm.startPrank(allocations[0].account);
+        token.increaseAllowance(address(instance), allocations[0].amount);
+
+        // buy first 25% of allocation
+        uint256 firstPart = allocations[0].amount / 4;
+        instance.buyTokens(firstPart, allocations[0], lastProof);
+        // verify `ledger.claimedBy[allocation.account]` has been updated
+        assertEq(instance.claimedBy(allocations[0].account), firstPart);
+        // buys the rest of their allocation
+        instance.buyTokens(
+            allocations[0].amount - firstPart,
+            allocations[0],
+            lastProof
+        );
+        assertEq(
+            instance.claimedBy(allocations[0].account),
+            allocations[0].amount
+        );
+    }
+
     function test_buyTokens_TagStageToCompleted() public {
         _setUpTestData();
 

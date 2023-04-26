@@ -16,6 +16,20 @@ contract IGOWritableInternal is IIGOWritableInternal {
         IGOStorage.layout().tags.data[tagId].stage = Stage.COMPLETED;
     }
 
+    function _requireAllocationNotExceeded(
+        uint256 toBuy,
+        Allocation calldata allocation
+    ) internal view {
+        uint256 totalAfterPurchase = toBuy +
+            IGOStorage.layout().ledger.claimedBy[allocation.account];
+        if (totalAfterPurchase > allocation.amount) {
+            revert IGOWritable_AllocationExceeded(
+                allocation.amount,
+                totalAfterPurchase - allocation.amount
+            );
+        }
+    }
+
     function _requireAuthorizedAccount(address account) internal view {
         require(account == msg.sender, "msg.sender: NOT_AUTHORIZED");
     }
