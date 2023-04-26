@@ -3,7 +3,6 @@ pragma solidity ^0.8.17;
 
 import {IERC20} from "openzeppelin-contracts/token/ERC20/IERC20.sol";
 
-import {MerkleProof} from "openzeppelin-contracts/utils/cryptography/MerkleProof.sol";
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 import {SafeERC20} from "openzeppelin-contracts/token/ERC20/utils/SafeERC20.sol";
 
@@ -19,51 +18,30 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
     function buyTokens(
         Allocation calldata allocation,
         bytes32[] calldata proof
-    ) external onlyTagAtStage(Stage.OPENED, allocation.tagId) {
+    ) external {
+        // `Allocation` struct data in local variables (save gas)
         string calldata tagId = allocation.tagId;
         uint256 amount = allocation.amount;
+        // local variables (save gas)
+        uint256 maxTagCap = IGOStorage.layout().tags.data[tagId].maxTagCap;
+        uint256 grandTotal = IGOStorage.layout().setUp.grandTotal;
+        // check given parameters
+        _requireOpenedIGO();
+        _requireOpenedTag(allocation.tagId);
+        _requireAuthorizedAccount(allocation.account);
+        _requireValidAllocation(allocation, proof);
+        _requireTagCapNotExceeded(tagId, maxTagCap, amount);
+        _requireGrandTotalNotExceeded(amount, grandTotal);
+
+        // read storage
         IGOStorage.SetUp memory setUp = IGOStorage.layout().setUp;
-        IGOStorage.Tags storage tags = IGOStorage.layout().tags;
         IGOStorage.Ledger storage ledger = IGOStorage.layout().ledger;
-
-        require(
-            msg.sender == allocation.account,
-            "msg.sender: NOT_AUTHORIZED"
-        );
-
-        require(
-            MerkleProof.verify(
-                proof,
-                tags.data[tagId].merkleRoot,
-                keccak256(abi.encode(allocation))
-            ),
-            "ALLOCATION_NOT_FOUND"
-        );
-
-        // verify maxTagCap will not be exceeded, after this purchase
-        uint256 maxTagCap = tags.data[tagId].maxTagCap;
-        uint256 raisedAfterPurchase = amount + ledger.raisedInTag[tagId];
-        if (raisedAfterPurchase > maxTagCap) {
-            revert IGOWritable_MaxTagCapExceeded(
-                tagId,
-                maxTagCap,
-                raisedAfterPurchase - maxTagCap
-            );
-        }
-
-        uint256 grandTotal = setUp.grandTotal;
-        uint256 totalAfterPurchase = amount + ledger.totalRaised;
-        if (totalAfterPurchase > grandTotal) {
-            revert IGOWritable_GrandTotalExceeded(
-                grandTotal,
-                totalAfterPurchase - grandTotal
-            );
-        }
 
         // update storage
         ledger.totalRaised += amount;
         ledger.raisedInTag[tagId] += amount;
-        if (ledger.raisedInTag[tagId] == maxTagCap) _nextStageForTag(tagId);
+        if (ledger.totalRaised == grandTotal) _closeIGO();
+        if (ledger.raisedInTag[tagId] == maxTagCap) _closeTag(tagId);
 
         // transfer tokens
         IERC20(setUp.token).safeTransferFrom(
@@ -71,6 +49,14 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
             setUp.treasuryWallet,
             amount
         );
+    }
+
+    function openIGO() external override onlyOwner {
+        IGOStorage.layout().ledger.stage = Stage.OPENED;
+    }
+
+    function pauseIGO() external override onlyOwner {
+        IGOStorage.layout().ledger.stage = Stage.PAUSED;
     }
 
     /**
@@ -115,7 +101,7 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
         IGOStorage.layout().setUp.treasuryWallet = addr;
     }
 
-    function updateWholeTag(
+    function updateTag(
         string calldata tagId_,
         Tag calldata tag_
     ) external onlyOwner {

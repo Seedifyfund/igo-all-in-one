@@ -7,7 +7,7 @@ import "forge-std/Test.sol";
 
 import {IERC20} from "openzeppelin-contracts/token/ERC20/IERC20.sol";
 
-import {IGO} from "../../../src/IGO.sol";
+import {IGO_Mock} from "../../mock/IGO_Mock.sol";
 import {IIGOWritableInternal} from "../../../src/writable/IIGOWritableInternal.sol";
 
 import {ERC20_Mock} from "../../mock/ERC20_Mock.sol";
@@ -16,7 +16,7 @@ import {FFI_Merkletreejs} from "../utils/FFI_Merkletreejs.sol";
 
 contract IGOSetUp is Test, IIGOWritableInternal, FFI_Merkletreejs {
     ERC20_Mock public token;
-    IGO public instance;
+    IGO_Mock public instance;
 
     address public treasuryWallet = makeAddr("treasuryWallet");
 
@@ -28,7 +28,7 @@ contract IGOSetUp is Test, IIGOWritableInternal, FFI_Merkletreejs {
 
     function setUp() public virtual {
         token = new ERC20_Mock();
-        instance = new IGO(address(token), treasuryWallet, grandTotal);
+        instance = new IGO_Mock(address(token), treasuryWallet, grandTotal);
 
         __createDefaultTags();
 
@@ -94,23 +94,23 @@ contract IGOSetUp is Test, IIGOWritableInternal, FFI_Merkletreejs {
         tags[0].merkleRoot = merkleRoot;
         tags[0].stage = Stage.OPENED;
         tags[0].maxTagCap = allocations[0].amount;
-        instance.updateWholeTag(tagIdentifiers[0], tags[0]);
+        instance.updateTag(tagIdentifiers[0], tags[0]);
+
+        instance.openIGO();
     }
 
     function _increaseMaxTagCapBy(uint256 by) internal {
         Tag memory tag_ = instance.tag(allocations[0].tagId);
         tag_.maxTagCap += by;
-        instance.updateWholeTag(allocations[0].tagId, tag_);
+        instance.updateTag(allocations[0].tagId, tag_);
     }
 
     function _buyTokens(
-        address buyer,
-        uint256 toBuy,
         Allocation memory allocation,
         bytes32[] memory proof
     ) internal {
-        vm.startPrank(buyer);
-        token.increaseAllowance(address(instance), toBuy);
+        vm.startPrank(allocation.account);
+        token.increaseAllowance(address(instance), allocation.amount);
         instance.buyTokens(allocation, proof);
         vm.stopPrank();
     }

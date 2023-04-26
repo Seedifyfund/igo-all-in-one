@@ -4,6 +4,10 @@ pragma solidity ^0.8.17;
 import {IIGOWritableInternal} from "./IIGOWritableInternal.sol";
 
 interface IIGOWritable {
+    function openIGO() external;
+
+    function pauseIGO() external;
+
     function setTags(
         string[] calldata tagIdentifiers_,
         IIGOWritableInternal.Tag[] calldata tags_

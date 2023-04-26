@@ -16,12 +16,7 @@ contract IGO_Test_buyTokens is IGOSetUp {
         uint256 balanceBeforeBuy = token.balanceOf(allocations[0].account);
         assertEq(token.balanceOf(treasuryWallet), 0);
 
-        _buyTokens(
-            allocations[0].account,
-            allocations[0].amount,
-            allocations[0],
-            lastProof
-        );
+        _buyTokens(allocations[0], lastProof);
 
         uint256 balanceAfterBuy = token.balanceOf(allocations[0].account);
         assertEq(balanceAfterBuy, balanceBeforeBuy - allocations[0].amount);
@@ -31,15 +26,19 @@ contract IGO_Test_buyTokens is IGOSetUp {
     function test_buyTokens_TagStageToCompleted() public {
         _setUpTestData();
 
-        _buyTokens(
-            allocations[0].account,
-            allocations[0].amount,
-            allocations[0],
-            lastProof
-        );
+        _buyTokens(allocations[0], lastProof);
 
         Tag memory tag = instance.tag(allocations[0].tagId);
         assertEq(uint256(tag.stage), uint256(Stage.COMPLETED));
+    }
+
+    function test_buyTokens_IGOStageToCompleted() public {
+        instance.updateGrandTotal(allocations[0].amount);
+
+        _setUpTestData();
+        _buyTokens(allocations[0], lastProof);
+
+        assertEq(uint256(instance.igoStage()), uint256(Stage.COMPLETED));
     }
 
     //////////////// TODO: Tets success in a more complete scenario ////////////////

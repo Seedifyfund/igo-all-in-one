@@ -19,6 +19,7 @@ library IGOStorage {
 
     // Only updated by users interactions
     struct Ledger {
+        IIGOWritableInternal.Stage stage;
         uint256 totalRaised;
         mapping(string => uint256) raisedInTag;
     }
