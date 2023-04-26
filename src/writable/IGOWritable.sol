@@ -54,6 +54,10 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
         IGOStorage.layout().ledger.stage = Stage.OPENED;
     }
 
+    function pauseIGO() external override onlyOwner {
+        IGOStorage.layout().ledger.stage = Stage.PAUSED;
+    }
+
     /**
      * @dev If a tag with an identifier already exists, it will be
      *      overwritten, otherwise it will be created.

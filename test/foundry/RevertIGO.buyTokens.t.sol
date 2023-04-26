@@ -7,6 +7,18 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
     /*//////////////////////////////////////////////////////////////
                                  REVERT
     //////////////////////////////////////////////////////////////*/
+    function testRevert_buyTokens_PauseIGOOverridesTagStage() public {
+        instance.pauseIGO();
+
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IGOWritableInternal_IGONotOpened.selector,
+                Stage.PAUSED
+            )
+        );
+        instance.buyTokens(allocations[0], lastProof);
+    }
+
     function testRevert_buyTokens_If_TagNotOpened() public {
         instance.openIGO();
 
