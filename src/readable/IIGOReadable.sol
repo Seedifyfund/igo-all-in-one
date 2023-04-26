@@ -2,12 +2,12 @@
 pragma solidity ^0.8.17;
 
 import {IRestrictedWritableInternal} from "../writable/restricted/IRestrictedWritableInternal.sol";
-import {IIGOWritableInternal} from "../writable/IIGOWritableInternal.sol";
+import {IStageInternal} from "../writable/shared/IStageInternal.sol";
 
 interface IIGOReadable {
     function claimedBy(address account) external view returns (uint256);
 
-    function igoStage() external view returns (IIGOWritableInternal.Stage);
+    function igoStage() external view returns (IStageInternal.Stage);
 
     function raisedInTag(string memory tagId) external view returns (uint256);
 

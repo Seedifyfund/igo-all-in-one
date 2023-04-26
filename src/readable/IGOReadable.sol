@@ -4,13 +4,15 @@ pragma solidity ^0.8.17;
 import {IIGOReadable} from "../readable/IIGOReadable.sol";
 import {IIGOWritableInternal} from "../writable/IIGOWritableInternal.sol";
 import {IRestrictedWritableInternal} from "../writable/restricted/IRestrictedWritableInternal.sol";
+import {IStageInternal} from "../writable/shared/IStageInternal.sol";
 
 import {IGOStorage} from "../IGOStorage.sol";
 
 contract IGOReadable is
     IIGOReadable,
     IIGOWritableInternal,
-    IRestrictedWritableInternal
+    IRestrictedWritableInternal,
+    IStageInternal
 {
     function claimedBy(address account) external view returns (uint256) {
         return IGOStorage.layout().ledger.claimedBy[account];

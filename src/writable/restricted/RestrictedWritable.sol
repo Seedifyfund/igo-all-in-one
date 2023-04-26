@@ -8,7 +8,7 @@ import {SafeERC20} from "openzeppelin-contracts/token/ERC20/utils/SafeERC20.sol"
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 
 import {IRestrictedWritable} from "./IRestrictedWritable.sol";
-import {IIGOWritableInternal} from "../IIGOWritableInternal.sol";
+import {IStageInternal} from "../shared/IStageInternal.sol";
 
 import {RestrictedWritableInternal} from "./RestrictedWritableInternal.sol";
 
@@ -22,11 +22,11 @@ contract RestrictedWritable is
     using SafeERC20 for IERC20;
 
     function openIGO() external override onlyOwner {
-        IGOStorage.layout().ledger.stage = IIGOWritableInternal.Stage.OPENED;
+        IGOStorage.layout().ledger.stage = IStageInternal.Stage.OPENED;
     }
 
     function pauseIGO() external override onlyOwner {
-        IGOStorage.layout().ledger.stage = IIGOWritableInternal.Stage.PAUSED;
+        IGOStorage.layout().ledger.stage = IStageInternal.Stage.PAUSED;
     }
 
     function updateGrandTotal(uint256 grandTotal_) external onlyOwner {

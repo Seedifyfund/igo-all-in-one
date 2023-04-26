@@ -3,17 +3,20 @@ pragma solidity ^0.8.17;
 
 import {MerkleProof} from "openzeppelin-contracts/utils/cryptography/MerkleProof.sol";
 
+import {IStageInternal} from "./shared/IStageInternal.sol";
 import {IIGOWritableInternal} from "./IIGOWritableInternal.sol";
 
 import {IGOStorage} from "../IGOStorage.sol";
 
 contract IGOWritableInternal is IIGOWritableInternal {
     function _closeIGO() internal {
-        IGOStorage.layout().ledger.stage = Stage.COMPLETED;
+        IGOStorage.layout().ledger.stage = IStageInternal.Stage.COMPLETED;
     }
 
     function _closeTag(string memory tagId) internal {
-        IGOStorage.layout().tags.data[tagId].stage = Stage.COMPLETED;
+        IGOStorage.layout().tags.data[tagId].stage = IStageInternal
+            .Stage
+            .COMPLETED;
     }
 
     function _requireAllocationNotExceeded(
@@ -50,15 +53,19 @@ contract IGOWritableInternal is IIGOWritableInternal {
     }
 
     function _requireOpenedIGO() internal view {
-        Stage current = IGOStorage.layout().ledger.stage;
-        if (current != Stage.OPENED) {
+        IStageInternal.Stage current = IGOStorage.layout().ledger.stage;
+        if (current != IStageInternal.Stage.OPENED) {
             revert IGOWritableInternal_IGONotOpened(current);
         }
     }
 
     function _requireOpenedTag(string memory tagId) internal view {
-        Stage current = IGOStorage.layout().tags.data[tagId].stage;
-        if (current != Stage.OPENED) {
+        IStageInternal.Stage current = IGOStorage
+            .layout()
+            .tags
+            .data[tagId]
+            .stage;
+        if (current != IStageInternal.Stage.OPENED) {
             revert IGOWritableInternal_TagNotOpened(tagId, current);
         }
     }
