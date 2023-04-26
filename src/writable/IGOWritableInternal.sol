@@ -8,6 +8,9 @@ import {IIGOWritableInternal} from "./IIGOWritableInternal.sol";
 
 import {IGOStorage} from "../IGOStorage.sol";
 
+/**
+ * @notice Inherits from `IStageInternal` will create `error[5005]: Linearization of inheritance graph impossible`
+ */
 contract IGOWritableInternal is IIGOWritableInternal {
     function _closeIGO() internal {
         IGOStorage.layout().ledger.stage = IStageInternal.Stage.COMPLETED;

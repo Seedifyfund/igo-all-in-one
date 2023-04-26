@@ -14,6 +14,9 @@ import {RestrictedWritableInternal} from "./RestrictedWritableInternal.sol";
 
 import {IGOStorage} from "../../IGOStorage.sol";
 
+/**
+ * @notice Inherits from `IStageInternal` will create `error[5005]: Linearization of inheritance graph impossible`
+ */
 contract RestrictedWritable is
     IRestrictedWritable,
     RestrictedWritableInternal,
