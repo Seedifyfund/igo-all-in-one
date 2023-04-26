@@ -12,10 +12,8 @@ contract IGOWritableInternal is IIGOWritableInternal {
         IGOStorage.layout().ledger.stage = Stage.COMPLETED;
     }
 
-    function _nextStageForTag(string memory tagId) internal {
-        IGOStorage.layout().tags.data[tagId].stage = Stage(
-            uint256(IGOStorage.layout().tags.data[tagId].stage) + 1
-        );
+    function _closeTag(string memory tagId) internal {
+        IGOStorage.layout().tags.data[tagId].stage = Stage.COMPLETED;
     }
 
     function _requireAuthorizedAccount(address account) internal view {
