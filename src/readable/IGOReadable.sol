@@ -7,6 +7,10 @@ import {IIGOWritableInternal} from "../writable/IIGOWritableInternal.sol";
 import {IGOStorage} from "../IGOStorage.sol";
 
 contract IGOReadable is IIGOReadable, IIGOWritableInternal {
+    function claimedBy(address account) external view returns (uint256) {
+        return IGOStorage.layout().ledger.claimedBy[account];
+    }
+
     function igoStage() external view override returns (Stage) {
         return IGOStorage.layout().ledger.stage;
     }

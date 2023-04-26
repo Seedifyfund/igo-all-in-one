@@ -96,7 +96,38 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
     // TODO: test merkle proof invalidity in more cases
     function testRevert_buyTokens_If_UserNotRegisteredToBuyInTagId() public {}
 
-    function testRevert_buyTokens_If_UserNotClaimingTheRightAmount() public {}
+    function testRevert_buyTokens_If_UserBuyMoreThanTheirAllocation() public {
+        _setUpTestData();
+        vm.startPrank(allocations[0].account);
+
+        // revert on buying, 1 more BUSD than their allocation
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IGOWritable_AllocationExceeded.selector,
+                allocations[0].amount,
+                1
+            )
+        );
+        instance.buyTokens(
+            allocations[0].amount + 1,
+            allocations[0],
+            lastProof
+        );
+
+        // revert on buying, twice more than their allocation
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IGOWritable_AllocationExceeded.selector,
+                allocations[0].amount,
+                allocations[0].amount
+            )
+        );
+        instance.buyTokens(
+            allocations[0].amount * 2,
+            allocations[0],
+            lastProof
+        );
+    }
 
     function testRevert_buyTokens_If_MaxTagCapExceeded() public {
         _setUpTestData();

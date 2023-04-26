@@ -4,6 +4,8 @@ pragma solidity ^0.8.17;
 import {IIGOWritableInternal} from "../writable/IIGOWritableInternal.sol";
 
 interface IIGOReadable {
+    function claimedBy(address account) external view returns (uint256);
+
     function igoStage() external view returns (IIGOWritableInternal.Stage);
 
     function raisedInTag(string memory tagId) external view returns (uint256);
