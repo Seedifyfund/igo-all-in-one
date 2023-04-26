@@ -36,7 +36,7 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
         instance.openIGO();
 
         tags[0].stage = Stage.COMPLETED;
-        instance.updateWholeTag(allocations[0].tagId, tags[0]);
+        instance.updateTag(allocations[0].tagId, tags[0]);
 
         vm.expectRevert(
             abi.encodeWithSelector(
@@ -52,7 +52,7 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
         instance.openIGO();
 
         tags[0].stage = Stage.PAUSED;
-        instance.updateWholeTag(allocations[0].tagId, tags[0]);
+        instance.updateTag(allocations[0].tagId, tags[0]);
 
         vm.expectRevert(
             abi.encodeWithSelector(
@@ -68,7 +68,7 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
         instance.openIGO();
 
         tags[0].stage = Stage.OPENED;
-        instance.updateWholeTag(allocations[0].tagId, tags[0]);
+        instance.updateTag(allocations[0].tagId, tags[0]);
 
         vm.startPrank(makeAddr("address23950"));
         vm.expectRevert("msg.sender: NOT_AUTHORIZED");
@@ -137,7 +137,7 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
 
         // update merkle root & state for second tag
         tags[1] = tags[0];
-        instance.updateWholeTag(tagIdentifiers[1], tags[1]);
+        instance.updateTag(tagIdentifiers[1], tags[1]);
 
         // buy tokens
         _buyTokens(allocations[0], proof0);

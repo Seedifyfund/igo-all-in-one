@@ -100,7 +100,7 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, Ownable {
         IGOStorage.layout().setUp.treasuryWallet = addr;
     }
 
-    function updateWholeTag(
+    function updateTag(
         string calldata tagId_,
         Tag calldata tag_
     ) external onlyOwner {

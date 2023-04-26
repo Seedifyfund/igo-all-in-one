@@ -68,7 +68,7 @@ contract IGO_Test is IGOSetUp {
     /*//////////////////////////////////////////////////////////////
                                  UPDATE TAGS
     //////////////////////////////////////////////////////////////*/
-    function test_updateWholeTag() public {
+    function test_updateTag() public {
         Tag memory tag = instance.tag(tagIdentifiers[0]);
         tag.stage = Stage.OPENED;
         tag.merkleRoot = bytes32("1");
@@ -76,7 +76,7 @@ contract IGO_Test is IGOSetUp {
         tag.endAt = 2;
         tag.maxTagCap = 3;
 
-        instance.updateWholeTag(tagIdentifiers[0], tag);
+        instance.updateTag(tagIdentifiers[0], tag);
 
         Tag memory updatedTag = instance.tag(tagIdentifiers[0]);
 
@@ -87,7 +87,7 @@ contract IGO_Test is IGOSetUp {
         assertEq(updatedTag.maxTagCap, tag.maxTagCap);
     }
 
-    function testRevert_updateWholeTag_If_maxTagCap_GreaterThan_grandTotal()
+    function testRevert_updateTag_If_maxTagCap_GreaterThan_grandTotal()
         public
     {
         Tag memory tag = instance.tag(tagIdentifiers[0]);
@@ -100,6 +100,6 @@ contract IGO_Test is IGOSetUp {
                 grandTotal
             )
         );
-        instance.updateWholeTag(tagIdentifiers[0], tag);
+        instance.updateTag(tagIdentifiers[0], tag);
     }
 }

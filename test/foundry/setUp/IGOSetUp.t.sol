@@ -94,7 +94,7 @@ contract IGOSetUp is Test, IIGOWritableInternal, FFI_Merkletreejs {
         tags[0].merkleRoot = merkleRoot;
         tags[0].stage = Stage.OPENED;
         tags[0].maxTagCap = allocations[0].amount;
-        instance.updateWholeTag(tagIdentifiers[0], tags[0]);
+        instance.updateTag(tagIdentifiers[0], tags[0]);
 
         instance.openIGO();
     }
@@ -102,7 +102,7 @@ contract IGOSetUp is Test, IIGOWritableInternal, FFI_Merkletreejs {
     function _increaseMaxTagCapBy(uint256 by) internal {
         Tag memory tag_ = instance.tag(allocations[0].tagId);
         tag_.maxTagCap += by;
-        instance.updateWholeTag(allocations[0].tagId, tag_);
+        instance.updateTag(allocations[0].tagId, tag_);
     }
 
     function _buyTokens(
