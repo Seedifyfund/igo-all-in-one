@@ -15,12 +15,11 @@ import {IGOWritableInternal} from "./IGOWritableInternal.sol";
 contract IGOWritable is IIGOWritable, IGOWritableInternal, RestrictedWritable {
     using SafeERC20 for IERC20;
 
-    //////////////////////////// EXTERNAL ////////////////////////////
     function buyTokens(
         uint256 amount,
         Allocation calldata allocation,
         bytes32[] calldata proof
-    ) external {
+    ) external override {
         // `Allocation` struct data in local variables (save gas)
         string calldata tagId = allocation.tagId;
         // local variables (save gas)

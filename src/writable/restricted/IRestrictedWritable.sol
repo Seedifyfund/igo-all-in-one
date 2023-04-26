@@ -8,6 +8,13 @@ interface IRestrictedWritable {
 
     function pauseIGO() external;
 
+    function updateGrandTotal(uint256 grandTotal_) external;
+
+    function updateTag(
+        string calldata tagId_,
+        IRestrictedWritableInternal.Tag calldata tag_
+    ) external;
+
     function setTags(
         string[] memory tagIdentifiers_,
         IRestrictedWritableInternal.Tag[] memory tags_

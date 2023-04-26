@@ -32,7 +32,9 @@ contract RestrictedWritable is
         IGOStorage.layout().ledger.stage = IStageInternal.Stage.PAUSED;
     }
 
-    function updateGrandTotal(uint256 grandTotal_) external onlyOwner {
+    function updateGrandTotal(
+        uint256 grandTotal_
+    ) external override onlyOwner {
         require(grandTotal_ >= 1_000, "IGOWritable: grandTotal < 1_000");
         IGOStorage.layout().setUp.grandTotal = grandTotal_;
     }
@@ -40,7 +42,7 @@ contract RestrictedWritable is
     function updateTag(
         string calldata tagId_,
         Tag calldata tag_
-    ) external onlyOwner {
+    ) external override onlyOwner {
         IGOStorage.Tags storage tags = IGOStorage.layout().tags;
 
         _isMaxTagAllocationGtGrandTotal(
