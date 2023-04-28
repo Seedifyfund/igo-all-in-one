@@ -78,4 +78,6 @@ contract IGOSetUp_require is
             );
         }
     }
+
+    function test() public {}
 }

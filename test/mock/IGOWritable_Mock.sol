@@ -16,41 +16,52 @@ contract IGOWritable_Mock is IGOWritable, IGOReadable {
     function exposed_requireAllocationNotExceeded(
         uint256 toBuy,
         Allocation calldata allocation
-    ) external view {
+    ) external view returns (bool) {
         _requireAllocationNotExceeded(toBuy, allocation);
+        return true;
     }
 
-    function exposed_requireAuthorizedAccount(address account) external view {
+    function exposed_requireAuthorizedAccount(
+        address account
+    ) external view returns (bool) {
         _requireAuthorizedAccount(account);
+        return true;
     }
 
     function exposed_requireGrandTotalNotExceeded(
         uint256 toBuy,
         uint256 grandTotal
-    ) external view {
+    ) external view returns (bool) {
         _requireGrandTotalNotExceeded(toBuy, grandTotal);
+        return true;
     }
 
-    function exposed_requireOpenedIGO() external view {
+    function exposed_requireOpenedIGO() external view returns (bool) {
         _requireOpenedIGO();
+        return true;
     }
 
-    function exposed_requireOpenedTag(string memory tagId) external view {
+    function exposed_requireOpenedTag(
+        string memory tagId
+    ) external view returns (bool) {
         _requireOpenedTag(tagId);
+        return true;
     }
 
     function exposed_requireTagCapNotExceeded(
         string calldata tagId,
         uint256 maxTagCap,
         uint256 toBuy
-    ) external view {
+    ) external view returns (bool) {
         _requireTagCapNotExceeded(tagId, maxTagCap, toBuy);
+        return true;
     }
 
     function exposed_requireValidAllocation(
         Allocation calldata allocation,
         bytes32[] calldata proof
-    ) external view {
+    ) external view returns (bool) {
         _requireValidAllocation(allocation, proof);
+        return true;
     }
 }
