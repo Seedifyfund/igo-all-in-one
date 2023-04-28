@@ -5,7 +5,7 @@ import {IRestrictedWritableInternal} from "../writable/restricted/IRestrictedWri
 import {IStageInternal} from "../writable/shared/IStageInternal.sol";
 
 interface IIGOReadable {
-    function claimedBy(address account) external view returns (uint256);
+    function boughtBy(address account) external view returns (uint256);
 
     function igoStage() external view returns (IStageInternal.Stage);
 
