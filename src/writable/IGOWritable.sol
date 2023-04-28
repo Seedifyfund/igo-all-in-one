@@ -26,13 +26,13 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, RestrictedWritable {
         uint256 maxTagCap = IGOStorage.layout().tags.data[tagId].maxTagCap;
         uint256 grandTotal = IGOStorage.layout().setUp.grandTotal;
         // check given parameters
+        _requireAllocationNotExceeded(amount, allocation);
+        _requireAuthorizedAccount(allocation.account);
+        _requireGrandTotalNotExceeded(amount, grandTotal);
         _requireOpenedIGO();
         _requireOpenedTag(allocation.tagId);
-        _requireAuthorizedAccount(allocation.account);
-        _requireValidAllocation(allocation, proof);
-        _requireAllocationNotExceeded(amount, allocation);
         _requireTagCapNotExceeded(tagId, maxTagCap, amount);
-        _requireGrandTotalNotExceeded(amount, grandTotal);
+        _requireValidAllocation(allocation, proof);
 
         // read storage
         IGOStorage.SetUp memory setUp = IGOStorage.layout().setUp;
