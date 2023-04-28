@@ -8,7 +8,7 @@ import "forge-std/Test.sol";
 import {IERC20} from "openzeppelin-contracts/token/ERC20/IERC20.sol";
 import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
 
-import {IGO_Mock} from "../../mock/IGO_Mock.sol";
+import {IGO} from "../../../src/IGO.sol";
 import {IIGOWritableInternal} from "../../../src/writable/IIGOWritableInternal.sol";
 import {IRestrictedWritableInternal} from "../../../src/writable/restricted/IRestrictedWritableInternal.sol";
 import {IStageInternal} from "../../../src/writable/shared/IStageInternal.sol";
@@ -23,7 +23,7 @@ contract IGOSetUp is
     FFI_Merkletreejs
 {
     ERC20 public token;
-    IGO_Mock public instance;
+    IGO public instance;
 
     address public treasuryWallet = makeAddr("treasuryWallet");
 
@@ -35,7 +35,7 @@ contract IGOSetUp is
 
     function setUp() public virtual {
         token = new ERC20("Mock", "MCK");
-        instance = new IGO_Mock(
+        instance = new IGO(
             address(token),
             treasuryWallet,
             grandTotal,

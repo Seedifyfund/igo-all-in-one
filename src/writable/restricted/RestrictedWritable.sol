@@ -39,6 +39,20 @@ contract RestrictedWritable is
         IGOStorage.layout().setUp.grandTotal = grandTotal_;
     }
 
+    function updateToken(address token_) external onlyOwner {
+        IGOStorage.layout().setUp.token = token_;
+    }
+
+    function updateTreasuryWallet(address addr) external onlyOwner {
+        IGOStorage.layout().setUp.treasuryWallet = addr;
+    }
+
+    function recoverLostERC20(address token, address to) external onlyOwner {
+        uint256 amount = IERC20(token).balanceOf(address(this));
+        IERC20(token).safeTransfer(to, amount);
+    }
+
+    //////////////////////////// TAG BATCH UPDATES ////////////////////////////
     function updateTag(
         string calldata tagId_,
         Tag calldata tag_
@@ -54,20 +68,6 @@ contract RestrictedWritable is
         tags.data[tagId_] = tag_;
     }
 
-    function updateToken(address token_) external onlyOwner {
-        IGOStorage.layout().setUp.token = token_;
-    }
-
-    function updateTreasuryWallet(address addr) external onlyOwner {
-        IGOStorage.layout().setUp.treasuryWallet = addr;
-    }
-
-    function recoverLostERC20(address token, address to) external onlyOwner {
-        uint256 amount = IERC20(token).balanceOf(address(this));
-        IERC20(token).safeTransfer(to, amount);
-    }
-
-    //////////////////////////// PUBLIC ////////////////////////////
     /**
      * @dev If a tag with an identifier already exists, it will be
      *      overwritten, otherwise it will be created.
@@ -95,5 +95,51 @@ contract RestrictedWritable is
             tags.ids.push(tagIdentifiers_[i]);
             tags.data[tagIdentifiers_[i]] = tags_[i];
         }
+    }
+
+    //////////////////////////// TAG SINGLE UPDATE ////////////////////////////
+    function openTag(string memory tagId) external override onlyOwner {
+        IGOStorage.layout().tags.data[tagId].stage = IStageInternal
+            .Stage
+            .OPENED;
+    }
+
+    function pauseTag(string memory tagId) external override onlyOwner {
+        IGOStorage.layout().tags.data[tagId].stage = IStageInternal
+            .Stage
+            .PAUSED;
+    }
+
+    function updateTagMerkleRoot(
+        string memory tagId,
+        bytes32 merkleRoot
+    ) external override onlyOwner {
+        IGOStorage.layout().tags.data[tagId].merkleRoot = merkleRoot;
+    }
+
+    function updateTagStartDate(
+        string memory tagId,
+        uint128 startAt
+    ) external override onlyOwner {
+        IGOStorage.layout().tags.data[tagId].startAt = startAt;
+    }
+
+    function updateTagEndDate(
+        string memory tagId,
+        uint128 endAt
+    ) external override onlyOwner {
+        IGOStorage.layout().tags.data[tagId].endAt = endAt;
+    }
+
+    function updateTagMaxCap(
+        string memory tagId,
+        uint256 maxTagCap
+    ) external override onlyOwner {
+        _isMaxTagAllocationGtGrandTotal(
+            tagId,
+            maxTagCap,
+            IGOStorage.layout().setUp.grandTotal
+        );
+        IGOStorage.layout().tags.data[tagId].maxTagCap = maxTagCap;
     }
 }
