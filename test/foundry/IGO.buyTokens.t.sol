@@ -31,8 +31,8 @@ contract IGO_Test_buyTokens is IGOSetUp {
         // buy first 25% of allocation
         uint256 firstPart = allocations[0].amount / 4;
         instance.buyTokens(firstPart, allocations[0], lastProof);
-        // verify `ledger.claimedBy[allocation.account]` has been updated
-        assertEq(instance.claimedBy(allocations[0].account), firstPart);
+        // verify `ledger.boughtBy[allocation.account]` has been updated
+        assertEq(instance.boughtBy(allocations[0].account), firstPart);
         // buys the rest of their allocation
         instance.buyTokens(
             allocations[0].amount - firstPart,
@@ -40,7 +40,7 @@ contract IGO_Test_buyTokens is IGOSetUp {
             lastProof
         );
         assertEq(
-            instance.claimedBy(allocations[0].account),
+            instance.boughtBy(allocations[0].account),
             allocations[0].amount
         );
     }

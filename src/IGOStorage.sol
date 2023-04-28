@@ -23,7 +23,7 @@ library IGOStorage {
         IStageInternal.Stage stage;
         uint256 totalRaised;
         mapping(string => uint256) raisedInTag;
-        mapping(address => uint256) claimedBy;
+        mapping(address => uint256) boughtBy;
     }
 
     struct IGOStruct {

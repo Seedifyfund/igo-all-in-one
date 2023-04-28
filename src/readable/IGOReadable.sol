@@ -15,8 +15,8 @@ contract IGOReadable is
     IStageInternal
 {
     // TODO rename to `boughtBy`
-    function claimedBy(address account) external view returns (uint256) {
-        return IGOStorage.layout().ledger.claimedBy[account];
+    function boughtBy(address account) external view returns (uint256) {
+        return IGOStorage.layout().ledger.boughtBy[account];
     }
 
     function igoStage() external view override returns (Stage) {

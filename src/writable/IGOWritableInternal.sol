@@ -27,7 +27,7 @@ contract IGOWritableInternal is IIGOWritableInternal {
         Allocation calldata allocation
     ) internal view {
         uint256 totalAfterPurchase = toBuy +
-            IGOStorage.layout().ledger.claimedBy[allocation.account];
+            IGOStorage.layout().ledger.boughtBy[allocation.account];
         if (totalAfterPurchase > allocation.amount) {
             revert IGOWritable_AllocationExceeded(
                 allocation.amount,

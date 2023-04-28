@@ -41,7 +41,7 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, RestrictedWritable {
         // update storage
         ledger.totalRaised += amount;
         ledger.raisedInTag[tagId] += amount;
-        ledger.claimedBy[allocation.account] += amount;
+        ledger.boughtBy[allocation.account] += amount;
         if (ledger.totalRaised == grandTotal) _closeIGO();
         if (ledger.raisedInTag[tagId] == maxTagCap) _closeTag(tagId);
 
