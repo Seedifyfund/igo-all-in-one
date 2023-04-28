@@ -16,4 +16,4 @@ Then run: `forge coverage --report lcov --ffi --nmc Differential && genhtml lcov
 
 ## Coverage Screenshot
 
-<img width="1501" alt="igo-coverage" src="https://user-images.githubusercontent.com/37904797/234664715-e7806581-c14c-4ac2-91c4-224d8724a2f1.png">
+<img width="1501" alt="igo-coverage" src="https://user-images.githubusercontent.com/37904797/235130979-e8b8c02c-927e-47be-bfb9-5603aa35f259.png">
