@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2023-04-28 13:52:56</td>
+            <td class="headerValue">2023-05-05 12:12:44</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -72,9 +72,9 @@
 <a name="1"><span class="lineNum">       1 </span>                :            : // SPDX-License-Identifier: UNLICENSED</a>
 <a name="2"><span class="lineNum">       2 </span>                :            : pragma solidity ^0.8.17;</a>
 <a name="3"><span class="lineNum">       3 </span>                :            : </a>
-<a name="4"><span class="lineNum">       4 </span>                :            : import {IRestrictedWritableInternal} from &quot;./writable/restricted/IRestrictedWritableInternal.sol&quot;;</a>
-<a name="5"><span class="lineNum">       5 </span>                :            : import {IStageInternal} from &quot;./writable/shared/IStageInternal.sol&quot;;</a>
-<a name="6"><span class="lineNum">       6 </span>                :            : </a>
+<a name="4"><span class="lineNum">       4 </span>                :            : import {ISharedInternal} from &quot;./shared/ISharedInternal.sol&quot;;</a>
+<a name="5"><span class="lineNum">       5 </span>                :            : </a>
+<a name="6"><span class="lineNum">       6 </span>                :            : /// @author https://github.com/Theo6890</a>
 <a name="7"><span class="lineNum">       7 </span>                :            : library IGOStorage {</a>
 <a name="8"><span class="lineNum">       8 </span>                :            :     // Only updated by owner</a>
 <a name="9"><span class="lineNum">       9 </span>                :            :     struct SetUp {</a>
@@ -86,15 +86,15 @@
 <a name="15"><span class="lineNum">      15 </span>                :            :     // Updated by owner and users interactions</a>
 <a name="16"><span class="lineNum">      16 </span>                :            :     struct Tags {</a>
 <a name="17"><span class="lineNum">      17 </span>                :            :         string[] ids;</a>
-<a name="18"><span class="lineNum">      18 </span>                :            :         mapping(string =&gt; IRestrictedWritableInternal.Tag) data;</a>
+<a name="18"><span class="lineNum">      18 </span>                :            :         mapping(string =&gt; ISharedInternal.Tag) data;</a>
 <a name="19"><span class="lineNum">      19 </span>                :            :     }</a>
 <a name="20"><span class="lineNum">      20 </span>                :            : </a>
 <a name="21"><span class="lineNum">      21 </span>                :            :     // Only updated by users interactions</a>
 <a name="22"><span class="lineNum">      22 </span>                :            :     struct Ledger {</a>
-<a name="23"><span class="lineNum">      23 </span>                :            :         IStageInternal.Stage stage;</a>
+<a name="23"><span class="lineNum">      23 </span>                :            :         ISharedInternal.Stage stage;</a>
 <a name="24"><span class="lineNum">      24 </span>                :            :         uint256 totalRaised;</a>
 <a name="25"><span class="lineNum">      25 </span>                :            :         mapping(string =&gt; uint256) raisedInTag;</a>
-<a name="26"><span class="lineNum">      26 </span>                :            :         mapping(address =&gt; uint256) boughtBy;</a>
+<a name="26"><span class="lineNum">      26 </span>                :            :         mapping(address =&gt; mapping(string =&gt; uint256)) boughtByIn;</a>
 <a name="27"><span class="lineNum">      27 </span>                :            :     }</a>
 <a name="28"><span class="lineNum">      28 </span>                :            : </a>
 <a name="29"><span class="lineNum">      29 </span>                :            :     struct IGOStruct {</a>
