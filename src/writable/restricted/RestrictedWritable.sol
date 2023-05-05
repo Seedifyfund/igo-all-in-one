@@ -7,7 +7,7 @@ import {SafeERC20} from "openzeppelin-contracts/token/ERC20/utils/SafeERC20.sol"
 
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 
-import {IStageInternal} from "../shared/IStageInternal.sol";
+import {ISharedInternal} from "../../shared/ISharedInternal.sol";
 import {IRestrictedWritable} from "./IRestrictedWritable.sol";
 
 import {IGOStorage} from "../../IGOStorage.sol";
@@ -15,7 +15,7 @@ import {IGOStorage} from "../../IGOStorage.sol";
 import {RestrictedWritableInternal} from "./RestrictedWritableInternal.sol";
 
 /**
- * @dev Inherits from `IStageInternal` will create `error[5005]: Linearization of inheritance graph impossible`
+ * @dev Inherits from `ISharedInternal` will create `error[5005]: Linearization of inheritance graph impossible`
  */
 contract RestrictedWritable is
     IRestrictedWritable,
@@ -25,11 +25,11 @@ contract RestrictedWritable is
     using SafeERC20 for IERC20;
 
     function openIGO() external override onlyOwner {
-        IGOStorage.layout().ledger.stage = IStageInternal.Stage.OPENED;
+        IGOStorage.layout().ledger.stage = ISharedInternal.Stage.OPENED;
     }
 
     function pauseIGO() external override onlyOwner {
-        IGOStorage.layout().ledger.stage = IStageInternal.Stage.PAUSED;
+        IGOStorage.layout().ledger.stage = ISharedInternal.Stage.PAUSED;
     }
 
     function updateGrandTotal(
@@ -61,7 +61,7 @@ contract RestrictedWritable is
     /// @inheritdoc IRestrictedWritable
     function updateTag(
         string calldata tagId_,
-        Tag calldata tag_
+        ISharedInternal.Tag calldata tag_
     ) external override onlyOwner {
         IGOStorage.Tags storage tags = IGOStorage.layout().tags;
 
@@ -77,7 +77,7 @@ contract RestrictedWritable is
     /// @inheritdoc IRestrictedWritable
     function setTags(
         string[] memory tagIdentifiers_,
-        Tag[] memory tags_
+        ISharedInternal.Tag[] memory tags_
     ) public override onlyOwner {
         IGOStorage.Tags storage tags = IGOStorage.layout().tags;
 
@@ -102,13 +102,13 @@ contract RestrictedWritable is
 
     //////////////////////////// TAG SINGLE UPDATE ////////////////////////////
     function openTag(string memory tagId) external override onlyOwner {
-        IGOStorage.layout().tags.data[tagId].stage = IStageInternal
+        IGOStorage.layout().tags.data[tagId].stage = ISharedInternal
             .Stage
             .OPENED;
     }
 
     function pauseTag(string memory tagId) external override onlyOwner {
-        IGOStorage.layout().tags.data[tagId].stage = IStageInternal
+        IGOStorage.layout().tags.data[tagId].stage = ISharedInternal
             .Stage
             .PAUSED;
     }

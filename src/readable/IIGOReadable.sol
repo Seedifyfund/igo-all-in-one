@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
-import {IRestrictedWritableInternal} from "../writable/restricted/IRestrictedWritableInternal.sol";
-import {IStageInternal} from "../writable/shared/IStageInternal.sol";
+import {ISharedInternal} from "../shared/ISharedInternal.sol";
 
 interface IIGOReadable {
     /**
@@ -13,7 +12,7 @@ interface IIGOReadable {
         string calldata tagId
     ) external view returns (uint256);
 
-    function igoStage() external view returns (IStageInternal.Stage);
+    function igoStage() external view returns (ISharedInternal.Stage);
 
     function raisedInTag(string memory tagId) external view returns (uint256);
 
@@ -24,7 +23,7 @@ interface IIGOReadable {
 
     function tag(
         string memory tagId
-    ) external view returns (IRestrictedWritableInternal.Tag memory tag);
+    ) external view returns (ISharedInternal.Tag memory tag);
 
     function tagIds() external view returns (string[] memory tagIds);
 

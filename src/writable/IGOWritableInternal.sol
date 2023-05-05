@@ -3,21 +3,21 @@ pragma solidity ^0.8.17;
 
 import {MerkleProof} from "openzeppelin-contracts/utils/cryptography/MerkleProof.sol";
 
-import {IStageInternal} from "./shared/IStageInternal.sol";
+import {ISharedInternal} from "../shared/ISharedInternal.sol";
 import {IIGOWritableInternal} from "./IIGOWritableInternal.sol";
 
 import {IGOStorage} from "../IGOStorage.sol";
 
 /**
- * @notice Inherits from `IStageInternal` will create `error[5005]: Linearization of inheritance graph impossible`
+ * @notice Inherits from `ISharedInternal` will create `error[5005]: Linearization of inheritance graph impossible`
  */
 contract IGOWritableInternal is IIGOWritableInternal {
     function _closeIGO() internal {
-        IGOStorage.layout().ledger.stage = IStageInternal.Stage.COMPLETED;
+        IGOStorage.layout().ledger.stage = ISharedInternal.Stage.COMPLETED;
     }
 
     function _closeTag(string memory tagId) internal {
-        IGOStorage.layout().tags.data[tagId].stage = IStageInternal
+        IGOStorage.layout().tags.data[tagId].stage = ISharedInternal
             .Stage
             .COMPLETED;
     }
@@ -63,19 +63,19 @@ contract IGOWritableInternal is IIGOWritableInternal {
     }
 
     function _requireOpenedIGO() internal view {
-        IStageInternal.Stage current = IGOStorage.layout().ledger.stage;
-        if (current != IStageInternal.Stage.OPENED) {
+        ISharedInternal.Stage current = IGOStorage.layout().ledger.stage;
+        if (current != ISharedInternal.Stage.OPENED) {
             revert IGOWritableInternal_IGONotOpened(current);
         }
     }
 
     function _requireOpenedTag(string memory tagId) internal view {
-        IStageInternal.Stage current = IGOStorage
+        ISharedInternal.Stage current = IGOStorage
             .layout()
             .tags
             .data[tagId]
             .stage;
-        if (current != IStageInternal.Stage.OPENED) {
+        if (current != ISharedInternal.Stage.OPENED) {
             revert IGOWritableInternal_TagNotOpened(tagId, current);
         }
     }

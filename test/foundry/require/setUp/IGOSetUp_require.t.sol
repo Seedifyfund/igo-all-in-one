@@ -6,7 +6,7 @@ import {Strings} from "openzeppelin-contracts/utils/Strings.sol";
 import "forge-std/Test.sol";
 
 import {IRestrictedWritableInternal} from "../../../../src/writable/restricted/IRestrictedWritableInternal.sol";
-import {IStageInternal} from "../../../../src/writable/shared/IStageInternal.sol";
+import {ISharedInternal} from "../../../../src/shared/ISharedInternal.sol";
 import {IIGOWritableInternal} from "../../../../src/writable/IIGOWritableInternal.sol";
 
 import {IGOWritable_Mock} from "../../../mock/IGOWritable_Mock.sol";
@@ -15,7 +15,7 @@ import {FFI_Merkletreejs} from "../../utils/FFI_Merkletreejs.sol";
 contract IGOSetUp_require is
     Test,
     IRestrictedWritableInternal,
-    IStageInternal,
+    ISharedInternal,
     IIGOWritableInternal,
     FFI_Merkletreejs
 {

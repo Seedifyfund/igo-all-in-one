@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
-import {IRestrictedWritableInternal} from "./writable/restricted/IRestrictedWritableInternal.sol";
-import {IStageInternal} from "./writable/shared/IStageInternal.sol";
+import {ISharedInternal} from "./shared/ISharedInternal.sol";
 
 /// @author https://github.com/Theo6890
 library IGOStorage {
@@ -16,12 +15,12 @@ library IGOStorage {
     // Updated by owner and users interactions
     struct Tags {
         string[] ids;
-        mapping(string => IRestrictedWritableInternal.Tag) data;
+        mapping(string => ISharedInternal.Tag) data;
     }
 
     // Only updated by users interactions
     struct Ledger {
-        IStageInternal.Stage stage;
+        ISharedInternal.Stage stage;
         uint256 totalRaised;
         mapping(string => uint256) raisedInTag;
         mapping(address => mapping(string => uint256)) boughtByIn;

@@ -3,7 +3,7 @@ pragma solidity ^0.8.17;
 
 import {IIGOReadable} from "../readable/IIGOReadable.sol";
 import {IRestrictedWritableInternal} from "../writable/restricted/IRestrictedWritableInternal.sol";
-import {IStageInternal} from "../writable/shared/IStageInternal.sol";
+import {ISharedInternal} from "../shared/ISharedInternal.sol";
 import {IIGOWritableInternal} from "../writable/IIGOWritableInternal.sol";
 
 import {IGOStorage} from "../IGOStorage.sol";
@@ -12,7 +12,7 @@ contract IGOReadable is
     IIGOReadable,
     IIGOWritableInternal,
     IRestrictedWritableInternal,
-    IStageInternal
+    ISharedInternal
 {
     /// @inheritdoc IIGOReadable
     function boughtByIn(

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
-import {IRestrictedWritableInternal} from "./IRestrictedWritableInternal.sol";
+import {ISharedInternal} from "../../shared/ISharedInternal.sol";
 
 /// @notice Only the owner of the contract can call these methods.
 interface IRestrictedWritable {
@@ -24,7 +24,7 @@ interface IRestrictedWritable {
     /// @dev Update a tag and all its data.
     function updateTag(
         string calldata tagId_,
-        IRestrictedWritableInternal.Tag calldata tag_
+        ISharedInternal.Tag calldata tag_
     ) external;
 
     /**
@@ -33,7 +33,7 @@ interface IRestrictedWritable {
      */
     function setTags(
         string[] memory tagIdentifiers_,
-        IRestrictedWritableInternal.Tag[] memory tags_
+        ISharedInternal.Tag[] memory tags_
     ) external;
 
     //////////////////////////// TAG SINGLE UPDATE ////////////////////////////
