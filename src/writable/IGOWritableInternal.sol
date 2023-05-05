@@ -22,12 +22,14 @@ contract IGOWritableInternal is IIGOWritableInternal {
             .COMPLETED;
     }
 
-    function _requireAllocationNotExceeded(
+    function _requireAllocationNotExceededInTag(
         uint256 toBuy,
         Allocation calldata allocation
     ) internal view {
         uint256 totalAfterPurchase = toBuy +
-            IGOStorage.layout().ledger.boughtBy[allocation.account];
+            IGOStorage.layout().ledger.boughtByIn[allocation.account][
+                allocation.tagId
+            ];
         if (totalAfterPurchase > allocation.amount) {
             revert IGOWritable_AllocationExceeded(
                 allocation.amount,

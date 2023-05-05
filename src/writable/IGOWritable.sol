@@ -26,7 +26,7 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, RestrictedWritable {
         uint256 maxTagCap = IGOStorage.layout().tags.data[tagId].maxTagCap;
         uint256 grandTotal = IGOStorage.layout().setUp.grandTotal;
         // check given parameters
-        _requireAllocationNotExceeded(amount, allocation);
+        _requireAllocationNotExceededInTag(amount, allocation);
         _requireAuthorizedAccount(allocation.account);
         _requireGrandTotalNotExceeded(amount, grandTotal);
         _requireOpenedIGO();
@@ -41,7 +41,7 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, RestrictedWritable {
         // update storage
         ledger.totalRaised += amount;
         ledger.raisedInTag[tagId] += amount;
-        ledger.boughtBy[allocation.account] += amount;
+        ledger.boughtByIn[allocation.account][tagId] += amount;
         if (ledger.totalRaised == grandTotal) _closeIGO();
         if (ledger.raisedInTag[tagId] == maxTagCap) _closeTag(tagId);
 

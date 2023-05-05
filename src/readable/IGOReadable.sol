@@ -14,9 +14,11 @@ contract IGOReadable is
     IRestrictedWritableInternal,
     IStageInternal
 {
-    // TODO rename to `boughtBy`
-    function boughtBy(address account) external view returns (uint256) {
-        return IGOStorage.layout().ledger.boughtBy[account];
+    function boughtByIn(
+        address account,
+        string calldata tagId
+    ) external view returns (uint256) {
+        return IGOStorage.layout().ledger.boughtByIn[account][tagId];
     }
 
     function igoStage() external view override returns (Stage) {

@@ -13,11 +13,11 @@ contract IGOWritable_Mock is IGOWritable, IGOReadable {
         _closeTag(tagId);
     }
 
-    function exposed_requireAllocationNotExceeded(
+    function exposed_requireAllocationNotExceededInTag(
         uint256 toBuy,
         Allocation calldata allocation
     ) external view returns (bool) {
-        _requireAllocationNotExceeded(toBuy, allocation);
+        _requireAllocationNotExceededInTag(toBuy, allocation);
         return true;
     }
 
