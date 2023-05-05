@@ -4,6 +4,7 @@ pragma solidity ^0.8.17;
 import {IRestrictedWritableInternal} from "./writable/restricted/IRestrictedWritableInternal.sol";
 import {IStageInternal} from "./writable/shared/IStageInternal.sol";
 
+/// @author https://github.com/Theo6890
 library IGOStorage {
     // Only updated by owner
     struct SetUp {

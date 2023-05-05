@@ -4,6 +4,7 @@ pragma solidity ^0.8.17;
 import {IRestrictedWritableInternal} from "./IRestrictedWritableInternal.sol";
 
 contract RestrictedWritableInternal is IRestrictedWritableInternal {
+    /// @dev Revert if max allocation in a tag is greater than grand total.
     function _isMaxTagAllocationGtGrandTotal(
         string memory tagId_,
         uint256 maxTagAllocation_,

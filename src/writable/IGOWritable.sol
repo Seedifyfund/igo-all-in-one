@@ -15,6 +15,7 @@ import {IGOWritableInternal} from "./IGOWritableInternal.sol";
 contract IGOWritable is IIGOWritable, IGOWritableInternal, RestrictedWritable {
     using SafeERC20 for IERC20;
 
+    /// @inheritdoc IIGOWritable
     function buyTokens(
         uint256 amount,
         Allocation calldata allocation,

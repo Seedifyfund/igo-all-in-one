@@ -5,6 +5,9 @@ import {IRestrictedWritableInternal} from "../writable/restricted/IRestrictedWri
 import {IStageInternal} from "../writable/shared/IStageInternal.sol";
 
 interface IIGOReadable {
+    /**
+     * @return Amount of tokens bought by the account in a tag.
+     */
     function boughtByIn(
         address account,
         string calldata tagId

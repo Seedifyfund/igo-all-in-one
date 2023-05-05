@@ -22,6 +22,10 @@ contract IGOWritableInternal is IIGOWritableInternal {
             .COMPLETED;
     }
 
+    /**
+     * @dev Ensure a wallet can not more than their allocation for the
+     *      given tag.
+     */
     function _requireAllocationNotExceededInTag(
         uint256 toBuy,
         address rewardee,
@@ -38,6 +42,7 @@ contract IGOWritableInternal is IIGOWritableInternal {
         }
     }
 
+    /// @dev Only the `msg.sender` can buy tokens for themselves
     function _requireAuthorizedAccount(address account) internal view {
         require(account == msg.sender, "msg.sender: NOT_AUTHORIZED");
     }

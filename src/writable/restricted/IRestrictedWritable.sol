@@ -3,6 +3,7 @@ pragma solidity ^0.8.17;
 
 import {IRestrictedWritableInternal} from "./IRestrictedWritableInternal.sol";
 
+/// @notice Only the owner of the contract can call these methods.
 interface IRestrictedWritable {
     //////////////////////////// SHARED IGO DATA ////////////////////////////
     function openIGO() external;
@@ -11,16 +12,25 @@ interface IRestrictedWritable {
 
     function updateGrandTotal(uint256 grandTotal_) external;
 
+    /// @notice Updates the token users will use to buy into the IGO.
     function updateToken(address token_) external;
 
     function updateTreasuryWallet(address addr) external;
 
+    /// @dev Retrieve any ERC20 sent to the contract by mistake.
+    function recoverLostERC20(address token, address to) external;
+
     //////////////////////////// TAG BATCH UPDATES ////////////////////////////
+    /// @dev Update a tag and all its data.
     function updateTag(
         string calldata tagId_,
         IRestrictedWritableInternal.Tag calldata tag_
     ) external;
 
+    /**
+     * @dev If a tag with an identifier already exists, it will be
+     *      updated, otherwise it will be created.
+     */
     function setTags(
         string[] memory tagIdentifiers_,
         IRestrictedWritableInternal.Tag[] memory tags_

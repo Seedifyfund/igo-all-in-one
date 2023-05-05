@@ -14,6 +14,7 @@ contract IGOReadable is
     IRestrictedWritableInternal,
     IStageInternal
 {
+    /// @inheritdoc IIGOReadable
     function boughtByIn(
         address account,
         string calldata tagId
