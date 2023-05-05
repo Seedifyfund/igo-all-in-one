@@ -18,7 +18,9 @@ contract IGO_Test_requireAllocationNotExceededInTag is IGOSetUp_require {
         );
         instance.exposed_requireAllocationNotExceededInTag(
             allocations[0].amount + exceedBy,
-            allocations[0]
+            allocations[0].account,
+            allocations[0].amount,
+            allocations[0].tagId
         );
     }
 
@@ -26,13 +28,17 @@ contract IGO_Test_requireAllocationNotExceededInTag is IGOSetUp_require {
         assertTrue(
             instance.exposed_requireAllocationNotExceededInTag(
                 allocations[0].amount / 4,
-                allocations[0]
+                allocations[0].account,
+                allocations[0].amount,
+                allocations[0].tagId
             )
         );
         assertTrue(
             instance.exposed_requireAllocationNotExceededInTag(
                 allocations[0].amount,
-                allocations[0]
+                allocations[0].account,
+                allocations[0].amount,
+                allocations[0].tagId
             )
         );
     }
