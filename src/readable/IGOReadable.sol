@@ -18,7 +18,7 @@ contract IGOReadable is
     function boughtByIn(
         address account,
         string calldata tagId
-    ) external view returns (uint256) {
+    ) external view override returns (uint256) {
         return IGOStorage.layout().ledger.boughtByIn[account][tagId];
     }
 
@@ -35,6 +35,7 @@ contract IGOReadable is
     function setUp()
         external
         view
+        override
         returns (address token, address treasuryWallet, uint256 grandTotal)
     {
         IGOStorage.SetUp memory setUp_ = IGOStorage.layout().setUp;
@@ -58,7 +59,7 @@ contract IGOReadable is
         tagIds_ = IGOStorage.layout().tags.ids;
     }
 
-    function totalRaised() external view returns (uint256) {
+    function totalRaised() external view override returns (uint256) {
         return IGOStorage.layout().ledger.totalRaised;
     }
 }

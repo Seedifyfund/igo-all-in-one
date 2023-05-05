@@ -40,11 +40,11 @@ contract RestrictedWritable is
     }
 
     /// @inheritdoc IRestrictedWritable
-    function updateToken(address token_) external onlyOwner {
+    function updateToken(address token_) external override onlyOwner {
         IGOStorage.layout().setUp.token = token_;
     }
 
-    function updateTreasuryWallet(address addr) external onlyOwner {
+    function updateTreasuryWallet(address addr) external override onlyOwner {
         IGOStorage.layout().setUp.treasuryWallet = addr;
     }
 
@@ -52,7 +52,7 @@ contract RestrictedWritable is
     function recoverLostERC20(
         address token,
         address to
-    ) external onlyOwner {
+    ) external override onlyOwner {
         uint256 amount = IERC20(token).balanceOf(address(this));
         IERC20(token).safeTransfer(to, amount);
     }
