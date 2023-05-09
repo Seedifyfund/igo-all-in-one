@@ -6,6 +6,7 @@ import {IGOStorage} from "./IGOStorage.sol";
 import {IGOReadable} from "./readable/IGOReadable.sol";
 import {IGOWritable} from "./writable/IGOWritable.sol";
 
+/// @author https://github.com/Theo6890
 contract IGO is IGOReadable, IGOWritable {
     constructor(
         address token,

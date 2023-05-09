@@ -11,7 +11,7 @@ import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
 import {IGO} from "../../../src/IGO.sol";
 import {IIGOWritableInternal} from "../../../src/writable/IIGOWritableInternal.sol";
 import {IRestrictedWritableInternal} from "../../../src/writable/restricted/IRestrictedWritableInternal.sol";
-import {IStageInternal} from "../../../src/writable/shared/IStageInternal.sol";
+import {ISharedInternal} from "../../../src/shared/ISharedInternal.sol";
 
 import {FFI_Merkletreejs} from "../utils/FFI_Merkletreejs.sol";
 
@@ -19,7 +19,7 @@ contract IGOSetUp is
     Test,
     IIGOWritableInternal,
     IRestrictedWritableInternal,
-    IStageInternal,
+    ISharedInternal,
     FFI_Merkletreejs
 {
     ERC20 public token;

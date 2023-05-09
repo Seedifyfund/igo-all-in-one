@@ -7,7 +7,7 @@ import {SafeERC20} from "openzeppelin-contracts/token/ERC20/utils/SafeERC20.sol"
 
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 
-import {IStageInternal} from "../shared/IStageInternal.sol";
+import {ISharedInternal} from "../../shared/ISharedInternal.sol";
 import {IRestrictedWritable} from "./IRestrictedWritable.sol";
 
 import {IGOStorage} from "../../IGOStorage.sol";
@@ -15,7 +15,7 @@ import {IGOStorage} from "../../IGOStorage.sol";
 import {RestrictedWritableInternal} from "./RestrictedWritableInternal.sol";
 
 /**
- * @notice Inherits from `IStageInternal` will create `error[5005]: Linearization of inheritance graph impossible`
+ * @dev Inherits from `ISharedInternal` will create `error[5005]: Linearization of inheritance graph impossible`
  */
 contract RestrictedWritable is
     IRestrictedWritable,
@@ -25,11 +25,11 @@ contract RestrictedWritable is
     using SafeERC20 for IERC20;
 
     function openIGO() external override onlyOwner {
-        IGOStorage.layout().ledger.stage = IStageInternal.Stage.OPENED;
+        IGOStorage.layout().ledger.stage = ISharedInternal.Stage.OPENED;
     }
 
     function pauseIGO() external override onlyOwner {
-        IGOStorage.layout().ledger.stage = IStageInternal.Stage.PAUSED;
+        IGOStorage.layout().ledger.stage = ISharedInternal.Stage.PAUSED;
     }
 
     function updateGrandTotal(
@@ -39,23 +39,29 @@ contract RestrictedWritable is
         IGOStorage.layout().setUp.grandTotal = grandTotal_;
     }
 
-    function updateToken(address token_) external onlyOwner {
+    /// @inheritdoc IRestrictedWritable
+    function updateToken(address token_) external override onlyOwner {
         IGOStorage.layout().setUp.token = token_;
     }
 
-    function updateTreasuryWallet(address addr) external onlyOwner {
+    function updateTreasuryWallet(address addr) external override onlyOwner {
         IGOStorage.layout().setUp.treasuryWallet = addr;
     }
 
-    function recoverLostERC20(address token, address to) external onlyOwner {
+    /// @inheritdoc IRestrictedWritable
+    function recoverLostERC20(
+        address token,
+        address to
+    ) external override onlyOwner {
         uint256 amount = IERC20(token).balanceOf(address(this));
         IERC20(token).safeTransfer(to, amount);
     }
 
     //////////////////////////// TAG BATCH UPDATES ////////////////////////////
+    /// @inheritdoc IRestrictedWritable
     function updateTag(
         string calldata tagId_,
-        Tag calldata tag_
+        ISharedInternal.Tag calldata tag_
     ) external override onlyOwner {
         IGOStorage.Tags storage tags = IGOStorage.layout().tags;
 
@@ -68,13 +74,10 @@ contract RestrictedWritable is
         tags.data[tagId_] = tag_;
     }
 
-    /**
-     * @dev If a tag with an identifier already exists, it will be
-     *      overwritten, otherwise it will be created.
-     */
+    /// @inheritdoc IRestrictedWritable
     function setTags(
         string[] memory tagIdentifiers_,
-        Tag[] memory tags_
+        ISharedInternal.Tag[] memory tags_
     ) public override onlyOwner {
         IGOStorage.Tags storage tags = IGOStorage.layout().tags;
 
@@ -99,13 +102,13 @@ contract RestrictedWritable is
 
     //////////////////////////// TAG SINGLE UPDATE ////////////////////////////
     function openTag(string memory tagId) external override onlyOwner {
-        IGOStorage.layout().tags.data[tagId].stage = IStageInternal
+        IGOStorage.layout().tags.data[tagId].stage = ISharedInternal
             .Stage
             .OPENED;
     }
 
     function pauseTag(string memory tagId) external override onlyOwner {
-        IGOStorage.layout().tags.data[tagId].stage = IStageInternal
+        IGOStorage.layout().tags.data[tagId].stage = ISharedInternal
             .Stage
             .PAUSED;
     }

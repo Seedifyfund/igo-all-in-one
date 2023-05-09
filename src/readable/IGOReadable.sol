@@ -3,7 +3,7 @@ pragma solidity ^0.8.17;
 
 import {IIGOReadable} from "../readable/IIGOReadable.sol";
 import {IRestrictedWritableInternal} from "../writable/restricted/IRestrictedWritableInternal.sol";
-import {IStageInternal} from "../writable/shared/IStageInternal.sol";
+import {ISharedInternal} from "../shared/ISharedInternal.sol";
 import {IIGOWritableInternal} from "../writable/IIGOWritableInternal.sol";
 
 import {IGOStorage} from "../IGOStorage.sol";
@@ -12,11 +12,14 @@ contract IGOReadable is
     IIGOReadable,
     IIGOWritableInternal,
     IRestrictedWritableInternal,
-    IStageInternal
+    ISharedInternal
 {
-    // TODO rename to `boughtBy`
-    function boughtBy(address account) external view returns (uint256) {
-        return IGOStorage.layout().ledger.boughtBy[account];
+    /// @inheritdoc IIGOReadable
+    function boughtByIn(
+        address account,
+        string calldata tagId
+    ) external view override returns (uint256) {
+        return IGOStorage.layout().ledger.boughtByIn[account][tagId];
     }
 
     function igoStage() external view override returns (Stage) {
@@ -32,6 +35,7 @@ contract IGOReadable is
     function setUp()
         external
         view
+        override
         returns (address token, address treasuryWallet, uint256 grandTotal)
     {
         IGOStorage.SetUp memory setUp_ = IGOStorage.layout().setUp;
@@ -55,7 +59,7 @@ contract IGOReadable is
         tagIds_ = IGOStorage.layout().tags.ids;
     }
 
-    function totalRaised() external view returns (uint256) {
+    function totalRaised() external view override returns (uint256) {
         return IGOStorage.layout().ledger.totalRaised;
     }
 }

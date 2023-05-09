@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
-import {IStageInternal} from "./shared/IStageInternal.sol";
+import {ISharedInternal} from "../shared/ISharedInternal.sol";
 
 interface IIGOWritableInternal {
     struct Allocation {
@@ -10,10 +10,10 @@ interface IIGOWritableInternal {
         uint256 amount;
     }
 
-    error IGOWritableInternal_IGONotOpened(IStageInternal.Stage current);
+    error IGOWritableInternal_IGONotOpened(ISharedInternal.Stage current);
     error IGOWritableInternal_TagNotOpened(
         string tagId,
-        IStageInternal.Stage current
+        ISharedInternal.Stage current
     );
     error IGOWritable_AllocationExceeded(
         uint256 allocation,

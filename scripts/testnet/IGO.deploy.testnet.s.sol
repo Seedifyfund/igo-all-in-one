@@ -5,7 +5,7 @@ import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
 
 import "forge-std/Script.sol";
 
-import {IRestrictedWritableInternal} from "../../src/writable/restricted/IRestrictedWritableInternal.sol";
+import {ISharedInternal} from "../../src/shared/ISharedInternal.sol";
 import {IGO} from "../../src/IGO.sol";
 
 /**
@@ -38,7 +38,7 @@ contract IGO_deploy_testnet is Script {
             vm.addr(privateKey),
             1_000_000,
             new string[](0),
-            new IRestrictedWritableInternal.Tag[](0)
+            new ISharedInternal.Tag[](0)
         );
 
         vm.stopBroadcast();
