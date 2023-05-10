@@ -22,6 +22,24 @@ contract IGOWritableInternal is IIGOWritableInternal {
             .COMPLETED;
     }
 
+    function _updateStorageOnBuy(
+        uint256 amount,
+        string calldata tagId,
+        address buyer,
+        uint256 grandTotal,
+        uint256 maxTagCap
+    ) internal {
+        IGOStorage.Ledger storage ledger = IGOStorage.layout().ledger;
+
+        // update raised amount
+        ledger.totalRaised += amount;
+        ledger.raisedInTag[tagId] += amount;
+        ledger.boughtByIn[buyer][tagId] += amount;
+        // close if limit reached
+        if (ledger.totalRaised == grandTotal) _closeIGO();
+        if (ledger.raisedInTag[tagId] == maxTagCap) _closeTag(tagId);
+    }
+
     /**
      * @dev Ensure a wallet can not more than their allocation for the
      *      given tag.

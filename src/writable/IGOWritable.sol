@@ -40,17 +40,15 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, RestrictedWritable {
         _requireTagCapNotExceeded(tagId, maxTagCap, amount);
         _requireValidAllocation(allocation, proof);
 
-        // read storage
+        _updateStorageOnBuy(
+            amount,
+            tagId,
+            allocation.account,
+            grandTotal,
+            maxTagCap
+        );
+
         IGOStorage.SetUp memory setUp = IGOStorage.layout().setUp;
-        IGOStorage.Ledger storage ledger = IGOStorage.layout().ledger;
-
-        // update storage
-        ledger.totalRaised += amount;
-        ledger.raisedInTag[tagId] += amount;
-        ledger.boughtByIn[allocation.account][tagId] += amount;
-        if (ledger.totalRaised == grandTotal) _closeIGO();
-        if (ledger.raisedInTag[tagId] == maxTagCap) _closeTag(tagId);
-
         // transfer tokens
         IERC20(setUp.token).safeTransferFrom(
             msg.sender,
