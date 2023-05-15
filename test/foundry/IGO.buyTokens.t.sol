@@ -4,6 +4,13 @@ pragma solidity ^0.8.17;
 import {IGOSetUp} from "./setUp/IGOSetUp.t.sol";
 
 contract IGO_Test_buyTokens is IGOSetUp {
+    address public buyer;
+
+    function setUp() public override {
+        super.setUp();
+        buyer = allocations[0].account;
+    }
+
     function test_token() public {
         (address token_, , ) = instance.setUp();
         assertEq(token_, address(token));
@@ -13,37 +20,30 @@ contract IGO_Test_buyTokens is IGOSetUp {
         _setUpTestData();
 
         // before buying tokens
-        uint256 balanceBeforeBuy = token.balanceOf(allocations[0].account);
+        uint256 balanceBeforeBuy = token.balanceOf(buyer);
         assertEq(token.balanceOf(treasuryWallet), 0);
 
         _buyTokens(allocations[0], lastProof);
 
-        uint256 balanceAfterBuy = token.balanceOf(allocations[0].account);
+        uint256 balanceAfterBuy = token.balanceOf(buyer);
         assertEq(balanceAfterBuy, balanceBeforeBuy - allocations[0].amount);
         assertEq(token.balanceOf(treasuryWallet), allocations[0].amount);
     }
 
     function test_buyTokens_UserBuyTheirAllocation_InMultipleTx() public {
         _setUpTestData();
-        vm.startPrank(allocations[0].account);
-        token.increaseAllowance(address(instance), allocations[0].amount);
+        uint256 amount = allocations[0].amount;
+        uint256 firstPart = amount / 4;
 
-        // buy first 25% of allocation
-        uint256 firstPart = allocations[0].amount / 4;
-        instance.buyTokens(firstPart, allocations[0], lastProof);
+        /////////////////// buy first 25% of allocation ///////////////////
+        _buyTokens(firstPart, allocations[0], lastProof);
         // verify `ledger.boughtByIn[allocation.account][tagId]` has been updated
+        assertEq(instance.boughtByIn(buyer, allocations[0].tagId), firstPart);
+        /////////////////// buys the rest of their allocation ///////////////////
+        amount -= firstPart;
+        _buyTokens(amount, allocations[0], lastProof);
         assertEq(
-            instance.boughtByIn(allocations[0].account, allocations[0].tagId),
-            firstPart
-        );
-        // buys the rest of their allocation
-        instance.buyTokens(
-            allocations[0].amount - firstPart,
-            allocations[0],
-            lastProof
-        );
-        assertEq(
-            instance.boughtByIn(allocations[0].account, allocations[0].tagId),
+            instance.boughtByIn(buyer, allocations[0].tagId),
             allocations[0].amount
         );
     }
@@ -81,7 +81,6 @@ contract IGO_Test_buyTokens is IGOSetUp {
         deal(address(token), sender, lost + 100 ether);
 
         vm.startPrank(sender);
-        token.increaseAllowance(address(instance), lost);
         token.transfer(address(instance), lost);
         vm.stopPrank();
 

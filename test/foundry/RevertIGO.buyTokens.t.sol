@@ -8,18 +8,31 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
 
     function testRevert_buyTokens_If_UserNotAddedToMerkleTreeAtAll() public {
         _setUpTestData();
+        permission.deadline = defaultSigDeadline;
 
-        // msg.sender is not in any leaves of the tree so all allocation
+        // `alice` is not in any leaves of the tree so all allocation
         // containing msg.sender must fail
         for (uint256 i; i < leaves.length; ++i) {
             _generateMerkleRootAndProofForLeaf(i);
 
-            allocations[i].account = msg.sender;
+            (address alice, uint256 key) = makeAddrAndKey("alice");
+            allocations[i].account = alice;
+            privateKeyOf[alice] = key;
 
-            vm.prank(msg.sender);
-            // reverts with "ALLOCATION_NOT_FOUND", but issue when using string
+            bytes memory sig = _getPermitTransferSignature(
+                _createPermit(
+                    allocations[i].amount,
+                    uint256(bytes32(keccak256(abi.encode(allocations[i]))))
+                ),
+                address(instance),
+                privateKeyOf[allocations[i].account]
+            );
+            permission.signature = sig;
+
+            vm.prank(alice);
+            // reverts wit "ALLOCATION_NOT_FOUND", but issue when using string
             vm.expectRevert();
-            instance.buyTokens(amount, allocations[i], lastProof);
+            instance.buyTokens(amount, allocations[i], lastProof, permission);
         }
     }
 
