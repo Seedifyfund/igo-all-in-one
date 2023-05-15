@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
+import {ReentrancyGuard} from "openzeppelin-contracts/security/ReentrancyGuard.sol";
+
 import {IIGOWritable} from "./IIGOWritable.sol";
 
 import {IGOStorage} from "../IGOStorage.sol";
@@ -8,13 +10,18 @@ import {IGOStorage} from "../IGOStorage.sol";
 import {RestrictedWritable} from "./restricted/RestrictedWritable.sol";
 import {IGOWritableInternal} from "./IGOWritableInternal.sol";
 
-contract IGOWritable is IIGOWritable, IGOWritableInternal, RestrictedWritable {
+contract IGOWritable is
+    IIGOWritable,
+    IGOWritableInternal,
+    RestrictedWritable,
+    ReentrancyGuard
+{
     /// @inheritdoc IIGOWritable
     function buyTokens(
         uint256 amount,
         Allocation calldata allocation,
         bytes32[] calldata proof
-    ) external override {
+    ) external override nonReentrant {
         // `Allocation` struct data in local variables (save gas)
         string calldata tagId = allocation.tagId;
         // local variables (save gas)
