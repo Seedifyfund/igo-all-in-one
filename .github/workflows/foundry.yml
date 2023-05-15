@@ -26,13 +26,16 @@ jobs:
                   rari-capital/solmate Uniswap/permit2 --no-commit
 
             - name: Install packages (ehters required)
-              run: rm package.json && rm yarn.lock && yarn add ethers@5.7.2 merkletreejs --immutable --immutable-cache --check-cache
+              run: |
+                  rm package.json && rm yarn.lock && yarn add ethers@5.7.2 \
+                  merkletreejs --immutable --immutable-cache --check-cache
 
             - name: Run Forge build
               run: |
                   forge --version
                   forge build --sizes
               id: build
+
             - name: Run Forge tests
               run: forge test -vvv --ffi
               id: forge-test
