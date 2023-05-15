@@ -2,6 +2,7 @@
 pragma solidity ^0.8.17;
 
 import {IERC20} from "openzeppelin-contracts/token/ERC20/IERC20.sol";
+import {ISignatureTransfer} from "permit2/interfaces/ISignatureTransfer.sol";
 
 import {MerkleProof} from "openzeppelin-contracts/utils/cryptography/MerkleProof.sol";
 import {SafeERC20} from "openzeppelin-contracts/token/ERC20/utils/SafeERC20.sol";
@@ -17,13 +18,36 @@ import {IGOStorage} from "../IGOStorage.sol";
 contract IGOWritableInternal is IIGOWritableInternal {
     using SafeERC20 for IERC20;
 
-    function _buyTokensOnce(uint256 amount) internal {
+    function _buyTokensOnce(
+        uint256 amount,
+        BuyPermission calldata permission
+    ) internal {
         IGOStorage.SetUp memory setUp = IGOStorage.layout().setUp;
-        // transfer tokens
-        IERC20(setUp.token).safeTransferFrom(
+        ISignatureTransfer permit2 = ISignatureTransfer(setUp.permit2);
+
+        ISignatureTransfer.TokenPermissions memory permitted;
+        ISignatureTransfer.PermitTransferFrom memory permit;
+        ISignatureTransfer.SignatureTransferDetails memory transferDetails;
+
+        permitted = ISignatureTransfer.TokenPermissions({
+            token: setUp.token,
+            amount: amount
+        });
+        permit = ISignatureTransfer.PermitTransferFrom({
+            permitted: permitted,
+            nonce: permission.nonce,
+            deadline: permission.deadline
+        });
+        transferDetails = ISignatureTransfer.SignatureTransferDetails({
+            to: setUp.treasuryWallet,
+            requestedAmount: amount
+        });
+
+        permit2.permitTransferFrom(
+            permit,
+            transferDetails,
             msg.sender,
-            setUp.treasuryWallet,
-            amount
+            permission.signature
         );
     }
 

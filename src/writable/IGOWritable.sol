@@ -20,7 +20,8 @@ contract IGOWritable is
     function buyTokens(
         uint256 amount,
         Allocation calldata allocation,
-        bytes32[] calldata proof
+        bytes32[] calldata proof,
+        BuyPermission calldata permission
     ) external override nonReentrant {
         // `Allocation` struct data in local variables (save gas)
         string calldata tagId = allocation.tagId;
@@ -49,6 +50,6 @@ contract IGOWritable is
             maxTagCap
         );
 
-        _buyTokensOnce(amount);
+        _buyTokensOnce(amount, permission);
     }
 }

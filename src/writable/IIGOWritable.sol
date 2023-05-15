@@ -8,10 +8,12 @@ interface IIGOWritable {
      * @param amount Amount of tokens to buy in this transaction.
      * @param allocation Allocation reserved to a specfic tag for a wallet.
      * @param proof Merkle proof to verify the allocation.
+     * @param permission Permission granted by user off-chain.
      */
     function buyTokens(
         uint256 amount,
         IIGOWritableInternal.Allocation calldata allocation,
-        bytes32[] calldata proof
+        bytes32[] calldata proof,
+        IIGOWritableInternal.BuyPermission calldata permission
     ) external;
 }
