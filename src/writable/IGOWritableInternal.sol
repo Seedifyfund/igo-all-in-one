@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
+import {IERC20} from "openzeppelin-contracts/token/ERC20/IERC20.sol";
+
 import {MerkleProof} from "openzeppelin-contracts/utils/cryptography/MerkleProof.sol";
+import {SafeERC20} from "openzeppelin-contracts/token/ERC20/utils/SafeERC20.sol";
 
 import {ISharedInternal} from "../shared/ISharedInternal.sol";
 import {IIGOWritableInternal} from "./IIGOWritableInternal.sol";
@@ -12,6 +15,18 @@ import {IGOStorage} from "../IGOStorage.sol";
  * @notice Inherits from `ISharedInternal` will create `error[5005]: Linearization of inheritance graph impossible`
  */
 contract IGOWritableInternal is IIGOWritableInternal {
+    using SafeERC20 for IERC20;
+
+    function _buyTokensOnce(uint256 amount) internal {
+        IGOStorage.SetUp memory setUp = IGOStorage.layout().setUp;
+        // transfer tokens
+        IERC20(setUp.token).safeTransferFrom(
+            msg.sender,
+            setUp.treasuryWallet,
+            amount
+        );
+    }
+
     function _closeIGO() internal {
         IGOStorage.layout().ledger.stage = ISharedInternal.Stage.COMPLETED;
     }

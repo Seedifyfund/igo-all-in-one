@@ -1,10 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
-import {IERC20} from "openzeppelin-contracts/token/ERC20/IERC20.sol";
-
-import {SafeERC20} from "openzeppelin-contracts/token/ERC20/utils/SafeERC20.sol";
-
 import {IIGOWritable} from "./IIGOWritable.sol";
 
 import {IGOStorage} from "../IGOStorage.sol";
@@ -13,8 +9,6 @@ import {RestrictedWritable} from "./restricted/RestrictedWritable.sol";
 import {IGOWritableInternal} from "./IGOWritableInternal.sol";
 
 contract IGOWritable is IIGOWritable, IGOWritableInternal, RestrictedWritable {
-    using SafeERC20 for IERC20;
-
     /// @inheritdoc IIGOWritable
     function buyTokens(
         uint256 amount,
@@ -48,12 +42,6 @@ contract IGOWritable is IIGOWritable, IGOWritableInternal, RestrictedWritable {
             maxTagCap
         );
 
-        IGOStorage.SetUp memory setUp = IGOStorage.layout().setUp;
-        // transfer tokens
-        IERC20(setUp.token).safeTransferFrom(
-            msg.sender,
-            setUp.treasuryWallet,
-            amount
-        );
+        _buyTokensOnce(amount);
     }
 }
