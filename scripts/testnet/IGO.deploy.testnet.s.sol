@@ -35,6 +35,7 @@ contract IGO_deploy_testnet is Script {
         ERC20 token = new ERC20("Mock", "MCK");
         IGO igo = new IGO(
             address(token),
+            0x000000000022D473030F116dDEE9F6B43aC78BA3, // bsc
             vm.addr(privateKey),
             1_000_000,
             new string[](0),

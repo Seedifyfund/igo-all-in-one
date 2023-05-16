@@ -10,6 +10,15 @@ interface IIGOWritableInternal {
         uint256 amount;
     }
 
+    struct BuyPermission {
+        // permit2 signature to transfer tokens from the buyer to the treasury wallet
+        bytes signature;
+        // deadline on the permit signature
+        uint256 deadline;
+        // a unique value for every token owner's signature to prevent signature replays
+        uint256 nonce;
+    }
+
     error IGOWritableInternal_IGONotOpened(ISharedInternal.Stage current);
     error IGOWritableInternal_TagNotOpened(
         string tagId,

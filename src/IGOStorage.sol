@@ -8,6 +8,7 @@ library IGOStorage {
     // Only updated by owner
     struct SetUp {
         address token;
+        address permit2;
         address treasuryWallet;
         uint256 grandTotal;
     }

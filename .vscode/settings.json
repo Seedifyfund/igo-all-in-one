@@ -16,5 +16,8 @@
     "diffEditor.ignoreTrimWhitespace": false,
     "[terraform]": {
         "editor.defaultFormatter": "hashicorp.terraform"
+    },
+    "[toml]": {
+        "editor.defaultFormatter": "tamasfe.even-better-toml"
     }
 }
