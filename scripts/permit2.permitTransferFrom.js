@@ -8,7 +8,7 @@
  *
  * @param {ethers.Wallet} wallet - Wallet instance
  *
- * @param {Object} domain - Domain of `Permit2` deployed by Uniswap
+ * @param {Object} domain - Domain of `Permit2` deployed by Uniswap, see `test/foundry/differential_testing/permit2.permitTransferFrom.t.js`
  * @param {string} domain.name - Name of the contract passed in EIP712 constructor
  * @param {ethers.BigNumber} domain.chaindId - Chain id where the contract is deployed
  * @param {string} domain.contractAddr - Address of the contract

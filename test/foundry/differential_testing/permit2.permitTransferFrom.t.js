@@ -6,10 +6,10 @@ const coder = ethers.utils.defaultAbiCoder;
 
 const args = process.argv.slice(2);
 
-// if (args.length !== 4) {
-//     console.log('please supply rewards contract address as argument');
-//     process.exit(1);
-// }
+if (args.length !== 4) {
+    console.log('please supply rewards contract address as argument');
+    process.exit(1);
+}
 
 async function permit2Test(
     chainId,
