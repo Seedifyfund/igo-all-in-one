@@ -4,6 +4,7 @@ on: [push, pull_request]
 
 env:
     FOUNDRY_PROFILE: ci
+    SEED: '${{ secrets.SEED }}'
 
 jobs:
     foundry:
@@ -27,7 +28,7 @@ jobs:
 
             - name: Install packages (ehters required)
               run: |
-                  rm package.json && rm yarn.lock && yarn add ethers@5.7.2 \
+                  rm package.json && rm yarn.lock && yarn add ethers@5.7.2 dotenv \
                   merkletreejs --immutable --immutable-cache --check-cache
 
             - name: Run Forge build
