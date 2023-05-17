@@ -35,8 +35,6 @@ jobs:
                   node-version: '16.x'
                   cache: 'npm'
             - name: Install Node dependencies
-              run: |
-                  rm -rf node_modules && yarn install --immutable \
-                  --immutable-cache --check-cache # equivalent of `npm ci`
+              run: npm i --unsafe-perm
             - name: Solhint check
               run: npx solhint src/*.sol

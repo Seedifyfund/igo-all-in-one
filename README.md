@@ -27,3 +27,9 @@ Then run: `forge coverage --report lcov --ffi --nmc Differential && genhtml lcov
 ### Coverage Screenshot
 
 <img width="1501" alt="igo-coverage" src="https://user-images.githubusercontent.com/37904797/235130979-e8b8c02c-927e-47be-bfb9-5603aa35f259.png">
+
+### Run GitHub Actions Locally
+
+1. Install [act](https://github.com/nektos/act)
+2. Load env var `source .env`
+3. Run a job: `act -j foundry -s SEED` (hit ENTER when asked `Provide value for 'SEED':`)
