@@ -58,7 +58,8 @@ contract IGOSetUp_require is
                     bytes32(0),
                     uint128(block.timestamp) + lastStart,
                     uint128(block.timestamp) + lastEnd,
-                    maxTagAllocation
+                    maxTagAllocation,
+                    address(0)
                 )
             );
 

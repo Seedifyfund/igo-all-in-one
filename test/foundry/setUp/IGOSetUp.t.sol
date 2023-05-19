@@ -3,6 +3,8 @@ pragma solidity ^0.8.17;
 
 import "forge-std/Test.sol";
 
+import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
+
 import {IGO} from "../../../src/IGO.sol";
 import {IIGOWritableInternal} from "../../../src/writable/IIGOWritableInternal.sol";
 import {IRestrictedWritableInternal} from "../../../src/writable/restricted/IRestrictedWritableInternal.sol";
@@ -25,6 +27,7 @@ contract IGOSetUp is
     mapping(address => uint256) public privateKeyOf;
 
     IGO public instance;
+    ERC20 public token;
 
     address public treasuryWallet = makeAddr("treasuryWallet");
 
@@ -37,6 +40,8 @@ contract IGOSetUp is
 
     function setUp() public virtual override {
         super.setUp();
+
+        token = new ERC20("Mock", "MCK");
 
         instance = new IGO(
             address(token),
@@ -75,7 +80,8 @@ contract IGOSetUp is
                     bytes32(0),
                     uint128(block.timestamp) + lastStart,
                     uint128(block.timestamp) + lastEnd,
-                    maxTagAllocation
+                    maxTagAllocation,
+                    address(0)
                 )
             );
 
@@ -111,16 +117,11 @@ contract IGOSetUp is
     }
 
     function _setUpTestData() internal {
-        _generateLeaves(allocations);
-        _generateMerkleRootAndProofForLeaf(0);
+        __setUpTestData(address(0));
+    }
 
-        // update merkle root & stage
-        tags[0].merkleRoot = merkleRoot;
-        tags[0].stage = Stage.OPENED;
-        tags[0].maxTagCap = allocations[0].amount;
-        instance.updateTag(tagIdentifiers[0], tags[0]);
-
-        instance.openIGO();
+    function _setUpTestData(address token_) internal {
+        __setUpTestData(token_);
     }
 
     function _increaseMaxTagCapBy(uint256 by) internal {
@@ -134,12 +135,36 @@ contract IGOSetUp is
         Allocation memory allocation,
         bytes32[] memory proof
     ) internal {
+        __buyTokens(address(token), amount, allocation, proof);
+    }
+
+    function _buyTokens(
+        Allocation memory allocation,
+        bytes32[] memory proof
+    ) internal {
+        __buyTokens(address(token), allocation.amount, allocation, proof);
+    }
+
+    function _buyTokensWithTagToken(
+        address tagToken,
+        Allocation memory allocation,
+        bytes32[] memory proof
+    ) internal {
+        __buyTokens(tagToken, allocation.amount, allocation, proof);
+    }
+
+    function __buyTokens(
+        address token_,
+        uint256 amount,
+        Allocation memory allocation,
+        bytes32[] memory proof
+    ) private {
         uint256 nonce = uint256(
             bytes32(keccak256(abi.encode(allocation, amount)))
         );
         // vm.startPrank(allocation.account);
         bytes memory sig = _getPermitTransferSignature(
-            _createPermit(amount, nonce),
+            _createPermit(token_, amount, nonce),
             address(instance),
             privateKeyOf[allocation.account]
         );
@@ -149,27 +174,20 @@ contract IGOSetUp is
 
         vm.prank(allocation.account);
         instance.buyTokens(amount, allocation, proof, permission);
-        // vm.stopPrank();
     }
 
-    function _buyTokens(
-        Allocation memory allocation,
-        bytes32[] memory proof
-    ) internal {
-        uint256 nonce = uint256(bytes32(keccak256(abi.encode(allocation))));
-        // vm.startPrank(allocation.account);
-        bytes memory sig = _getPermitTransferSignature(
-            _createPermit(allocation.amount, nonce),
-            address(instance),
-            privateKeyOf[allocation.account]
-        );
-        permission.signature = sig;
-        permission.deadline = defaultSigDeadline;
-        permission.nonce = nonce;
+    function __setUpTestData(address token_) private {
+        _generateLeaves(allocations);
+        _generateMerkleRootAndProofForLeaf(0);
 
-        vm.prank(allocation.account);
-        instance.buyTokens(allocation.amount, allocation, proof, permission);
-        // vm.stopPrank();
+        // update merkle root & stage
+        tags[0].merkleRoot = merkleRoot;
+        tags[0].stage = Stage.OPENED;
+        tags[0].maxTagCap = allocations[0].amount;
+        tags[0].tokenPayment = token_;
+        instance.updateTag(tagIdentifiers[0], tags[0]);
+
+        instance.openIGO();
     }
 
     function test() public {}
