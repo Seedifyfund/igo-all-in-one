@@ -54,7 +54,7 @@ contract IGOWritable is
         );
 
         address tokenPayment = tag.tokenPayment;
-        tokenPayment = tokenPayment != address(0) ? token : setUp.token;
+        tokenPayment = tokenPayment != address(0) ? tokenPayment : setUp.token;
 
         _buyTokensOnce(setUp, tokenPayment, amount, permission);
     }
