@@ -53,9 +53,11 @@ contract IGOWritable is
             maxTagCap
         );
 
-        address tokenPayment = tag.tokenPayment;
-        tokenPayment = tokenPayment != address(0) ? tokenPayment : setUp.token;
+        address paymentToken = tag.paymentToken;
+        paymentToken = paymentToken != address(0)
+            ? paymentToken
+            : setUp.paymentToken;
 
-        _buyTokensOnce(setUp, tokenPayment, amount, permission);
+        _buyTokensOnce(setUp, paymentToken, amount, permission);
     }
 }

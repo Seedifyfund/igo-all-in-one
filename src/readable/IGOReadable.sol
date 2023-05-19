@@ -39,7 +39,7 @@ contract IGOReadable is
         returns (address token, address treasuryWallet, uint256 grandTotal)
     {
         IGOStorage.SetUp memory setUp_ = IGOStorage.layout().setUp;
-        token = setUp_.token;
+        token = setUp_.paymentToken;
         treasuryWallet = setUp_.treasuryWallet;
         grandTotal = setUp_.grandTotal;
     }

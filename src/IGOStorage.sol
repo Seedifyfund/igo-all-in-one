@@ -7,7 +7,7 @@ import {ISharedInternal} from "./shared/ISharedInternal.sol";
 library IGOStorage {
     // Only updated by owner
     struct SetUp {
-        address token;
+        address paymentToken;
         address permit2;
         address treasuryWallet;
         uint256 grandTotal;

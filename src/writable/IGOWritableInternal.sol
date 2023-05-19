@@ -20,7 +20,7 @@ contract IGOWritableInternal is IIGOWritableInternal {
 
     function _buyTokensOnce(
         IGOStorage.SetUp memory setUp,
-        address tokenPayment,
+        address paymentToken,
         uint256 amount,
         BuyPermission calldata permission
     ) internal {
@@ -31,7 +31,7 @@ contract IGOWritableInternal is IIGOWritableInternal {
         ISignatureTransfer.SignatureTransferDetails memory transferDetails;
 
         permitted = ISignatureTransfer.TokenPermissions({
-            token: tokenPayment,
+            token: paymentToken,
             amount: amount
         });
         permit = ISignatureTransfer.PermitTransferFrom({

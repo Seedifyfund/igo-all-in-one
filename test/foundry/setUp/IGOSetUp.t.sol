@@ -184,7 +184,7 @@ contract IGOSetUp is
         tags[0].merkleRoot = merkleRoot;
         tags[0].stage = Stage.OPENED;
         tags[0].maxTagCap = allocations[0].amount;
-        tags[0].tokenPayment = token_;
+        tags[0].paymentToken = token_;
         instance.updateTag(tagIdentifiers[0], tags[0]);
 
         instance.openIGO();
