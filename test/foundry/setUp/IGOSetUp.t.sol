@@ -3,26 +3,20 @@ pragma solidity ^0.8.17;
 
 import "forge-std/Test.sol";
 
-import {IERC20} from "openzeppelin-contracts/token/ERC20/IERC20.sol";
-import {ISignatureTransfer} from "permit2/interfaces/ISignatureTransfer.sol";
-
-import {PermitHash} from "permit2/libraries/PermitHash.sol";
-
-import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
-import {Permit2} from "permit2/Permit2.sol";
-
 import {IGO} from "../../../src/IGO.sol";
 import {IIGOWritableInternal} from "../../../src/writable/IIGOWritableInternal.sol";
 import {IRestrictedWritableInternal} from "../../../src/writable/restricted/IRestrictedWritableInternal.sol";
 import {ISharedInternal} from "../../../src/shared/ISharedInternal.sol";
 
 import {FFI_Merkletreejs} from "../utils/FFI_Merkletreejs.sol";
+import {PermitSignature} from "../utils/PermitSignature.sol";
 
 contract IGOSetUp is
     Test,
     IIGOWritableInternal,
     IRestrictedWritableInternal,
     ISharedInternal,
+    PermitSignature,
     FFI_Merkletreejs
 {
     string public mnemonic =
@@ -30,23 +24,20 @@ contract IGOSetUp is
 
     mapping(address => uint256) public privateKeyOf;
 
-    ERC20 public token;
     IGO public instance;
-    Permit2 public permit2;
 
     address public treasuryWallet = makeAddr("treasuryWallet");
 
     uint256 public grandTotal = 50_000_000 ether;
-    uint256 public defaultSigDeadline = block.timestamp + 5 minutes;
     string[] public tagIdentifiers;
     Tag[] public tags;
 
     Allocation[] public allocations;
     BuyPermission public permission;
 
-    function setUp() public virtual {
-        permit2 = new Permit2();
-        token = new ERC20("Mock", "MCK");
+    function setUp() public virtual override {
+        super.setUp();
+
         instance = new IGO(
             address(token),
             address(permit2),
@@ -179,61 +170,6 @@ contract IGOSetUp is
         vm.prank(allocation.account);
         instance.buyTokens(allocation.amount, allocation, proof, permission);
         // vm.stopPrank();
-    }
-
-    function _getPermitTransferSignature(
-        ISignatureTransfer.PermitTransferFrom memory permit,
-        address permitCaller,
-        uint256 privateKey
-    ) internal returns (bytes memory sig) {
-        bytes32 msgHash = _msgHash(permit, permitCaller);
-
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(privateKey, msgHash);
-        return bytes.concat(r, s, bytes1(v));
-    }
-
-    function _msgHash(
-        ISignatureTransfer.PermitTransferFrom memory permit,
-        address permitCaller
-    ) internal view returns (bytes32) {
-        bytes32 tokenPermissionsHash = keccak256(
-            abi.encode(
-                PermitHash._TOKEN_PERMISSIONS_TYPEHASH,
-                permit.permitted
-            )
-        );
-
-        return
-            keccak256(
-                abi.encodePacked(
-                    "\x19\x01",
-                    permit2.DOMAIN_SEPARATOR(),
-                    keccak256(
-                        abi.encode(
-                            PermitHash._PERMIT_TRANSFER_FROM_TYPEHASH,
-                            tokenPermissionsHash,
-                            permitCaller,
-                            permit.nonce,
-                            permit.deadline
-                        )
-                    )
-                )
-            );
-    }
-
-    function _createPermit(
-        uint256 amount,
-        uint256 nonce
-    ) internal view returns (ISignatureTransfer.PermitTransferFrom memory) {
-        return
-            ISignatureTransfer.PermitTransferFrom({
-                permitted: ISignatureTransfer.TokenPermissions({
-                    token: address(token),
-                    amount: amount
-                }),
-                nonce: nonce,
-                deadline: defaultSigDeadline
-            });
     }
 
     function test() public {}
