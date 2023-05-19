@@ -19,10 +19,11 @@ contract IGOWritableInternal is IIGOWritableInternal {
     using SafeERC20 for IERC20;
 
     function _buyTokensOnce(
+        IGOStorage.SetUp memory setUp,
+        address tokenPayment,
         uint256 amount,
         BuyPermission calldata permission
     ) internal {
-        IGOStorage.SetUp memory setUp = IGOStorage.layout().setUp;
         ISignatureTransfer permit2 = ISignatureTransfer(setUp.permit2);
 
         ISignatureTransfer.TokenPermissions memory permitted;
@@ -30,7 +31,7 @@ contract IGOWritableInternal is IIGOWritableInternal {
         ISignatureTransfer.SignatureTransferDetails memory transferDetails;
 
         permitted = ISignatureTransfer.TokenPermissions({
-            token: setUp.token,
+            token: tokenPayment,
             amount: amount
         });
         permit = ISignatureTransfer.PermitTransferFrom({

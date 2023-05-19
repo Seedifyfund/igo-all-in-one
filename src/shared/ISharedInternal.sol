@@ -16,5 +16,7 @@ interface ISharedInternal {
         uint128 startAt;
         uint128 endAt;
         uint256 maxTagCap;
+        // token of the tag, otherwise default IGO token
+        address tokenPayment;
     }
 }
