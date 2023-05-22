@@ -25,6 +25,7 @@ import {IGO} from "../../src/IGO.sol";
 * @dev VRFCoordinatorV2Interface: https://docs.chain.link/docs/vrf-contracts/
 */
 
+//slither-disable-next-line naming-convention
 contract IGO_deploy_testnet is Script {
     function run() external {
         ///@dev Configure .env file
@@ -33,7 +34,7 @@ contract IGO_deploy_testnet is Script {
         vm.startBroadcast(privateKey);
 
         ERC20 token = new ERC20("Mock", "MCK");
-        IGO igo = new IGO(
+        new IGO(
             address(token),
             0x000000000022D473030F116dDEE9F6B43aC78BA3, // bsc
             vm.addr(privateKey),
