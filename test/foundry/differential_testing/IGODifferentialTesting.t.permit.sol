@@ -25,7 +25,7 @@ contract IGO_DifferentialTesting_permit is
 
     function testDifferential_permitTransferFrom_CompareJSToSolidity() public {
         uint256 privateKey = vm.deriveKey(SEED, 0);
-        address addr = vm.addr(privateKey);
+        // address addr = vm.addr(privateKey);
 
         ISignatureTransfer.PermitTransferFrom memory permit = _createPermit(
             address(makeAddr("token")),
