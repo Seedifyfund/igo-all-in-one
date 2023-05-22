@@ -28,7 +28,6 @@ contract IGO_EIP712_Test is IGOSetUp {
             privateKeyOf[buyer],
             msgHash
         );
-        bytes memory sig = bytes.concat(r, s, bytes1(v));
 
         address signer = ecrecover(msgHash, v, r, s);
 
