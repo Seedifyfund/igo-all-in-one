@@ -21,6 +21,7 @@ contract RevertIGO_Test_buyTokens is IGOSetUp {
 
             bytes memory sig = _getPermitTransferSignature(
                 _createPermit(
+                    address(token),
                     allocations[i].amount,
                     uint256(bytes32(keccak256(abi.encode(allocations[i]))))
                 ),

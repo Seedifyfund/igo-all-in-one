@@ -17,7 +17,7 @@ contract IGO is IGOReadable, IGOWritable {
         Tag[] memory tags
     ) {
         IGOStorage.SetUp storage setUp = IGOStorage.layout().setUp;
-        setUp.token = token;
+        setUp.paymentToken = token;
         setUp.permit2 = permit2;
         setUp.treasuryWallet = treasuryWallet;
         setUp.grandTotal = grandTotal_;

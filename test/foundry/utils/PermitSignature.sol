@@ -8,17 +8,13 @@ import {ISignatureTransfer} from "permit2/interfaces/ISignatureTransfer.sol";
 import {PermitHash} from "permit2/libraries/PermitHash.sol";
 
 import {Permit2} from "permit2/Permit2.sol";
-import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
 
 contract PermitSignature is Test {
     Permit2 public permit2;
     uint256 public defaultSigDeadline = block.timestamp + 5 minutes;
 
-    ERC20 public token;
-
     function setUp() public virtual {
         permit2 = new Permit2();
-        token = new ERC20("Mock", "MCK");
     }
 
     function _getPermitTransferSignature(
@@ -62,13 +58,14 @@ contract PermitSignature is Test {
     }
 
     function _createPermit(
+        address token,
         uint256 amount,
         uint256 nonce
     ) internal view returns (ISignatureTransfer.PermitTransferFrom memory) {
         return
             ISignatureTransfer.PermitTransferFrom({
                 permitted: ISignatureTransfer.TokenPermissions({
-                    token: address(token),
+                    token: token,
                     amount: amount
                 }),
                 nonce: nonce,
