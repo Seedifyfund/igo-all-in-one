@@ -23,9 +23,9 @@ interface IIGOReadable {
 
     function tag(
         string memory tagId
-    ) external view returns (ISharedInternal.Tag memory tag);
+    ) external view returns (ISharedInternal.Tag memory tag_);
 
-    function tagIds() external view returns (string[] memory tagIds);
+    function tagIds() external view returns (string[] memory tagIds_);
 
     function totalRaised() external view returns (uint256);
 }
