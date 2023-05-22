@@ -4,6 +4,7 @@ pragma solidity ^0.8.17;
 import {ReentrancyGuard} from "openzeppelin-contracts/security/ReentrancyGuard.sol";
 
 import {IIGOWritable} from "./IIGOWritable.sol";
+import {ISharedInternal} from "../shared/ISharedInternal.sol";
 
 import {IGOStorage} from "../IGOStorage.sol";
 
@@ -26,8 +27,10 @@ contract IGOWritable is
         // `Allocation` struct data in local variables (save gas)
         string calldata tagId = allocation.tagId;
         // local variables (save gas)
-        uint256 maxTagCap = IGOStorage.layout().tags.data[tagId].maxTagCap;
-        uint256 grandTotal = IGOStorage.layout().setUp.grandTotal;
+        ISharedInternal.Tag memory tag = IGOStorage.layout().tags.data[tagId];
+        IGOStorage.SetUp memory setUp = IGOStorage.layout().setUp;
+        uint256 maxTagCap = tag.maxTagCap;
+        uint256 grandTotal = setUp.grandTotal;
         // check given parameters
         _requireAllocationNotExceededInTag(
             amount,
@@ -50,6 +53,11 @@ contract IGOWritable is
             maxTagCap
         );
 
-        _buyTokensOnce(amount, permission);
+        address paymentToken = tag.paymentToken;
+        paymentToken = paymentToken != address(0)
+            ? paymentToken
+            : setUp.paymentToken;
+
+        _buyTokensOnce(setUp, paymentToken, amount, permission);
     }
 }

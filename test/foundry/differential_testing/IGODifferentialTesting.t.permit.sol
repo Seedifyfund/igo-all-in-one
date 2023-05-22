@@ -28,6 +28,7 @@ contract IGO_DifferentialTesting_permit is
         // address addr = vm.addr(privateKey);
 
         ISignatureTransfer.PermitTransferFrom memory permit = _createPermit(
+            address(makeAddr("token")),
             1243,
             defaultSigDeadline
         );

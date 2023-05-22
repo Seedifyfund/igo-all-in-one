@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
+import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
+
 import {IGOSetUp} from "./setUp/IGOSetUp.t.sol";
 
 contract IGO_Test_buyTokens is IGOSetUp {
@@ -64,6 +66,25 @@ contract IGO_Test_buyTokens is IGOSetUp {
         _buyTokens(allocations[0], lastProof);
 
         assertEq(uint256(instance.igoStage()), uint256(Stage.COMPLETED));
+    }
+
+    function test_buyTokens_WithSpecificTagToken() public {
+        ERC20 tagToken = new ERC20("tagToken", "TAG");
+        _setUpTestData(address(tagToken));
+        // mint tagToken to allocation[0].account
+        deal(address(tagToken), allocations[0].account, allocations[0].amount);
+        assertEq(
+            tagToken.balanceOf(allocations[0].account),
+            allocations[0].amount
+        );
+        // unlimited allowance to permit2
+        vm.prank(allocations[0].account);
+        tagToken.approve(address(permit2), type(uint256).max);
+
+        _buyTokensWithTagToken(address(tagToken), allocations[0], lastProof);
+
+        assertEq(tagToken.balanceOf(treasuryWallet), allocations[0].amount);
+        assertEq(tagToken.balanceOf(allocations[0].account), 0);
     }
 
     //////////////// TODO: Tets success in a more complete scenario ////////////////

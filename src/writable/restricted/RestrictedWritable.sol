@@ -41,7 +41,7 @@ contract RestrictedWritable is
 
     /// @inheritdoc IRestrictedWritable
     function updateToken(address token_) external override onlyOwner {
-        IGOStorage.layout().setUp.token = token_;
+        IGOStorage.layout().setUp.paymentToken = token_;
     }
 
     function updateTreasuryWallet(address addr) external override onlyOwner {

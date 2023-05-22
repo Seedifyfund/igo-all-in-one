@@ -21,7 +21,7 @@ contract IGO_EIP712_Test is IGOSetUp {
     function test_recoverSigner() public {
         vm.startPrank(buyer);
         ISignatureTransfer.PermitTransferFrom memory permit;
-        permit = _createPermit(amount, nonce);
+        permit = _createPermit(address(token), amount, nonce);
 
         bytes32 msgHash = _msgHash(permit, address(this));
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(
@@ -37,7 +37,7 @@ contract IGO_EIP712_Test is IGOSetUp {
     function test_permitTransferFrom() public {
         ISignatureTransfer.PermitTransferFrom memory permit;
         ISignatureTransfer.SignatureTransferDetails memory transferDetails;
-        permit = _createPermit(amount, nonce);
+        permit = _createPermit(address(token), amount, nonce);
         transferDetails = ISignatureTransfer.SignatureTransferDetails({
             to: treasuryWallet,
             requestedAmount: amount

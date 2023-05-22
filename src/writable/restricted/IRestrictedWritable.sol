@@ -36,6 +36,7 @@ interface IRestrictedWritable {
         ISharedInternal.Tag[] memory tags_
     ) external;
 
+    // TODO: UX choice to make here, do we need both tag single field update and tag batch update?
     //////////////////////////// TAG SINGLE UPDATE ////////////////////////////
     function openTag(string memory tagId) external;
 
