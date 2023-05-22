@@ -13,14 +13,14 @@ contract IGO is IGOReadable, IGOWritable {
         address permit2,
         address treasuryWallet,
         uint256 grandTotal_,
-        string[] memory tagIds,
+        string[] memory tagIds_,
         Tag[] memory tags
     ) {
-        IGOStorage.SetUp storage setUp = IGOStorage.layout().setUp;
-        setUp.paymentToken = token;
-        setUp.permit2 = permit2;
-        setUp.treasuryWallet = treasuryWallet;
-        setUp.grandTotal = grandTotal_;
-        setTags(tagIds, tags);
+        IGOStorage.SetUp storage setUp_ = IGOStorage.layout().setUp;
+        setUp_.paymentToken = token;
+        setUp_.permit2 = permit2;
+        setUp_.treasuryWallet = treasuryWallet;
+        setUp_.grandTotal = grandTotal_;
+        setTags(tagIds_, tags);
     }
 }
