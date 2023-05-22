@@ -1,9 +1,4 @@
 {
-    "filter_paths": "lib",
-    "solc_remaps": [
-        "ds-test/=/share/lib/ds-test/src/",
-        "forge-std/=/share/lib/forge-std/src/",
-        "solmate/=/share/lib/solmate/src/",
-        "openzeppelin-contracts/=/share/lib/openzeppelin-contracts/contracts/"
-    ]
+    "filter_paths": "(lib/|test/)",
+    "detectors_to_exclude": "assembly"
 }
