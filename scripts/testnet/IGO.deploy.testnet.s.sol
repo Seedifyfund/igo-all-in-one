@@ -25,6 +25,7 @@ import {IGO} from "../../src/IGO.sol";
 * @dev VRFCoordinatorV2Interface: https://docs.chain.link/docs/vrf-contracts/
 */
 
+//slither-disable-next-line naming-convention
 contract IGO_deploy_testnet is Script {
     function run() external {
         ///@dev Configure .env file

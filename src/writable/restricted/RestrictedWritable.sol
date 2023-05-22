@@ -89,6 +89,7 @@ contract RestrictedWritable is
         uint256 length = tagIdentifiers_.length;
         uint256 grandTotal = IGOStorage.layout().setUp.grandTotal;
 
+        //slither-disable-next-line uninitialized-local
         for (uint256 i; i < length; ++i) {
             _isMaxTagAllocationGtGrandTotal(
                 tagIdentifiers_[i],
