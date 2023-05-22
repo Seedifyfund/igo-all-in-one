@@ -25,7 +25,7 @@ contract PermitSignature is Test {
         ISignatureTransfer.PermitTransferFrom memory permit,
         address permitCaller,
         uint256 privateKey
-    ) internal returns (bytes memory sig) {
+    ) internal view returns (bytes memory sig) {
         bytes32 msgHash = _msgHash(permit, permitCaller);
 
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(privateKey, msgHash);
