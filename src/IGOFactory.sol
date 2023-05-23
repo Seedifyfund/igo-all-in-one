@@ -19,12 +19,7 @@ contract IGOFactory is Ownable {
         uint256 grandTotal_,
         string[] memory tagIds_,
         ISharedInternal.Tag[] memory tags
-    ) external returns (IGO) {
-        // require(
-        //     owner() == _msgSender() || address(this) == _msgSender(),
-        //     "Ownable: caller is not the owner"
-        // );
-
+    ) external onlyOwner returns (IGO) {
         require(
             address(_igos[igoName]) == address(0),
             "IGOFactory: IGO already exists"

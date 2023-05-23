@@ -25,9 +25,6 @@ contract IGOFactory_test is Test, ISharedInternal {
     function setUp() public {
         factory = new IGOFactory();
 
-        emit log_named_address("factory", address(factory));
-        emit log_named_address("address(this)", address(this));
-
         token = new ERC20("Mock", "MCK");
         instance = factory.createIGO(
             "test",
@@ -42,45 +39,43 @@ contract IGOFactory_test is Test, ISharedInternal {
 
     /// @dev Check variables have updated accordingly
     function test_igoFactory() public {
-        assertTrue(true);
-        // assertEq(address(instance), address(factory.igoWithName("test")));
-        // assertEq(factory.igoCount(), 1);
-        // assertEq(factory.igoNames()[0], "test");
-        // // string[] memory names = factory.igoNames();
+        assertEq(address(instance), address(factory.igoWithName("test")));
+        assertEq(factory.igoCount(), 1);
+        assertEq(factory.igoNames()[0], "test");
+        // string[] memory names = factory.igoNames();
     }
 
-    // function test_createIGO_CheckOwnerOf_FactoryAndDeployedIGO() public {
-    //     assertEq(instance.owner(), factory.owner());
-    //     assertEq(instance.owner(), address(this));
-    //     assertEq(instance.owner(), msg.sender);
-    // }
+    function test_createIGO_CheckOwnerOf_FactoryAndDeployedIGO() public {
+        assertEq(instance.owner(), factory.owner());
+        assertEq(instance.owner(), address(this));
+    }
 
-    // function testRevert_createIGO_If_SenderIsNotOwner() public {
-    //     // only owner can create a new IGO
-    //     address someone = makeAddr("someone");
-    //     vm.startPrank(someone);
-    //     vm.expectRevert("Ownable: caller is not the owner");
-    //     factory.createIGO(
-    //         "someone-test",
-    //         address(token),
-    //         permit2Addr,
-    //         treasuryWallet,
-    //         grandTotal,
-    //         new string[](0),
-    //         new Tag[](0)
-    //     );
-    // }
+    function testRevert_createIGO_If_SenderIsNotOwner() public {
+        // only owner can create a new IGO
+        address someone = makeAddr("someone");
+        vm.startPrank(someone);
+        vm.expectRevert("Ownable: caller is not the owner");
+        factory.createIGO(
+            "someone-test",
+            address(token),
+            permit2Addr,
+            treasuryWallet,
+            grandTotal,
+            new string[](0),
+            new Tag[](0)
+        );
+    }
 
-    // function testRevert_createIGO_If_SameName() public {
-    //     vm.expectRevert("IGOFactory: IGO already exists");
-    //     factory.createIGO(
-    //         "test",
-    //         address(token),
-    //         permit2Addr,
-    //         treasuryWallet,
-    //         grandTotal,
-    //         new string[](0),
-    //         new Tag[](0)
-    //     );
-    // }
+    function testRevert_createIGO_If_SameName() public {
+        vm.expectRevert("IGOFactory: IGO already exists");
+        factory.createIGO(
+            "test",
+            address(token),
+            permit2Addr,
+            treasuryWallet,
+            grandTotal,
+            new string[](0),
+            new Tag[](0)
+        );
+    }
 }
