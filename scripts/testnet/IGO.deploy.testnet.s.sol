@@ -7,6 +7,7 @@ import "forge-std/Script.sol";
 
 import {ISharedInternal} from "../../src/shared/ISharedInternal.sol";
 import {IGO} from "../../src/IGO.sol";
+import {IGOFactory} from "../../src/IGOFactory.sol";
 
 /**
 * @dev forge script IGO_deploy_testnet \
@@ -33,8 +34,11 @@ contract IGO_deploy_testnet is Script {
         uint256 privateKey = vm.deriveKey(SEED, 0); // address at index 0
         vm.startBroadcast(privateKey);
 
+        IGOFactory factory = new IGOFactory();
+
         ERC20 token = new ERC20("Mock", "MCK");
-        new IGO(
+        factory.createIGO(
+            "test",
             address(token),
             0x000000000022D473030F116dDEE9F6B43aC78BA3, // bsc
             vm.addr(privateKey),
