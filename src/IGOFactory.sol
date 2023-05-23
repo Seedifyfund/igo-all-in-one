@@ -7,6 +7,7 @@ import {ISharedInternal} from "./shared/ISharedInternal.sol";
 
 import {IGO} from "./IGO.sol";
 
+/// @dev Contract to deploy IGOs one the fly, in one transaction
 contract IGOFactory is Ownable {
     string[] internal _igoNames;
     mapping(string => IGO) internal _igos;
