@@ -24,6 +24,7 @@ contract IGO is IGOReadable, IGOWritable {
         setUp_.permit2 = permit2;
         setUp_.treasuryWallet = treasuryWallet;
         setUp_.grandTotal = grandTotal_;
-        setTags(tagIds_, tags);
+
+        _setTags(tagIds_, tags);
     }
 }

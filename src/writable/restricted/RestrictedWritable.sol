@@ -79,26 +79,7 @@ contract RestrictedWritable is
         string[] memory tagIdentifiers_,
         ISharedInternal.Tag[] memory tags_
     ) public override onlyOwner {
-        IGOStorage.Tags storage tags = IGOStorage.layout().tags;
-
-        require(
-            tagIdentifiers_.length == tags_.length,
-            "IGOWritable: tags arrays length"
-        );
-
-        uint256 length = tagIdentifiers_.length;
-        uint256 grandTotal = IGOStorage.layout().setUp.grandTotal;
-
-        //slither-disable-next-line uninitialized-local
-        for (uint256 i; i < length; ++i) {
-            _isMaxTagAllocationGtGrandTotal(
-                tagIdentifiers_[i],
-                tags_[i].maxTagCap,
-                grandTotal
-            );
-            tags.ids.push(tagIdentifiers_[i]);
-            tags.data[tagIdentifiers_[i]] = tags_[i];
-        }
+        _setTags(tagIdentifiers_, tags_);
     }
 
     //////////////////////////// TAG SINGLE UPDATE ////////////////////////////
