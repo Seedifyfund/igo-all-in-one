@@ -6,6 +6,7 @@ import "forge-std/Test.sol";
 import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
 
 import {IGO} from "../../../src/IGO.sol";
+import {IGOFactory} from "../../../src/IGOFactory.sol";
 import {IIGOWritableInternal} from "../../../src/writable/IIGOWritableInternal.sol";
 import {IRestrictedWritableInternal} from "../../../src/writable/restricted/IRestrictedWritableInternal.sol";
 import {ISharedInternal} from "../../../src/shared/ISharedInternal.sol";
@@ -26,6 +27,7 @@ contract IGOSetUp is
 
     mapping(address => uint256) public privateKeyOf;
 
+    IGOFactory public factory;
     IGO public instance;
     ERC20 public token;
 
@@ -41,9 +43,11 @@ contract IGOSetUp is
     function setUp() public virtual override {
         super.setUp();
 
-        token = new ERC20("Mock", "MCK");
+        factory = new IGOFactory();
 
-        instance = new IGO(
+        token = new ERC20("Mock", "MCK");
+        instance = factory.createIGO(
+            "test",
             address(token),
             address(permit2),
             treasuryWallet,
