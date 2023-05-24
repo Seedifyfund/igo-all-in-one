@@ -46,6 +46,30 @@ Note: Slither has been added to GitHub actions, so it will run automatically on 
 
 `myth a src/IGO.sol --solc-json mythril.config.json` (you can use both `myth a` and `mythril analyze`)
 
+### Manticore
+
+1. Run Docker container:
+
+```
+docker run --rm -it --platform linux/amd64 \
+-v $(pwd):/home/igo \
+baolean/manticore:latest
+```
+
+2. Go to mounted volume location: `cd /home/igo`
+
+3. Select Solidity version
+
+```
+solc-select install 0.8.17 && solc-select use 0.8.17
+```
+
+4. Run manticore:
+
+```
+manticore src/IGO.sol --contract IGO --solc-remaps="openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/ permit2/=lib/permit2/src/"
+```
+
 # Best Practices to Follow
 
 ## Generics
@@ -80,7 +104,7 @@ Must Do Checklist:
         -   [x] invariant testing
     -   [x] Static analysers: **mythril**, **slither** (GitHub actions), securify, smartcheck, oyente
         -   _Note: solidity smt checker can be used on top for formal verification testing_
-    -   [ ] Symbolic execution: manticore
+    -   [x] Symbolic execution: manticore
     -   [ ] Mutation testing: SuMo, Gambit, universalmutator
     -   [ ] Audit report generator: MythX
 
