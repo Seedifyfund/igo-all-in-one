@@ -66,10 +66,8 @@ Note: Slither has been added to GitHub actions, so it will run automatically on 
 Must Do Checklist:
 
 -   [x] Unit ([TDD](https://r-code.notion.site/TDDs-steps-cecba0a82ee6466f9f479ca553949be2)) & integration (BDD) tests (green)
--   [ ] Well refactored & commented code:
-    -   [x] NatSpec comment
-    -   [ ] [PlantUML](https://plantuml.com/starting)
-    -   [ ] [Sol2UML](https://github.com/naddison36/sol2uml) - pure UML for Solidity
+-   [x] Well refactored & commented code
+    -   _Use where needed: NatSpec comment, [PlantUML](https://plantuml.com/starting), [Sol2UML](https://github.com/naddison36/sol2uml) (UML for Solidity)_
 -   [ ] Internal Audit - Tool Suite
     -   [ ] Secureum articles
         -   [ ] [Audit Techniques & Tools 101](https://secureum.substack.com/p/audit-techniques-and-tools-101)
@@ -81,17 +79,18 @@ Must Do Checklist:
         -   [x] differential testing
         -   [x] invariant testing
     -   [x] Static analysers: **mythril**, **slither** (GitHub actions), securify, smartcheck, oyente
-    -   [ ] Formal verification testing: solidity smt
+        -   _Note: solidity smt checker can be used on top for formal verification testing_
     -   [ ] Symbolic execution: manticore
     -   [ ] Mutation testing: SuMo, Gambit, universalmutator
     -   [ ] Audit report generator: MythX
--   [ ] _Paper code review (architecture & conception tests) - not required for this project_
 
-Might Do Checklist:
+_Note: For more complex contract **Paper code review** should be considered to check for conception & logic errors._
 
--   [ ] static binary EVM analysis: rattle
--   [ ] control flow graph: surya (integrated into VSCode extension), evm_cfg_builder
--   [ ] disassemble EVM code: ethersplay, pyevmasm
--   [ ] runtime verification: scribble (also done by: mythril, harvey, mythx)
--   [ ] JSON RPC multiplexer, analysis tool wrapper & test integration tool: etheno (Ethereum testing Swiss Army knife)
+Other tools for a deeper analysis:
+
+-   static binary EVM analysis: rattle
+-   control flow graph: surya (integrated into VSCode extension), evm_cfg_builder
+-   disassemble EVM code: ethersplay, pyevmasm
+-   runtime verification: scribble (also done by: mythril, harvey, mythx)
+-   JSON RPC multiplexer, analysis tool wrapper & test integration tool: etheno (Ethereum testing Swiss Army knife)
     -   _eliminates the complexity of tools like Echidna on large, multi-contract projects_
