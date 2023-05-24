@@ -26,7 +26,6 @@ import {IGOFactory} from "../../src/IGOFactory.sol";
 * @dev VRFCoordinatorV2Interface: https://docs.chain.link/docs/vrf-contracts/
 */
 
-//slither-disable-next-line naming-convention
 contract IGO_deploy_testnet is Script {
     function run() external {
         ///@dev Configure .env file
@@ -37,6 +36,7 @@ contract IGO_deploy_testnet is Script {
         IGOFactory factory = new IGOFactory();
 
         ERC20 token = new ERC20("Mock", "MCK");
+        //slither-disable-next-line unused-return
         factory.createIGO(
             "test",
             address(token),
