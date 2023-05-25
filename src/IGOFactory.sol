@@ -12,6 +12,8 @@ contract IGOFactory is Ownable {
     string[] internal _igoNames;
     mapping(string => IGO) internal _igos;
 
+    event IGOCreated(string indexed igoName, address indexed igo);
+
     function createIGO(
         string memory igoName,
         address token,
@@ -39,6 +41,8 @@ contract IGOFactory is Ownable {
 
         _igoNames.push(igoName);
         _igos[igoName] = igo;
+
+        emit IGOCreated(igoName, address(igo));
 
         return igo;
     }
