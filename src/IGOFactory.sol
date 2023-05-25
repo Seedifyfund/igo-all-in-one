@@ -26,7 +26,8 @@ contract IGOFactory is Ownable {
             "IGOFactory: IGO already exists"
         );
 
-        IGO igo = new IGO(
+        IGO igo = new IGO();
+        igo.initialize(
             owner(),
             token,
             permit2,

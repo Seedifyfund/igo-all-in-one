@@ -2,6 +2,7 @@
 pragma solidity ^0.8.17;
 
 import {IIGOWritableInternal} from "./IIGOWritableInternal.sol";
+import {ISharedInternal} from "../shared/ISharedInternal.sol";
 
 interface IIGOWritable {
     /**
@@ -15,5 +16,15 @@ interface IIGOWritable {
         IIGOWritableInternal.Allocation calldata allocation,
         bytes32[] calldata proof,
         IIGOWritableInternal.BuyPermission calldata permission
+    ) external;
+
+    function initialize(
+        address owner,
+        address token,
+        address permit2,
+        address treasuryWallet,
+        uint256 grandTotal_,
+        string[] memory tagIds_,
+        ISharedInternal.Tag[] memory tags
     ) external;
 }
