@@ -2,6 +2,7 @@
 pragma solidity ^0.8.17;
 
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
+import {ReentrancyGuard} from "openzeppelin-contracts/security/ReentrancyGuard.sol";
 
 import {IIGOWritable} from "./writable/IIGOWritable.sol";
 import {ISharedInternal} from "./shared/ISharedInternal.sol";
@@ -9,7 +10,7 @@ import {ISharedInternal} from "./shared/ISharedInternal.sol";
 import {IGO} from "./IGO.sol";
 
 /// @dev Contract to deploy IGOs one the fly, in one transaction
-contract IGOFactory is Ownable {
+contract IGOFactory is Ownable, ReentrancyGuard {
     address public defaultIgo;
     string[] internal _igoNames;
     mapping(string => address) internal _igos;
@@ -29,17 +30,21 @@ contract IGOFactory is Ownable {
         uint256 grandTotal_,
         string[] memory tagIds_,
         ISharedInternal.Tag[] memory tags
-    ) external onlyOwner returns (address igo) {
+    ) external nonReentrant onlyOwner returns (address igo) {
         require(
             address(_igos[igoName]) == address(0),
             "IGOFactory: IGO already exists"
         );
 
+        // slither-disable-next-line too-many-digits
         bytes memory bytecode = type(IGO).creationCode;
         bytes32 salt = keccak256(abi.encodePacked(_msgSender(), igoName));
         assembly {
             igo := create2(0, add(bytecode, 32), mload(bytecode), salt)
         }
+
+        _igoNames.push(igoName);
+        _igos[igoName] = igo;
 
         IIGOWritable(igo).initialize(
             _msgSender(),
@@ -50,9 +55,6 @@ contract IGOFactory is Ownable {
             tagIds_,
             tags
         );
-
-        _igoNames.push(igoName);
-        _igos[igoName] = igo;
 
         emit IGOCreated(igoName, address(igo));
     }
