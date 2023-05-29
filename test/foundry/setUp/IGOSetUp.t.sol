@@ -46,7 +46,7 @@ contract IGOSetUp is
         factory = new IGOFactory();
 
         token = new ERC20("Mock", "MCK");
-        instance = factory.createIGO(
+        address addr = factory.createIGO(
             "test",
             address(token),
             address(permit2),
@@ -55,6 +55,7 @@ contract IGOSetUp is
             new string[](0),
             new Tag[](0)
         );
+        instance = IGO(addr);
 
         __createDefaultTags();
 

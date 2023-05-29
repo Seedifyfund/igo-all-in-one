@@ -26,7 +26,7 @@ contract IGOFactory_test is Test, ISharedInternal {
         factory = new IGOFactory();
 
         token = new ERC20("Mock", "MCK");
-        instance = factory.createIGO(
+        address addr = factory.createIGO(
             "test",
             address(token),
             permit2Addr,
@@ -35,6 +35,7 @@ contract IGOFactory_test is Test, ISharedInternal {
             new string[](0),
             new Tag[](0)
         );
+        instance = IGO(addr);
     }
 
     /// @dev Check variables have updated accordingly
