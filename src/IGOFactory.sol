@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
-import {Clones} from "openzeppelin-contracts/proxy/Clones.sol";
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 
 import {IIGOWritable} from "./writable/IIGOWritable.sol";
@@ -36,15 +35,14 @@ contract IGOFactory is Ownable {
             "IGOFactory: IGO already exists"
         );
 
-        // FIX: wallet is msg.sender
-        igo = Clones.cloneDeterministic(
-            defaultIgo,
-            keccak256(abi.encodePacked(_msgSender(), igoName))
-        );
+        bytes memory bytecode = type(IGO).creationCode;
+        bytes32 salt = keccak256(abi.encodePacked(_msgSender(), igoName));
+        assembly {
+            igo := create2(0, add(bytecode, 32), mload(bytecode), salt)
+        }
 
-        // FIX: factory is msg.sender
         IIGOWritable(igo).initialize(
-            owner(),
+            _msgSender(),
             token,
             permit2,
             treasuryWallet,
