@@ -1,16 +1,28 @@
-# <h1 align="center"> Foundryx Hardhat Template </h1>
+# <h1 align="center"> All-In-One IGO </h1>
 
 Contract to use for normal & VPR IGO but also any other extra cases where a project wants to allow people to buy tokens at a set price.
 
 More details on [Confluence](https://seedifymetastudios.atlassian.net/l/cp/bcc1Xhfr)
 
-### Install
+## Install
 
 ```bash
 yarn install && forge install
 ```
 
 Each time a new dependency is added in `lib/` run `forge install`.
+
+## Architecture
+
+Follow's Solidstate architecture (diamond pattern based).
+
+| **folder**   | **layer**              | **description**                                                                                                             | **example**                                                                    |
+| ------------ | ---------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| **-**        | internal - `interface` | contains custom `error`, `enum`, `struct`& `event`                                                                          | `IRandomnessWritableInternal.sol`, `IRandomnessReadableInternal.sol`           |
+| **-**        | external - `interface` | common interfaces which define external and public function's prototypes                                                    | `IRandomnessFallback.sol`, `IRandomnessReadble.sol`, `IRandomnessWritable.sol` |
+| **readable** | external               | set of functions which only read the storage                                                                                | `RandomnessReadable.sol`                                                       |
+| **writable** | external & internal    | set of functions which update storage; internal function always declares in `xyzWritableInternal.sol` & contains `modifier` | `RandomnessInternalWritable.sol`, `RandomnessWritable.sol`                     |
+| **./**       | storage                | library for to map, access and modify storage                                                                               | `RandomnessStorage.sol`                                                        |
 
 ## Tests
 
@@ -84,14 +96,14 @@ _Note: there issues as we can specificy `--ffi` parameter when compiling with fo
 
 _Note: gambit does not take into account specified remappings_
 
-# Best Practices to Follow
+## Best Practices to Follow
 
-## Generics
+### Generics
 
 -   Code formatter & linter: prettier, solhint, husky, lint-staged & husky
 -   [Foundry](https://book.getfoundry.sh/tutorials/best-practices)
 
-## Security
+### Security
 
 -   [Solidity Patterns](https://github.com/fravoll/solidity-patterns)
 -   [Solcurity Codes](https://github.com/transmissions11/solcurity)
@@ -99,7 +111,7 @@ _Note: gambit does not take into account specified remappings_
 -   [Smart Contract Security Verification Standard](https://github.com/securing/SCSVS)
 -   [SWC](https://swcregistry.io)
 
-# Be Prepared For Audits
+## Be Prepared For Audits
 
 Must Do Checklist:
 
