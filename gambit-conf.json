@@ -1,0 +1,17 @@
+[
+    {
+        "filename": "src/IGO.sol",
+        "solc-optimize": true,
+        "solc-remappings": [
+            "openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/",
+            "permit2/=lib/permit2/src/"
+        ]
+    },
+    {
+        "filename": "src/IGOFactory.sol",
+        "solc-optimize": true,
+        "solc-remappings": [
+            "openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/"
+        ]
+    }
+]
