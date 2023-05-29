@@ -70,6 +70,20 @@ solc-select install 0.8.17 && solc-select use 0.8.17
 manticore src/IGO.sol --contract IGO --solc-remaps="openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/ permit2/=lib/permit2/src/"
 ```
 
+### SuMo
+
+After install yarn dependencies, run `yarn sumo test` to run mutation testing.
+
+_Note: there issues as we can specificy `--ffi` parameter when compiling with forge_
+
+### Gambit
+
+1. Install it locally, [see GitHub](https://github.com/Certora/gambit?utm_campaign=Gambit%20Release&utm_source=Medium&utm_medium=Blog#installation)
+
+2. Run: `gambit mutate --json gambit-conf.json`
+
+_Note: gambit does not take into account specified remappings_
+
 # Best Practices to Follow
 
 ## Generics
@@ -92,11 +106,11 @@ Must Do Checklist:
 -   [x] Unit ([TDD](https://r-code.notion.site/TDDs-steps-cecba0a82ee6466f9f479ca553949be2)) & integration (BDD) tests (green)
 -   [x] Well refactored & commented code
     -   _Use where needed: NatSpec comment, [PlantUML](https://plantuml.com/starting), [Sol2UML](https://github.com/naddison36/sol2uml) (UML for Solidity)_
--   [ ] Internal Audit - Tool Suite
-    -   [ ] Secureum articles
-        -   [ ] [Audit Techniques & Tools 101](https://secureum.substack.com/p/audit-techniques-and-tools-101)
-        -   [ ] [Audit Findings 101](https://secureum.substack.com/p/audit-findings-101)
-        -   [ ] [Audit Findings 201](https://secureum.substack.com/p/audit-findings-201)
+-   Internal Audit - Tool Suite
+    -   [x] Secureum articles
+        -   [Audit Techniques & Tools 101](https://secureum.substack.com/p/audit-techniques-and-tools-101)
+        -   [Audit Findings 101](https://secureum.substack.com/p/audit-findings-101)
+        -   [Audit Findings 201](https://secureum.substack.com/p/audit-findings-201)
     -   [x] Built in Foundry:
         -   [x] fuzz testing: generate (semi-)random inputs
             -   _There is also echidna which can be used_
@@ -105,7 +119,7 @@ Must Do Checklist:
     -   [x] Static analysers: **mythril**, **slither** (GitHub actions), securify, smartcheck, oyente
         -   _Note: solidity smt checker can be used on top for formal verification testing_
     -   [x] Symbolic execution: manticore
-    -   [ ] Mutation testing: SuMo, Gambit, universalmutator
+    -   [x] Mutation testing: SuMo, Gambit, universalmutator
     -   [ ] Audit report generator: MythX
 
 _Note: For more complex contract **Paper code review** should be considered to check for conception & logic errors._
