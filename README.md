@@ -144,3 +144,10 @@ Other tools for a deeper analysis:
 -   runtime verification: scribble (also done by: mythril, harvey, mythx)
 -   JSON RPC multiplexer, analysis tool wrapper & test integration tool: etheno (Ethereum testing Swiss Army knife)
     -   _eliminates the complexity of tools like Echidna on large, multi-contract projects_
+
+## Deployed Addresses
+
+-   Factory:
+    -   `0x619BE601822B5e5DBD8afCB56431D6676CcA2734` [bsc testnet](https://testnet.bscscan.com/address/0x619be601822b5e5dbd8afcb56431d6676cca2734)
+-   IGO:
+    -   `0x64b22ECcFC51829E4Ed7bED684CD1C8E5304E544` [bsc testnet](https://testnet.bscscan.com/address/0x64b22ECcFC51829E4Ed7bED684CD1C8E5304E544)
