@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
-import {IGOSetUp_require} from "./setUp/IGOSetUp_require.t.sol";
+import {IGOSetUp_require} from "./require/setUp/IGOSetUp_require.t.sol";
 
 contract IGO_Test_updateStorageOnBuy is IGOSetUp_require {
     function test_updateStorageOnBuy_CloseTagWhenEndDateReached() public {
