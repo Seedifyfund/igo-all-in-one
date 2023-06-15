@@ -49,4 +49,15 @@ contract IGO_Test_requireOpenedTag is IGOSetUp_require {
         assertEq(uint256(tag_.stage), uint256(Stage.OPENED));
         assertTrue(instance.exposed_requireOpenedTag(tagIdentifiers[0]));
     }
+
+    function test_requireOpenedTag_OpenTagWhen_NotStartedAndDateReached()
+        public
+    {
+        vm.warp(tags[0].startAt);
+
+        assertTrue(instance.exposed_requireOpenedTag(tagIdentifiers[0]));
+
+        Tag memory tag_ = instance.tag(tagIdentifiers[0]);
+        assertEq(uint256(tag_.stage), uint256(Stage.OPENED));
+    }
 }

@@ -45,7 +45,7 @@ contract IGOWritable_Mock is IGOWritable, IGOReadable {
 
     function exposed_requireOpenedTag(
         string memory tagId
-    ) external view returns (bool) {
+    ) external returns (bool) {
         _requireOpenedTag(tagId);
         return true;
     }
@@ -64,6 +64,17 @@ contract IGOWritable_Mock is IGOWritable, IGOReadable {
         bytes32[] calldata proof
     ) external view returns (bool) {
         _requireValidAllocation(allocation, proof);
+        return true;
+    }
+
+    function exposed_updateStorageOnBuy(
+        uint256 amount,
+        string calldata tagId,
+        address buyer,
+        uint256 grandTotal,
+        uint256 maxTagCap
+    ) external returns (bool) {
+        _updateStorageOnBuy(amount, tagId, buyer, grandTotal, maxTagCap);
         return true;
     }
 }

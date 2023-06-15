@@ -78,6 +78,10 @@ contract IGOWritableInternal is IIGOWritableInternal {
         // close if limit reached
         if (ledger.totalRaised == grandTotal) _closeIGO();
         if (ledger.raisedInTag[tagId] == maxTagCap) _closeTag(tagId);
+        // close if time elapsed
+        if (block.timestamp >= IGOStorage.layout().tags.data[tagId].endAt) {
+            _closeTag(tagId);
+        }
     }
 
     /**
@@ -127,14 +131,21 @@ contract IGOWritableInternal is IIGOWritableInternal {
         }
     }
 
-    function _requireOpenedTag(string memory tagId) internal view {
-        ISharedInternal.Stage current = IGOStorage
-            .layout()
-            .tags
-            .data[tagId]
-            .stage;
-        if (current != ISharedInternal.Stage.OPENED) {
-            revert IGOWritableInternal_TagNotOpened(tagId, current);
+    function _requireOpenedTag(string memory tagId) internal {
+        ISharedInternal.Tag memory tag = IGOStorage.layout().tags.data[tagId];
+        // open tag if necessary
+        if (
+            tag.stage == ISharedInternal.Stage.NOT_STARTED &&
+            block.timestamp >= tag.startAt
+        ) {
+            IGOStorage.layout().tags.data[tagId].stage = ISharedInternal
+                .Stage
+                .OPENED;
+            return;
+        }
+        // revert if tag not opened
+        if (tag.stage != ISharedInternal.Stage.OPENED) {
+            revert IGOWritableInternal_TagNotOpened(tagId, tag.stage);
         }
     }
 
