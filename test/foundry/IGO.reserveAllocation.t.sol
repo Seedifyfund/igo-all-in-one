@@ -5,7 +5,7 @@ import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
 
 import {IGOSetUp} from "./setUp/IGOSetUp.t.sol";
 
-contract IGO_Test_buyTokens is IGOSetUp {
+contract IGO_Test_reserveAllocation is IGOSetUp {
     address public buyer;
 
     function setUp() public override {
@@ -18,57 +18,59 @@ contract IGO_Test_buyTokens is IGOSetUp {
         assertEq(token_, address(token));
     }
 
-    function test_buyTokens_TokenSuccessfullyTransfered() public {
+    function test_reserveAllocation_TokenSuccessfullyTransfered() public {
         _setUpTestData();
 
         // before buying tokens
         uint256 balanceBeforeBuy = token.balanceOf(buyer);
         assertEq(token.balanceOf(treasuryWallet), 0);
 
-        _buyTokens(allocations[0], lastProof);
+        _reserveAllocation(allocations[0], lastProof);
 
         uint256 balanceAfterBuy = token.balanceOf(buyer);
         assertEq(balanceAfterBuy, balanceBeforeBuy - allocations[0].amount);
         assertEq(token.balanceOf(treasuryWallet), allocations[0].amount);
     }
 
-    function test_buyTokens_UserBuyTheirAllocation_InMultipleTx() public {
+    function test_reserveAllocation_UserBuyTheirAllocation_InMultipleTx()
+        public
+    {
         _setUpTestData();
         uint256 amount = allocations[0].amount;
         uint256 firstPart = amount / 4;
 
         /////////////////// buy first 25% of allocation ///////////////////
-        _buyTokens(firstPart, allocations[0], lastProof);
+        _reserveAllocation(firstPart, allocations[0], lastProof);
         // verify `ledger.boughtByIn[allocation.account][tagId]` has been updated
         assertEq(instance.boughtByIn(buyer, allocations[0].tagId), firstPart);
         /////////////////// buys the rest of their allocation ///////////////////
         amount -= firstPart;
-        _buyTokens(amount, allocations[0], lastProof);
+        _reserveAllocation(amount, allocations[0], lastProof);
         assertEq(
             instance.boughtByIn(buyer, allocations[0].tagId),
             allocations[0].amount
         );
     }
 
-    function test_buyTokens_TagStageToCompleted() public {
+    function test_reserveAllocation_TagStageToCompleted() public {
         _setUpTestData();
 
-        _buyTokens(allocations[0], lastProof);
+        _reserveAllocation(allocations[0], lastProof);
 
         Tag memory tag = instance.tag(allocations[0].tagId);
         assertEq(uint256(tag.stage), uint256(Stage.COMPLETED));
     }
 
-    function test_buyTokens_IGOStageToCompleted() public {
+    function test_reserveAllocation_IGOStageToCompleted() public {
         instance.updateGrandTotal(allocations[0].amount);
 
         _setUpTestData();
-        _buyTokens(allocations[0], lastProof);
+        _reserveAllocation(allocations[0], lastProof);
 
         assertEq(uint256(instance.igoStage()), uint256(Stage.COMPLETED));
     }
 
-    function test_buyTokens_WithSpecificTagToken() public {
+    function test_reserveAllocation_WithSpecificTagToken() public {
         ERC20 tagToken = new ERC20("tagToken", "TAG");
         _setUpTestData(address(tagToken));
         // mint tagToken to allocation[0].account
@@ -81,7 +83,11 @@ contract IGO_Test_buyTokens is IGOSetUp {
         vm.prank(allocations[0].account);
         tagToken.approve(address(permit2), type(uint256).max);
 
-        _buyTokensWithTagToken(address(tagToken), allocations[0], lastProof);
+        _reserveAllocationWithTagToken(
+            address(tagToken),
+            allocations[0],
+            lastProof
+        );
 
         assertEq(tagToken.balanceOf(treasuryWallet), allocations[0].amount);
         assertEq(tagToken.balanceOf(allocations[0].account), 0);
