@@ -61,6 +61,13 @@ contract IGOWritable is
             : setUp.paymentToken;
 
         _reserveFullAllocation(setUp, paymentToken, amount, permission);
+
+        emit AllocationReserved(
+            tagId,
+            allocation.account,
+            amount,
+            paymentToken
+        );
     }
 
     function initialize(
