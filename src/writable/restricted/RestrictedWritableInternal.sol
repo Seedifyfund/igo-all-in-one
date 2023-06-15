@@ -21,6 +21,8 @@ contract RestrictedWritableInternal is IRestrictedWritableInternal {
         uint256 length = tagIdentifiers_.length;
         uint256 grandTotal = IGOStorage.layout().setUp.grandTotal;
 
+        uint256 summedMaxTagCap;
+
         //slither-disable-next-line uninitialized-local
         for (uint256 i; i < length; ++i) {
             _canPaymentTokenOrPriceBeUpdated(
@@ -37,6 +39,14 @@ contract RestrictedWritableInternal is IRestrictedWritableInternal {
             );
             tags.ids.push(tagIdentifiers_[i]);
             tags.data[tagIdentifiers_[i]] = tags_[i];
+
+            summedMaxTagCap += tags_[i].maxTagCap;
+        }
+        if (summedMaxTagCap > grandTotal) {
+            revert IGOWritable_SummedMaxTagCapGtGrandTotal(
+                summedMaxTagCap,
+                grandTotal
+            );
         }
     }
 
@@ -74,7 +84,7 @@ contract RestrictedWritableInternal is IRestrictedWritableInternal {
         uint256 grandTotal_
     ) internal pure returns (bool) {
         if (maxTagAllocation_ > grandTotal_) {
-            revert IGOWritable_GreaterThanGrandTotal(
+            revert IGOWritable_MaxTagCapGtGrandTotal(
                 tagId_,
                 maxTagAllocation_,
                 grandTotal_
