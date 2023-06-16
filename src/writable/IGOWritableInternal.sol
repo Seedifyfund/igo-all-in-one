@@ -136,7 +136,8 @@ contract IGOWritableInternal is IIGOWritableInternal {
         // open tag if necessary
         if (
             tag.stage == ISharedInternal.Stage.NOT_STARTED &&
-            block.timestamp >= tag.startAt
+            block.timestamp >= tag.startAt &&
+            block.timestamp < tag.endAt
         ) {
             IGOStorage.layout().tags.data[tagId].stage = ISharedInternal
                 .Stage

@@ -15,6 +15,20 @@ contract IGO_Test_requireOpenedTag is IGOSetUp_require {
         instance.exposed_requireOpenedTag(tagIdentifiers[0]);
     }
 
+    function testRevert_requireOpenedTag_If_NOT_STARTED_EndDateReachedBeforeOpening()
+        public
+    {
+        vm.warp(tags[0].endAt);
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IGOWritableInternal_TagNotOpened.selector,
+                tagIdentifiers[0],
+                Stage.NOT_STARTED
+            )
+        );
+        instance.exposed_requireOpenedTag(tagIdentifiers[0]);
+    }
+
     function testRevert_requireOpenedTag_If_PAUSED() public {
         instance.pauseTag(tagIdentifiers[0]);
         Tag memory tag_ = instance.tag(tagIdentifiers[0]);
