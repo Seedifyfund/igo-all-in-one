@@ -28,15 +28,21 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
         _reserveAllocation(allocations[0], lastProof);
 
         uint256 balanceAfterBuy = token.balanceOf(buyer);
-        assertEq(balanceAfterBuy, balanceBeforeBuy - allocations[0].amount);
-        assertEq(token.balanceOf(treasuryWallet), allocations[0].amount);
+        assertEq(
+            balanceAfterBuy,
+            balanceBeforeBuy - allocations[0].paymentTokenAmount
+        );
+        assertEq(
+            token.balanceOf(treasuryWallet),
+            allocations[0].paymentTokenAmount
+        );
     }
 
     function test_reserveAllocation_UserBuyTheirAllocation_InMultipleTx()
         public
     {
         _setUpTestData();
-        uint256 amount = allocations[0].amount;
+        uint256 amount = allocations[0].paymentTokenAmount;
         uint256 firstPart = amount / 4;
 
         /////////////////// buy first 25% of allocation ///////////////////
@@ -48,7 +54,7 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
         _reserveAllocation(amount, allocations[0], lastProof);
         assertEq(
             instance.boughtByIn(buyer, allocations[0].tagId),
-            allocations[0].amount
+            allocations[0].paymentTokenAmount
         );
     }
 
@@ -62,7 +68,7 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
     }
 
     function test_reserveAllocation_IGOStageToCompleted() public {
-        instance.updateGrandTotal(allocations[0].amount);
+        instance.updateGrandTotal(allocations[0].paymentTokenAmount);
 
         _setUpTestData();
         _reserveAllocation(allocations[0], lastProof);
@@ -74,10 +80,14 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
         ERC20 tagToken = new ERC20("tagToken", "TAG");
         _setUpTestData(address(tagToken));
         // mint tagToken to allocation[0].account
-        deal(address(tagToken), allocations[0].account, allocations[0].amount);
+        deal(
+            address(tagToken),
+            allocations[0].account,
+            allocations[0].paymentTokenAmount
+        );
         assertEq(
             tagToken.balanceOf(allocations[0].account),
-            allocations[0].amount
+            allocations[0].paymentTokenAmount
         );
         // unlimited allowance to permit2
         vm.prank(allocations[0].account);
@@ -89,7 +99,10 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
             lastProof
         );
 
-        assertEq(tagToken.balanceOf(treasuryWallet), allocations[0].amount);
+        assertEq(
+            tagToken.balanceOf(treasuryWallet),
+            allocations[0].paymentTokenAmount
+        );
         assertEq(tagToken.balanceOf(allocations[0].account), 0);
     }
 

@@ -117,7 +117,7 @@ contract IGOSetUp is
         deal(
             address(token),
             allocations[0].account,
-            allocations[0].amount + 10_000 ether
+            allocations[0].paymentTokenAmount + 10_000 ether
         );
     }
 
@@ -149,7 +149,7 @@ contract IGOSetUp is
     ) internal {
         __reserveAllocation(
             address(token),
-            allocation.amount,
+            allocation.paymentTokenAmount,
             allocation,
             proof
         );
@@ -160,7 +160,12 @@ contract IGOSetUp is
         Allocation memory allocation,
         bytes32[] memory proof
     ) internal {
-        __reserveAllocation(tagToken, allocation.amount, allocation, proof);
+        __reserveAllocation(
+            tagToken,
+            allocation.paymentTokenAmount,
+            allocation,
+            proof
+        );
     }
 
     function __reserveAllocation(
@@ -193,7 +198,7 @@ contract IGOSetUp is
         // update merkle root & stage
         tags[0].merkleRoot = merkleRoot;
         tags[0].stage = Stage.OPENED;
-        tags[0].maxTagCap = allocations[0].amount;
+        tags[0].maxTagCap = allocations[0].paymentTokenAmount;
         tags[0].paymentToken = token_;
         instance.updateTag(tagIdentifiers[0], tags[0]);
 
