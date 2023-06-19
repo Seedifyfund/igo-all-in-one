@@ -19,6 +19,13 @@ interface IIGOWritableInternal {
         uint256 nonce;
     }
 
+    event AllocationReserved(
+        string indexed tagId,
+        address indexed buyer,
+        uint256 indexed paymentTokenAmount,
+        address paymentToken
+    );
+
     error IGOWritableInternal_IGONotOpened(ISharedInternal.Stage current);
     error IGOWritableInternal_TagNotOpened(
         string tagId,

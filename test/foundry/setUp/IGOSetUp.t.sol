@@ -135,30 +135,35 @@ contract IGOSetUp is
         instance.updateTag(allocations[0].tagId, tag_);
     }
 
-    function _buyTokens(
+    function _reserveAllocation(
         uint256 amount,
         Allocation memory allocation,
         bytes32[] memory proof
     ) internal {
-        __buyTokens(address(token), amount, allocation, proof);
+        __reserveAllocation(address(token), amount, allocation, proof);
     }
 
-    function _buyTokens(
+    function _reserveAllocation(
         Allocation memory allocation,
         bytes32[] memory proof
     ) internal {
-        __buyTokens(address(token), allocation.amount, allocation, proof);
+        __reserveAllocation(
+            address(token),
+            allocation.amount,
+            allocation,
+            proof
+        );
     }
 
-    function _buyTokensWithTagToken(
+    function _reserveAllocationWithTagToken(
         address tagToken,
         Allocation memory allocation,
         bytes32[] memory proof
     ) internal {
-        __buyTokens(tagToken, allocation.amount, allocation, proof);
+        __reserveAllocation(tagToken, allocation.amount, allocation, proof);
     }
 
-    function __buyTokens(
+    function __reserveAllocation(
         address token_,
         uint256 amount,
         Allocation memory allocation,
@@ -178,7 +183,7 @@ contract IGOSetUp is
         permission.nonce = nonce;
 
         vm.prank(allocation.account);
-        instance.buyTokens(amount, allocation, proof, permission);
+        instance.reserveAllocation(amount, allocation, proof, permission);
     }
 
     function __setUpTestData(address token_) private {
