@@ -12,7 +12,7 @@ import {IIGOWritableInternal} from "../../../../src/writable/IIGOWritableInterna
 import {IGOWritable_Mock} from "../../../mock/IGOWritable_Mock.sol";
 import {FFI_Merkletreejs} from "../../utils/FFI_Merkletreejs.sol";
 
-contract IGOSetUp_require is
+contract IGOSetUp_internal is
     Test,
     IRestrictedWritableInternal,
     ISharedInternal,

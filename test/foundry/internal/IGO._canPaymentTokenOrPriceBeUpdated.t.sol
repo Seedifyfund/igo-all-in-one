@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
-import {IGOSetUp_require} from "./require/setUp/IGOSetUp_require.t.sol";
+import {IGOSetUp_internal} from "./setUp/IGOSetUp_internal.t.sol";
 
-import {ISharedInternal} from "../../src/shared/ISharedInternal.sol";
+import {ISharedInternal} from "../../../src/shared/ISharedInternal.sol";
 
-contract IGO_Test__canPaymentTokenOrPriceBeUpdated is IGOSetUp_require {
+contract IGO_Test__canPaymentTokenOrPriceBeUpdated is IGOSetUp_internal {
     function testRevert__canPaymentTokenOrPriceBeUpdated_If_PriceZERO()
         public
     {
