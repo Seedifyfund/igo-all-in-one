@@ -3,7 +3,7 @@ pragma solidity ^0.8.17;
 
 import {IGOSetUp_require} from "./require/setUp/IGOSetUp_require.t.sol";
 
-contract IGO_Test_updateStorageOnBuy is IGOSetUp_require {
+contract IGO_Test__updateStorageOnBuy is IGOSetUp_require {
     function test_updateStorageOnBuy_CloseTagWhenEndDateReached() public {
         // block.timestamp == tag.endAt --> tag.stage = COMPLETED
         vm.warp(tags[0].endAt);
