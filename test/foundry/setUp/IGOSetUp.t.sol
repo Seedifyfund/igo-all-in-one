@@ -86,7 +86,8 @@ contract IGOSetUp is
                     uint128(block.timestamp) + lastStart,
                     uint128(block.timestamp) + lastEnd,
                     maxTagAllocation,
-                    address(0)
+                    address(0),
+                    1 ether
                 )
             );
 
