@@ -50,8 +50,7 @@ contract IGO_Test is IGOSetUp {
         vm.expectRevert(
             abi.encodeWithSelector(
                 IGOWritable_SummedMaxTagCapGtGrandTotal.selector,
-                grandTotal + 1,
-                grandTotal
+                1
             )
         );
         instance.setTags(tagIdentifiers, tags);
@@ -105,8 +104,7 @@ contract IGO_Test is IGOSetUp {
         vm.expectRevert(
             abi.encodeWithSelector(
                 IGOWritable_SummedMaxTagCapGtGrandTotal.selector,
-                grandTotal + 1,
-                grandTotal
+                1
             )
         );
         instance.updateTag(tagIdentifiers[0], tags[0]);

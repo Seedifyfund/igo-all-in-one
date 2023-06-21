@@ -82,10 +82,11 @@ contract RestrictedWritable is
 
         _isSummedMaxTagCapLteGrandTotal(summedMaxTagCap, grandTotal);
 
-        // TODO: Update ids list & Add EnumerableSet in library? or find a workaround to save tag id once and only once
-        // tags.ids.push(tagIdentifiers_[i]);
+        // if tag does not exist, push to ids
+        if (oldTagData.maxTagCap == 0) {
+            IGOStorage.layout().tags.ids.push(tagId_);
+        }
         IGOStorage.layout().tags.data[tagId_] = tag_;
-        // TEST: verify summedMaxTagCap is updated correctly, as _isSummedMaxTagCapLteGrandTotal increments it
         IGOStorage.layout().setUp.summedMaxTagCap = summedMaxTagCap;
     }
 

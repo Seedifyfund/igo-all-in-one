@@ -43,9 +43,4 @@ contract RevertIGO_Test_reserveAllocation is IGOSetUp {
             );
         }
     }
-
-    // TODO: test merkle proof invalidity in more cases
-    function testRevert_reserveAllocation_If_UserNotRegisteredToBuyInTagId()
-        public
-    {}
 }

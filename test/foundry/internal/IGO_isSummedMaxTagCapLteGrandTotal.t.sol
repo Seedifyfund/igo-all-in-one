@@ -12,8 +12,7 @@ contract IGO_Test__isSummedMaxTagCapLteGrandTotal is IGOSetUp_internal {
         vm.expectRevert(
             abi.encodeWithSelector(
                 IGOWritable_SummedMaxTagCapGtGrandTotal.selector,
-                grandTotal + 1,
-                grandTotal
+                1
             )
         );
         instance.exposed__isSummedMaxTagCapLteGrandTotal(

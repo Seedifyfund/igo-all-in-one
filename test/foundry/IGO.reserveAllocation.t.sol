@@ -97,15 +97,6 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
         assertEq(tagToken.balanceOf(allocations[0].account), 0);
     }
 
-    //////////////// TODO: Tets success in a more complete scenario ////////////////
-    /// @dev tagIdentifier must be part of leaves, to ensure `msg.sender` can only participant to computed tag
-    /// grand total to 3_000,
-    /// magTagCap of tagIdentifier[0] is 1_000 ether,
-    /// magTagCap of tagIdentifier[1] is 2_000 ether,
-    /// makeAddress('0') buys 1_000 ether in tagIdentifier[0],
-    /// makeAddress('1') buy 2_000 ether in tagIdentifier[1],
-    /// verify totalRaised & raisedInTag
-
     function test_recoverLostERC20() public {
         address sender = makeAddr("address0");
         uint256 lost = 1_000 ether;

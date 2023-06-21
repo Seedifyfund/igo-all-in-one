@@ -43,11 +43,11 @@ contract RestrictedWritableInternal is IRestrictedWritableInternal {
             summedMaxTagCap += tags_[i].maxTagCap;
 
             _isSummedMaxTagCapLteGrandTotal(summedMaxTagCap, grandTotal);
-            // TODO: EnumerableSet in livrary? or find a workaround to save tag id once and only once
-            tags.ids.push(tagIdentifiers_[i]);
+
+            // if tag does not exist, push to ids
+            if (oldTagData.maxTagCap == 0) tags.ids.push(tagIdentifiers_[i]);
             tags.data[tagIdentifiers_[i]] = tags_[i];
         }
-        // TEST: verify summedMaxTagCap is updated correctly, as _isSummedMaxTagCapLteGrandTotal increments it
         IGOStorage.layout().setUp.summedMaxTagCap = summedMaxTagCap;
     }
 
@@ -84,8 +84,7 @@ contract RestrictedWritableInternal is IRestrictedWritableInternal {
     ) internal pure {
         if (summedMaxTagCap > grandTotal) {
             revert IGOWritable_SummedMaxTagCapGtGrandTotal(
-                summedMaxTagCap,
-                grandTotal
+                summedMaxTagCap - grandTotal
             );
         }
     }
