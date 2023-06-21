@@ -65,6 +65,13 @@ contract RestrictedWritable is
     ) external override onlyOwner {
         IGOStorage.Tags storage tags = IGOStorage.layout().tags;
 
+        _canPaymentTokenOrPriceBeUpdated(
+            tags.data[tagId_].stage,
+            tags.data[tagId_].paymentToken,
+            tag_.paymentToken,
+            tags.data[tagId_].projectTokenPrice,
+            tag_.projectTokenPrice
+        );
         _isMaxTagAllocationGtGrandTotal(
             tagId_,
             tag_.maxTagCap,

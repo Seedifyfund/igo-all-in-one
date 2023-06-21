@@ -24,7 +24,7 @@ contract RevertIGO_Test_reserveAllocation is IGOSetUp {
             bytes memory sig = _getPermitTransferSignature(
                 _createPermit(
                     address(token),
-                    allocations[i].amount,
+                    allocations[i].paymentTokenAmount,
                     uint256(bytes32(keccak256(abi.encode(allocations[i]))))
                 ),
                 address(instance),

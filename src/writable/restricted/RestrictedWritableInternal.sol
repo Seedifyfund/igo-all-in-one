@@ -23,6 +23,13 @@ contract RestrictedWritableInternal is IRestrictedWritableInternal {
 
         //slither-disable-next-line uninitialized-local
         for (uint256 i; i < length; ++i) {
+            _canPaymentTokenOrPriceBeUpdated(
+                tags.data[tagIdentifiers_[i]].stage,
+                tags.data[tagIdentifiers_[i]].paymentToken,
+                tags_[i].paymentToken,
+                tags.data[tagIdentifiers_[i]].projectTokenPrice,
+                tags_[i].projectTokenPrice
+            );
             _isMaxTagAllocationGtGrandTotal(
                 tagIdentifiers_[i],
                 tags_[i].maxTagCap,
@@ -30,6 +37,33 @@ contract RestrictedWritableInternal is IRestrictedWritableInternal {
             );
             tags.ids.push(tagIdentifiers_[i]);
             tags.data[tagIdentifiers_[i]] = tags_[i];
+        }
+    }
+
+    /**
+     * @notice Token used for payment and price of token project can only
+     *         be updated before a tag is opened. Even if a tag is paused
+     *         these variables can not be updated anymore.
+     *
+     * @dev If `paymentToken` is address(0) default IGO payment token is used,
+     *      see `IGOWritable.reserveAllocation` --> paymentToken.
+     */
+    function _canPaymentTokenOrPriceBeUpdated(
+        ISharedInternal.Stage stage,
+        address oldPaymentToken,
+        address newPaymentToken,
+        uint256 oldProjectTokenPrice,
+        uint256 newProjectTokenPrice
+    ) internal pure {
+        if (stage == ISharedInternal.Stage.NOT_STARTED) {
+            if (newProjectTokenPrice == 0) {
+                revert IGOWritable_ProjectTokenPrice_ZERO();
+            }
+        } else {
+            if (
+                oldPaymentToken != newPaymentToken ||
+                oldProjectTokenPrice != newProjectTokenPrice
+            ) revert IGOWritable_NoPaymentTokenOrPriceUpdate();
         }
     }
 

@@ -7,4 +7,7 @@ interface IRestrictedWritableInternal {
         uint256 maxTagAllocation,
         uint256 grandTotal
     );
+
+    error IGOWritable_NoPaymentTokenOrPriceUpdate();
+    error IGOWritable_ProjectTokenPrice_ZERO();
 }

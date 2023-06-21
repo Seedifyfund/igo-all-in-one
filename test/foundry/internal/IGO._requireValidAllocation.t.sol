@@ -4,9 +4,9 @@ pragma solidity ^0.8.17;
 import {Strings} from "openzeppelin-contracts/utils/Strings.sol";
 import {Strings2} from "murky/differential_testing/test/utils/Strings2.sol";
 
-import {IGOSetUp_require} from "./setUp/IGOSetUp_require.t.sol";
+import {IGOSetUp_internal} from "./setUp/IGOSetUp_internal.t.sol";
 
-contract IGO_Test_requireValidAllocation is IGOSetUp_require {
+contract IGO_Test__requireValidAllocation is IGOSetUp_internal {
     function testRevert_requireValidAllocation_If_EmptyProof() public {
         vm.expectRevert("ALLOCATION_NOT_FOUND");
         instance.exposed_requireValidAllocation(

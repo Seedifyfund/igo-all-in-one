@@ -7,7 +7,8 @@ interface IIGOWritableInternal {
     struct Allocation {
         string tagId;
         address account;
-        uint256 amount;
+        // amount the user can spend, expressed in IGOStruct.SetUp.paymentToken OR Tag.paymentToken
+        uint256 paymentTokenAmount;
     }
 
     struct BuyPermission {

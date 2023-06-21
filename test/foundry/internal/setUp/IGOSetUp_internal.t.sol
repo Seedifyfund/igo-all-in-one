@@ -12,7 +12,7 @@ import {IIGOWritableInternal} from "../../../../src/writable/IIGOWritableInterna
 import {IGOWritable_Mock} from "../../../mock/IGOWritable_Mock.sol";
 import {FFI_Merkletreejs} from "../../utils/FFI_Merkletreejs.sol";
 
-contract IGOSetUp_require is
+contract IGOSetUp_internal is
     Test,
     IRestrictedWritableInternal,
     ISharedInternal,
@@ -59,7 +59,8 @@ contract IGOSetUp_require is
                     uint128(block.timestamp) + lastStart,
                     uint128(block.timestamp) + lastEnd,
                     maxTagAllocation,
-                    address(0)
+                    address(0),
+                    1 ether
                 )
             );
 
