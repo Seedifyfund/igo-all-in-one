@@ -20,24 +20,35 @@ contract RestrictedWritableInternal is IRestrictedWritableInternal {
 
         uint256 length = tagIdentifiers_.length;
         uint256 grandTotal = IGOStorage.layout().setUp.grandTotal;
+        uint256 summedMaxTagCap = IGOStorage.layout().setUp.summedMaxTagCap;
+
+        ISharedInternal.Tag memory oldTagData;
 
         //slither-disable-next-line uninitialized-local
         for (uint256 i; i < length; ++i) {
+            oldTagData = tags.data[tagIdentifiers_[i]];
             _canPaymentTokenOrPriceBeUpdated(
-                tags.data[tagIdentifiers_[i]].stage,
-                tags.data[tagIdentifiers_[i]].paymentToken,
+                oldTagData.stage,
+                oldTagData.paymentToken,
                 tags_[i].paymentToken,
-                tags.data[tagIdentifiers_[i]].projectTokenPrice,
+                oldTagData.projectTokenPrice,
                 tags_[i].projectTokenPrice
             );
-            _isMaxTagAllocationGtGrandTotal(
-                tagIdentifiers_[i],
-                tags_[i].maxTagCap,
-                grandTotal
-            );
+
+            /**
+             * @dev if tag is new, oldTagData.maxTagCap is 0, avoid extra as
+             *      subtraction only cost 3 gas
+             */
+            summedMaxTagCap -= oldTagData.maxTagCap;
+            summedMaxTagCap += tags_[i].maxTagCap;
+
+            _isSummedMaxTagCapLteGrandTotal(summedMaxTagCap, grandTotal);
+            // TODO: EnumerableSet in livrary? or find a workaround to save tag id once and only once
             tags.ids.push(tagIdentifiers_[i]);
             tags.data[tagIdentifiers_[i]] = tags_[i];
         }
+        // TEST: verify summedMaxTagCap is updated correctly, as _isSummedMaxTagCapLteGrandTotal increments it
+        IGOStorage.layout().setUp.summedMaxTagCap = summedMaxTagCap;
     }
 
     /**
@@ -67,19 +78,15 @@ contract RestrictedWritableInternal is IRestrictedWritableInternal {
         }
     }
 
-    /// @dev Revert if max allocation in a tag is greater than grand total.
-    function _isMaxTagAllocationGtGrandTotal(
-        string memory tagId_,
-        uint256 maxTagAllocation_,
-        uint256 grandTotal_
-    ) internal pure returns (bool) {
-        if (maxTagAllocation_ > grandTotal_) {
-            revert IGOWritable_GreaterThanGrandTotal(
-                tagId_,
-                maxTagAllocation_,
-                grandTotal_
+    function _isSummedMaxTagCapLteGrandTotal(
+        uint256 summedMaxTagCap,
+        uint256 grandTotal
+    ) internal pure {
+        if (summedMaxTagCap > grandTotal) {
+            revert IGOWritable_SummedMaxTagCapGtGrandTotal(
+                summedMaxTagCap,
+                grandTotal
             );
         }
-        return false;
     }
 }

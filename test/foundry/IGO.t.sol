@@ -38,13 +38,19 @@ contract IGO_Test is IGOSetUp {
         }
     }
 
-    function testRevert_setTags_If_maxTagCap_GreaterThan_grandTotal() public {
-        tags[0].maxTagCap = grandTotal + 1;
+    function testRevert_setTags_If_SummedMaxTagCapGtGrandTotal_By_ONE()
+        public
+    {
+        // reduce grand total to amount of sum of each tag max cap
+        grandTotal = instance.summedMaxTagCap();
+        instance.updateGrandTotal(grandTotal);
+
+        ++tags[0].maxTagCap;
+
         vm.expectRevert(
             abi.encodeWithSelector(
-                IGOWritable_GreaterThanGrandTotal.selector,
-                tagIdentifiers[0],
-                tags[0].maxTagCap,
+                IGOWritable_SummedMaxTagCapGtGrandTotal.selector,
+                grandTotal + 1,
                 grandTotal
             )
         );
@@ -87,19 +93,22 @@ contract IGO_Test is IGOSetUp {
         assertEq(updatedTag.maxTagCap, tag.maxTagCap);
     }
 
-    function testRevert_updateTag_If_maxTagCap_GreaterThan_grandTotal()
+    function testRevert_updateTag_If_SummedMaxTagCapGtGrandTotal_By_ONE()
         public
     {
-        Tag memory tag = instance.tag(tagIdentifiers[0]);
-        tag.maxTagCap = grandTotal + 1;
+        // reduce grand total to amount of sum of each tag max cap
+        grandTotal = instance.summedMaxTagCap();
+        instance.updateGrandTotal(grandTotal);
+
+        ++tags[0].maxTagCap;
+
         vm.expectRevert(
             abi.encodeWithSelector(
-                IGOWritable_GreaterThanGrandTotal.selector,
-                tagIdentifiers[0],
-                tag.maxTagCap,
+                IGOWritable_SummedMaxTagCapGtGrandTotal.selector,
+                grandTotal + 1,
                 grandTotal
             )
         );
-        instance.updateTag(tagIdentifiers[0], tag);
+        instance.updateTag(tagIdentifiers[0], tags[0]);
     }
 }

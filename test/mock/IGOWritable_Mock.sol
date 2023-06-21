@@ -30,6 +30,14 @@ contract IGOWritable_Mock is IGOWritable, IGOReadable {
         _closeTag(tagId);
     }
 
+    function exposed__isSummedMaxTagCapLteGrandTotal(
+        uint256 summedMaxTagCap_,
+        uint256 grandTotal
+    ) external pure returns (bool) {
+        _isSummedMaxTagCapLteGrandTotal(summedMaxTagCap_, grandTotal);
+        return true;
+    }
+
     function exposed_requireAllocationNotExceededInTag(
         uint256 toBuy,
         address rewardee,

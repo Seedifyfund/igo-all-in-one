@@ -21,6 +21,8 @@ interface IIGOReadable {
         view
         returns (address token, address treasuryWallet, uint256 grandTotal);
 
+    function summedMaxTagCap() external view returns (uint256);
+
     function tag(
         string memory tagId
     ) external view returns (ISharedInternal.Tag memory tag_);

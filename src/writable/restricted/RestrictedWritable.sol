@@ -63,22 +63,30 @@ contract RestrictedWritable is
         string calldata tagId_,
         ISharedInternal.Tag calldata tag_
     ) external override onlyOwner {
-        IGOStorage.Tags storage tags = IGOStorage.layout().tags;
+        ISharedInternal.Tag memory oldTagData = IGOStorage.layout().tags.data[
+            tagId_
+        ];
+        uint256 grandTotal = IGOStorage.layout().setUp.grandTotal;
+        uint256 summedMaxTagCap = IGOStorage.layout().setUp.summedMaxTagCap;
 
         _canPaymentTokenOrPriceBeUpdated(
-            tags.data[tagId_].stage,
-            tags.data[tagId_].paymentToken,
+            oldTagData.stage,
+            oldTagData.paymentToken,
             tag_.paymentToken,
-            tags.data[tagId_].projectTokenPrice,
+            oldTagData.projectTokenPrice,
             tag_.projectTokenPrice
         );
-        _isMaxTagAllocationGtGrandTotal(
-            tagId_,
-            tag_.maxTagCap,
-            IGOStorage.layout().setUp.grandTotal
-        );
 
-        tags.data[tagId_] = tag_;
+        summedMaxTagCap -= oldTagData.maxTagCap;
+        summedMaxTagCap += tag_.maxTagCap;
+
+        _isSummedMaxTagCapLteGrandTotal(summedMaxTagCap, grandTotal);
+
+        // TODO: Update ids list & Add EnumerableSet in library? or find a workaround to save tag id once and only once
+        // tags.ids.push(tagIdentifiers_[i]);
+        IGOStorage.layout().tags.data[tagId_] = tag_;
+        // TEST: verify summedMaxTagCap is updated correctly, as _isSummedMaxTagCapLteGrandTotal increments it
+        IGOStorage.layout().setUp.summedMaxTagCap = summedMaxTagCap;
     }
 
     /// @inheritdoc IRestrictedWritable
@@ -127,11 +135,13 @@ contract RestrictedWritable is
         string memory tagId,
         uint256 maxTagCap
     ) external override onlyOwner {
-        _isMaxTagAllocationGtGrandTotal(
-            tagId,
-            maxTagCap,
-            IGOStorage.layout().setUp.grandTotal
-        );
+        IGOStorage.SetUp memory setUp = IGOStorage.layout().setUp;
+        uint256 summedMaxTagCap = setUp.summedMaxTagCap;
+
+        summedMaxTagCap -= IGOStorage.layout().tags.data[tagId].maxTagCap;
+        summedMaxTagCap += maxTagCap;
+
+        _isSummedMaxTagCapLteGrandTotal(summedMaxTagCap, setUp.grandTotal);
         IGOStorage.layout().tags.data[tagId].maxTagCap = maxTagCap;
     }
 }
