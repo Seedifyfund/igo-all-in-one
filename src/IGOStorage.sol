@@ -11,6 +11,9 @@ library IGOStorage {
         address permit2;
         address treasuryWallet;
         uint256 grandTotal;
+        // sum of maxTagCap OF all existing tags, can be lower than
+        // `grandTotal` and maximum equal to `grandTotal`
+        uint256 summedMaxTagCap;
     }
 
     // Updated by owner and users interactions

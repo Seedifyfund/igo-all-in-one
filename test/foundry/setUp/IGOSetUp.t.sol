@@ -64,6 +64,15 @@ contract IGOSetUp is
         __createDefaultAllocations();
     }
 
+    function test_SetUpState_setTags_SavesSummedMaxTagCap() public {
+        uint256 summedMaxTagCap = 0;
+        for (uint256 i; i < tags.length; ++i) {
+            summedMaxTagCap += tags[i].maxTagCap;
+        }
+
+        assertEq(summedMaxTagCap, instance.summedMaxTagCap());
+    }
+
     function __createDefaultTags() private {
         tagIdentifiers.push("vpr-base");
         tagIdentifiers.push("vpr-premium1");

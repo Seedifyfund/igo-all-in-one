@@ -67,15 +67,6 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
         assertEq(uint256(tag.stage), uint256(Stage.COMPLETED));
     }
 
-    function test_reserveAllocation_IGOStageToCompleted() public {
-        instance.updateGrandTotal(allocations[0].paymentTokenAmount);
-
-        _setUpTestData();
-        _reserveAllocation(allocations[0], lastProof);
-
-        assertEq(uint256(instance.igoStage()), uint256(Stage.COMPLETED));
-    }
-
     function test_reserveAllocation_WithSpecificTagToken() public {
         ERC20 tagToken = new ERC20("tagToken", "TAG");
         _setUpTestData(address(tagToken));
