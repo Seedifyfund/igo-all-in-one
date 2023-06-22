@@ -43,8 +43,9 @@ contract RestrictedWritable is
         IGOStorage.layout().setUp.grandTotal = grandTotal_;
     }
 
-    /// @inheritdoc IRestrictedWritable
-    function updateToken(address token_) external override onlyOwner {
+    function updateDefaultPaymentToken(
+        address token_
+    ) external override onlyOwner {
         require(token_ != address(0), "Token_ZERO_ADDRESS");
         IGOStorage.layout().setUp.paymentToken = token_;
     }
@@ -66,7 +67,7 @@ contract RestrictedWritable is
 
     //////////////////////////// TAG BATCH UPDATES ////////////////////////////
     /// @inheritdoc IRestrictedWritable
-    function updateTag(
+    function updateSetTag(
         string calldata tagId_,
         ISharedInternal.Tag calldata tag_
     ) external override onlyOwner {
@@ -99,7 +100,7 @@ contract RestrictedWritable is
     }
 
     /// @inheritdoc IRestrictedWritable
-    function setTags(
+    function updateSetTags(
         string[] memory tagIdentifiers_,
         ISharedInternal.Tag[] memory tags_
     ) public override onlyOwner {

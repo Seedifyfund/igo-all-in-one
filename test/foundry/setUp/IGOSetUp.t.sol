@@ -59,7 +59,7 @@ contract IGOSetUp is
 
         __createDefaultTags();
 
-        instance.setTags(tagIdentifiers, tags);
+        instance.updateSetTags(tagIdentifiers, tags);
 
         __createDefaultAllocations();
     }
@@ -142,7 +142,7 @@ contract IGOSetUp is
     function _increaseMaxTagCapBy(uint256 by) internal {
         Tag memory tag_ = instance.tag(allocations[0].tagId);
         tag_.maxTagCap += by;
-        instance.updateTag(allocations[0].tagId, tag_);
+        instance.updateSetTag(allocations[0].tagId, tag_);
     }
 
     function _reserveAllocation(
@@ -210,7 +210,7 @@ contract IGOSetUp is
         tags[0].stage = Stage.OPENED;
         tags[0].maxTagCap = allocations[0].paymentTokenAmount;
         tags[0].paymentToken = token_;
-        instance.updateTag(tagIdentifiers[0], tags[0]);
+        instance.updateSetTag(tagIdentifiers[0], tags[0]);
 
         instance.openIGO();
     }

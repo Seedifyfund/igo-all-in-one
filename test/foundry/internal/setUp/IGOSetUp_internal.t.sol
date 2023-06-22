@@ -33,7 +33,7 @@ contract IGOSetUp_internal is
         instance.updateGrandTotal(grandTotal);
 
         __createDefaultTags();
-        instance.setTags(tagIdentifiers, tags);
+        instance.updateSetTags(tagIdentifiers, tags);
         __createDefaultAllocations();
     }
 

@@ -60,7 +60,7 @@ contract IGO_Test is IGOSetUp {
                 1
             )
         );
-        instance.setTags(tagIdentifiers, tags);
+        instance.updateSetTags(tagIdentifiers, tags);
     }
 
     function testRevert_setTags_If_tagIdentifiers_LengthNotEqualTo_tags()
@@ -68,13 +68,13 @@ contract IGO_Test is IGOSetUp {
     {
         tagIdentifiers.pop();
         vm.expectRevert("IGOWritable: tags arrays length");
-        instance.setTags(tagIdentifiers, tags);
+        instance.updateSetTags(tagIdentifiers, tags);
     }
 
     function testRevert_setTags_If_tags_LengthNotEqualTo_tagIds() public {
         tags.pop();
         vm.expectRevert("IGOWritable: tags arrays length");
-        instance.setTags(tagIdentifiers, tags);
+        instance.updateSetTags(tagIdentifiers, tags);
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -88,7 +88,7 @@ contract IGO_Test is IGOSetUp {
         tag.endAt = 2;
         tag.maxTagCap = 3;
 
-        instance.updateTag(tagIdentifiers[0], tag);
+        instance.updateSetTag(tagIdentifiers[0], tag);
 
         Tag memory updatedTag = instance.tag(tagIdentifiers[0]);
 
@@ -114,6 +114,6 @@ contract IGO_Test is IGOSetUp {
                 1
             )
         );
-        instance.updateTag(tagIdentifiers[0], tags[0]);
+        instance.updateSetTag(tagIdentifiers[0], tags[0]);
     }
 }
