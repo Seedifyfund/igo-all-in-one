@@ -98,10 +98,6 @@ contract IGOWritable is
             setUp.permit2 != address(0),
             "IGOWritable__permit2_ZERO_ADDRESS"
         );
-        require(
-            setUp.treasuryWallet != address(0),
-            "IGOWritable__treasuryWallet_ZERO_ADDRESS"
-        );
         require(setUp.grandTotal > 0, "IGOWritable__grandTotal_ZERO");
 
         _transferOwnership(owner);

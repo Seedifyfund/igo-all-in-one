@@ -36,11 +36,11 @@ contract IGOReadable is
         external
         view
         override
-        returns (address token, address treasuryWallet, uint256 grandTotal)
+        returns (address vestingContract, address token, uint256 grandTotal)
     {
         IGOStorage.SetUp memory setUp_ = IGOStorage.layout().setUp;
+        vestingContract = setUp_.vestingContract;
         token = setUp_.paymentToken;
-        treasuryWallet = setUp_.treasuryWallet;
         grandTotal = setUp_.grandTotal;
     }
 

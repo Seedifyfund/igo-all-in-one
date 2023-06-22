@@ -44,7 +44,6 @@ contract IGOFactory_create_testnet is Script {
             vestingContract: address(0),
             paymentToken: address(new Token_Mock()),
             permit2: address(0x000000000022D473030F116dDEE9F6B43aC78BA3), // bsc
-            treasuryWallet: vm.addr(privateKey),
             grandTotal: 1_000_000,
             summedMaxTagCap: 0
         });

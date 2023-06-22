@@ -40,7 +40,7 @@ contract IGOWritableInternal is IIGOWritableInternal {
             deadline: permission.deadline
         });
         transferDetails = ISignatureTransfer.SignatureTransferDetails({
-            to: setUp.treasuryWallet,
+            to: setUp.vestingContract,
             requestedAmount: amount
         });
 

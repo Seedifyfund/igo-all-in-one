@@ -14,8 +14,6 @@ interface IRestrictedWritable {
 
     function updateDefaultPaymentToken(address token_) external;
 
-    function updateTreasuryWallet(address addr) external;
-
     /// @dev Retrieve any ERC20 sent to the contract by mistake.
     function recoverLostERC20(address token, address to) external;
 
