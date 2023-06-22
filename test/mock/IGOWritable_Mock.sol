@@ -5,12 +5,37 @@ import {IGOWritable} from "../../src/writable/IGOWritable.sol";
 import {IGOReadable} from "../../src/readable/IGOReadable.sol";
 
 contract IGOWritable_Mock is IGOWritable, IGOReadable {
+    function exposed_canPaymentTokenOrPriceBeUpdated(
+        Stage stage,
+        address oldPaymentToken,
+        address newPaymentToken,
+        uint256 oldProjectTokenPrice,
+        uint256 newProjectTokenPrice
+    ) external pure returns (bool) {
+        _canPaymentTokenOrPriceBeUpdated(
+            stage,
+            oldPaymentToken,
+            newPaymentToken,
+            oldProjectTokenPrice,
+            newProjectTokenPrice
+        );
+        return true;
+    }
+
     function exposed_closeIGO() external {
         _closeIGO();
     }
 
     function exposed_closeTag(string memory tagId) external {
         _closeTag(tagId);
+    }
+
+    function exposed__isSummedMaxTagCapLteGrandTotal(
+        uint256 summedMaxTagCap_,
+        uint256 grandTotal
+    ) external pure returns (bool) {
+        _isSummedMaxTagCapLteGrandTotal(summedMaxTagCap_, grandTotal);
+        return true;
     }
 
     function exposed_requireAllocationNotExceededInTag(
@@ -45,7 +70,7 @@ contract IGOWritable_Mock is IGOWritable, IGOReadable {
 
     function exposed_requireOpenedTag(
         string memory tagId
-    ) external view returns (bool) {
+    ) external returns (bool) {
         _requireOpenedTag(tagId);
         return true;
     }
@@ -64,6 +89,17 @@ contract IGOWritable_Mock is IGOWritable, IGOReadable {
         bytes32[] calldata proof
     ) external view returns (bool) {
         _requireValidAllocation(allocation, proof);
+        return true;
+    }
+
+    function exposed_updateStorageOnBuy(
+        uint256 amount,
+        string calldata tagId,
+        address buyer,
+        uint256 grandTotal,
+        uint256 maxTagCap
+    ) external returns (bool) {
+        _updateStorageOnBuy(amount, tagId, buyer, grandTotal, maxTagCap);
         return true;
     }
 }

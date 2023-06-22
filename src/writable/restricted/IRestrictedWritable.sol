@@ -12,8 +12,7 @@ interface IRestrictedWritable {
 
     function updateGrandTotal(uint256 grandTotal_) external;
 
-    /// @notice Updates the token users will use to buy into the IGO.
-    function updateToken(address token_) external;
+    function updateDefaultPaymentToken(address token_) external;
 
     function updateTreasuryWallet(address addr) external;
 
@@ -22,7 +21,7 @@ interface IRestrictedWritable {
 
     //////////////////////////// TAG BATCH UPDATES ////////////////////////////
     /// @dev Update a tag and all its data.
-    function updateTag(
+    function updateSetTag(
         string calldata tagId_,
         ISharedInternal.Tag calldata tag_
     ) external;
@@ -31,7 +30,7 @@ interface IRestrictedWritable {
      * @dev If a tag with an identifier already exists, it will be
      *      updated, otherwise it will be created.
      */
-    function setTags(
+    function updateSetTags(
         string[] memory tagIdentifiers_,
         ISharedInternal.Tag[] memory tags_
     ) external;

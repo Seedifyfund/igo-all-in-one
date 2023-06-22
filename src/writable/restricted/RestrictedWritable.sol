@@ -35,16 +35,23 @@ contract RestrictedWritable is
     function updateGrandTotal(
         uint256 grandTotal_
     ) external override onlyOwner {
-        require(grandTotal_ >= 1_000, "IGOWritable: grandTotal < 1_000");
+        require(grandTotal_ >= 1_000, "grandTotal_LowerThan__1_000");
+        _isSummedMaxTagCapLteGrandTotal(
+            IGOStorage.layout().setUp.summedMaxTagCap,
+            grandTotal_
+        );
         IGOStorage.layout().setUp.grandTotal = grandTotal_;
     }
 
-    /// @inheritdoc IRestrictedWritable
-    function updateToken(address token_) external override onlyOwner {
+    function updateDefaultPaymentToken(
+        address token_
+    ) external override onlyOwner {
+        require(token_ != address(0), "Token_ZERO_ADDRESS");
         IGOStorage.layout().setUp.paymentToken = token_;
     }
 
     function updateTreasuryWallet(address addr) external override onlyOwner {
+        require(addr != address(0), "TreasuryWallet_ZERO_ADDRESS");
         IGOStorage.layout().setUp.treasuryWallet = addr;
     }
 
@@ -53,29 +60,47 @@ contract RestrictedWritable is
         address token,
         address to
     ) external override onlyOwner {
+        require(token != address(0), "Token_ZERO_ADDRESS");
         uint256 amount = IERC20(token).balanceOf(address(this));
         IERC20(token).safeTransfer(to, amount);
     }
 
     //////////////////////////// TAG BATCH UPDATES ////////////////////////////
     /// @inheritdoc IRestrictedWritable
-    function updateTag(
+    function updateSetTag(
         string calldata tagId_,
         ISharedInternal.Tag calldata tag_
     ) external override onlyOwner {
-        IGOStorage.Tags storage tags = IGOStorage.layout().tags;
+        require(_isValidTag(tag_), "INVALID_TAG");
+        ISharedInternal.Tag memory oldTagData = IGOStorage.layout().tags.data[
+            tagId_
+        ];
+        uint256 grandTotal = IGOStorage.layout().setUp.grandTotal;
+        uint256 summedMaxTagCap = IGOStorage.layout().setUp.summedMaxTagCap;
 
-        _isMaxTagAllocationGtGrandTotal(
-            tagId_,
-            tag_.maxTagCap,
-            IGOStorage.layout().setUp.grandTotal
+        _canPaymentTokenOrPriceBeUpdated(
+            oldTagData.stage,
+            oldTagData.paymentToken,
+            tag_.paymentToken,
+            oldTagData.projectTokenPrice,
+            tag_.projectTokenPrice
         );
 
-        tags.data[tagId_] = tag_;
+        summedMaxTagCap -= oldTagData.maxTagCap;
+        summedMaxTagCap += tag_.maxTagCap;
+
+        _isSummedMaxTagCapLteGrandTotal(summedMaxTagCap, grandTotal);
+
+        // if tag does not exist, push to ids
+        if (oldTagData.maxTagCap == 0) {
+            IGOStorage.layout().tags.ids.push(tagId_);
+        }
+        IGOStorage.layout().tags.data[tagId_] = tag_;
+        IGOStorage.layout().setUp.summedMaxTagCap = summedMaxTagCap;
     }
 
     /// @inheritdoc IRestrictedWritable
-    function setTags(
+    function updateSetTags(
         string[] memory tagIdentifiers_,
         ISharedInternal.Tag[] memory tags_
     ) public override onlyOwner {
@@ -99,6 +124,7 @@ contract RestrictedWritable is
         string memory tagId,
         bytes32 merkleRoot
     ) external override onlyOwner {
+        require(merkleRoot != bytes32(0), "MerkleRoot_EMPTY");
         IGOStorage.layout().tags.data[tagId].merkleRoot = merkleRoot;
     }
 
@@ -106,6 +132,7 @@ contract RestrictedWritable is
         string memory tagId,
         uint128 startAt
     ) external override onlyOwner {
+        require(startAt >= block.timestamp, "START_IN_PAST");
         IGOStorage.layout().tags.data[tagId].startAt = startAt;
     }
 
@@ -113,6 +140,7 @@ contract RestrictedWritable is
         string memory tagId,
         uint128 endAt
     ) external override onlyOwner {
+        require(endAt > block.timestamp, "END_IN_PAST");
         IGOStorage.layout().tags.data[tagId].endAt = endAt;
     }
 
@@ -120,11 +148,13 @@ contract RestrictedWritable is
         string memory tagId,
         uint256 maxTagCap
     ) external override onlyOwner {
-        _isMaxTagAllocationGtGrandTotal(
-            tagId,
-            maxTagCap,
-            IGOStorage.layout().setUp.grandTotal
-        );
+        IGOStorage.SetUp memory setUp = IGOStorage.layout().setUp;
+        uint256 summedMaxTagCap = setUp.summedMaxTagCap;
+
+        summedMaxTagCap -= IGOStorage.layout().tags.data[tagId].maxTagCap;
+        summedMaxTagCap += maxTagCap;
+
+        _isSummedMaxTagCapLteGrandTotal(summedMaxTagCap, setUp.grandTotal);
         IGOStorage.layout().tags.data[tagId].maxTagCap = maxTagCap;
     }
 }

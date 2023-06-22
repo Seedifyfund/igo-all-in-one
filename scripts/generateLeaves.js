@@ -16,7 +16,9 @@ async function main(allocations_) {
     const allocationArray = ethers.utils.arrayify(allocations_);
 
     const decodedAllocations = coder.decode(
-        ['Allocation(string tagId,address account,uint256 amount)[]'],
+        [
+            'Allocation(string tagId,address account,uint256 paymentTokenAmount)[]',
+        ],
         allocationArray
     );
     const allocations = decodedAllocations[0];
@@ -24,7 +26,7 @@ async function main(allocations_) {
     // console.log(allocations);
     // console.log(allocations[0].tagId);
     // console.log(allocations[0].account);
-    // console.log(parseInt(ethers.utils.formatEther(allocations[0].amount)) + '\n');
+    // console.log(parseInt(ethers.utils.formatEther(allocations[0].paymentTokenAmount)) + '\n');
 
     let rawEncoded;
     let leaves = [];
@@ -32,12 +34,14 @@ async function main(allocations_) {
 
     for (let i = 0; i < length; ++i) {
         rawEncoded = coder.encode(
-            ['Allocation(string tagId,address account,uint256 amount)'],
+            [
+                'Allocation(string tagId,address account,uint256 paymentTokenAmount)',
+            ],
             [
                 [
                     allocations[i].tagId,
                     allocations[i].account,
-                    allocations[i].amount,
+                    allocations[i].paymentTokenAmount,
                 ],
             ]
         );

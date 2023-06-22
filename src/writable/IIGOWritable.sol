@@ -11,7 +11,7 @@ interface IIGOWritable {
      * @param proof Merkle proof to verify the allocation.
      * @param permission Permission granted by user off-chain.
      */
-    function buyTokens(
+    function reserveAllocation(
         uint256 amount,
         IIGOWritableInternal.Allocation calldata allocation,
         bytes32[] calldata proof,

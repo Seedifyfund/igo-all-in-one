@@ -7,7 +7,8 @@ interface IIGOWritableInternal {
     struct Allocation {
         string tagId;
         address account;
-        uint256 amount;
+        // amount the user can spend, expressed in IGOStruct.SetUp.paymentToken OR Tag.paymentToken
+        uint256 paymentTokenAmount;
     }
 
     struct BuyPermission {
@@ -18,6 +19,13 @@ interface IIGOWritableInternal {
         // a unique value for every token owner's signature to prevent signature replays
         uint256 nonce;
     }
+
+    event AllocationReserved(
+        string indexed tagId,
+        address indexed buyer,
+        uint256 indexed paymentTokenAmount,
+        address paymentToken
+    );
 
     error IGOWritableInternal_IGONotOpened(ISharedInternal.Stage current);
     error IGOWritableInternal_TagNotOpened(

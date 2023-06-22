@@ -20,7 +20,7 @@ contract IGOWritable is
     ReentrancyGuard
 {
     /// @inheritdoc IIGOWritable
-    function buyTokens(
+    function reserveAllocation(
         uint256 amount,
         Allocation calldata allocation,
         bytes32[] calldata proof,
@@ -37,7 +37,7 @@ contract IGOWritable is
         _requireAllocationNotExceededInTag(
             amount,
             allocation.account,
-            allocation.amount,
+            allocation.paymentTokenAmount,
             tagId
         );
         _requireAuthorizedAccount(allocation.account);
@@ -60,7 +60,14 @@ contract IGOWritable is
             ? paymentToken
             : setUp.paymentToken;
 
-        _buyTokensOnce(setUp, paymentToken, amount, permission);
+        _reserveFullAllocation(setUp, paymentToken, amount, permission);
+
+        emit AllocationReserved(
+            tagId,
+            allocation.account,
+            amount,
+            paymentToken
+        );
     }
 
     function initialize(

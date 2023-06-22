@@ -14,7 +14,7 @@ contract IGO_EIP712_Test is IGOSetUp {
     function setUp() public override {
         super.setUp();
         buyer = allocations[0].account;
-        amount = allocations[0].amount;
+        amount = allocations[0].paymentTokenAmount;
         nonce = 12432523;
     }
 

@@ -44,6 +44,10 @@ contract IGOReadable is
         grandTotal = setUp_.grandTotal;
     }
 
+    function summedMaxTagCap() external view returns (uint256) {
+        return IGOStorage.layout().setUp.summedMaxTagCap;
+    }
+
     function tag(
         string memory tagId
     ) external view override returns (Tag memory tag_) {

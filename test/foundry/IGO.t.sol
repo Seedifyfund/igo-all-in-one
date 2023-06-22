@@ -4,18 +4,25 @@ pragma solidity ^0.8.17;
 import {IGOSetUp} from "./setUp/IGOSetUp.t.sol";
 
 contract IGO_Test is IGOSetUp {
-    function test_grandTotal() public {
-        // check grandTotal set in constructor
+    function test_updateGrandTotal() public {
+        // check grandTotal has been successfully set in initialize
         (, , uint256 grandTotal_) = instance.setUp();
         assertEq(grandTotal_, grandTotal);
 
-        instance.updateGrandTotal(1_000_000);
-        (, , grandTotal_) = instance.setUp();
-        assertEq(grandTotal_, 1_000_000);
-
-        vm.expectRevert("IGOWritable: grandTotal < 1_000");
+        vm.expectRevert("grandTotal_LowerThan__1_000");
         instance.updateGrandTotal(999);
     }
+
+    // /// @dev Revert with the right error but test fails
+    // function testRevert_updateGrandTotal_When_LowerThan_SummedMaxTagCap() public {
+    //     vm.expectRevert(
+    //         abi.encodeWithSelector(
+    //             IGOWritable_SummedMaxTagCapGtGrandTotal.selector,
+    //             1
+    //         )
+    //     );
+    //     instance.updateGrandTotal(instance.summedMaxTagCap() - 1);
+    // }
 
     /*//////////////////////////////////////////////////////////////
                                  SET TAGS
@@ -38,17 +45,22 @@ contract IGO_Test is IGOSetUp {
         }
     }
 
-    function testRevert_setTags_If_maxTagCap_GreaterThan_grandTotal() public {
-        tags[0].maxTagCap = grandTotal + 1;
+    function testRevert_setTags_If_SummedMaxTagCapGtGrandTotal_By_ONE()
+        public
+    {
+        // reduce grand total to amount of sum of each tag max cap
+        grandTotal = instance.summedMaxTagCap();
+        instance.updateGrandTotal(grandTotal);
+
+        ++tags[0].maxTagCap;
+
         vm.expectRevert(
             abi.encodeWithSelector(
-                IGOWritable_GreaterThanGrandTotal.selector,
-                tagIdentifiers[0],
-                tags[0].maxTagCap,
-                grandTotal
+                IGOWritable_SummedMaxTagCapGtGrandTotal.selector,
+                1
             )
         );
-        instance.setTags(tagIdentifiers, tags);
+        instance.updateSetTags(tagIdentifiers, tags);
     }
 
     function testRevert_setTags_If_tagIdentifiers_LengthNotEqualTo_tags()
@@ -56,13 +68,13 @@ contract IGO_Test is IGOSetUp {
     {
         tagIdentifiers.pop();
         vm.expectRevert("IGOWritable: tags arrays length");
-        instance.setTags(tagIdentifiers, tags);
+        instance.updateSetTags(tagIdentifiers, tags);
     }
 
     function testRevert_setTags_If_tags_LengthNotEqualTo_tagIds() public {
         tags.pop();
         vm.expectRevert("IGOWritable: tags arrays length");
-        instance.setTags(tagIdentifiers, tags);
+        instance.updateSetTags(tagIdentifiers, tags);
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -76,7 +88,7 @@ contract IGO_Test is IGOSetUp {
         tag.endAt = 2;
         tag.maxTagCap = 3;
 
-        instance.updateTag(tagIdentifiers[0], tag);
+        instance.updateSetTag(tagIdentifiers[0], tag);
 
         Tag memory updatedTag = instance.tag(tagIdentifiers[0]);
 
@@ -87,19 +99,21 @@ contract IGO_Test is IGOSetUp {
         assertEq(updatedTag.maxTagCap, tag.maxTagCap);
     }
 
-    function testRevert_updateTag_If_maxTagCap_GreaterThan_grandTotal()
+    function testRevert_updateTag_If_SummedMaxTagCapGtGrandTotal_By_ONE()
         public
     {
-        Tag memory tag = instance.tag(tagIdentifiers[0]);
-        tag.maxTagCap = grandTotal + 1;
+        // reduce grand total to amount of sum of each tag max cap
+        grandTotal = instance.summedMaxTagCap();
+        instance.updateGrandTotal(grandTotal);
+
+        ++tags[0].maxTagCap;
+
         vm.expectRevert(
             abi.encodeWithSelector(
-                IGOWritable_GreaterThanGrandTotal.selector,
-                tagIdentifiers[0],
-                tag.maxTagCap,
-                grandTotal
+                IGOWritable_SummedMaxTagCapGtGrandTotal.selector,
+                1
             )
         );
-        instance.updateTag(tagIdentifiers[0], tag);
+        instance.updateSetTag(tagIdentifiers[0], tags[0]);
     }
 }

@@ -59,9 +59,18 @@ contract IGOSetUp is
 
         __createDefaultTags();
 
-        instance.setTags(tagIdentifiers, tags);
+        instance.updateSetTags(tagIdentifiers, tags);
 
         __createDefaultAllocations();
+    }
+
+    function test_SetUpState_setTags_SavesSummedMaxTagCap() public {
+        uint256 summedMaxTagCap = 0;
+        for (uint256 i; i < tags.length; ++i) {
+            summedMaxTagCap += tags[i].maxTagCap;
+        }
+
+        assertEq(summedMaxTagCap, instance.summedMaxTagCap());
     }
 
     function __createDefaultTags() private {
@@ -82,11 +91,12 @@ contract IGOSetUp is
             tags.push(
                 Tag(
                     Stage.NOT_STARTED,
-                    bytes32(0),
+                    bytes32("etc"),
                     uint128(block.timestamp) + lastStart,
                     uint128(block.timestamp) + lastEnd,
                     maxTagAllocation,
-                    address(0)
+                    address(0),
+                    1 ether
                 )
             );
 
@@ -117,7 +127,7 @@ contract IGOSetUp is
         deal(
             address(token),
             allocations[0].account,
-            allocations[0].amount + 10_000 ether
+            allocations[0].paymentTokenAmount + 10_000 ether
         );
     }
 
@@ -132,33 +142,43 @@ contract IGOSetUp is
     function _increaseMaxTagCapBy(uint256 by) internal {
         Tag memory tag_ = instance.tag(allocations[0].tagId);
         tag_.maxTagCap += by;
-        instance.updateTag(allocations[0].tagId, tag_);
+        instance.updateSetTag(allocations[0].tagId, tag_);
     }
 
-    function _buyTokens(
+    function _reserveAllocation(
         uint256 amount,
         Allocation memory allocation,
         bytes32[] memory proof
     ) internal {
-        __buyTokens(address(token), amount, allocation, proof);
+        __reserveAllocation(address(token), amount, allocation, proof);
     }
 
-    function _buyTokens(
+    function _reserveAllocation(
         Allocation memory allocation,
         bytes32[] memory proof
     ) internal {
-        __buyTokens(address(token), allocation.amount, allocation, proof);
+        __reserveAllocation(
+            address(token),
+            allocation.paymentTokenAmount,
+            allocation,
+            proof
+        );
     }
 
-    function _buyTokensWithTagToken(
+    function _reserveAllocationWithTagToken(
         address tagToken,
         Allocation memory allocation,
         bytes32[] memory proof
     ) internal {
-        __buyTokens(tagToken, allocation.amount, allocation, proof);
+        __reserveAllocation(
+            tagToken,
+            allocation.paymentTokenAmount,
+            allocation,
+            proof
+        );
     }
 
-    function __buyTokens(
+    function __reserveAllocation(
         address token_,
         uint256 amount,
         Allocation memory allocation,
@@ -178,7 +198,7 @@ contract IGOSetUp is
         permission.nonce = nonce;
 
         vm.prank(allocation.account);
-        instance.buyTokens(amount, allocation, proof, permission);
+        instance.reserveAllocation(amount, allocation, proof, permission);
     }
 
     function __setUpTestData(address token_) private {
@@ -188,9 +208,9 @@ contract IGOSetUp is
         // update merkle root & stage
         tags[0].merkleRoot = merkleRoot;
         tags[0].stage = Stage.OPENED;
-        tags[0].maxTagCap = allocations[0].amount;
+        tags[0].maxTagCap = allocations[0].paymentTokenAmount;
         tags[0].paymentToken = token_;
-        instance.updateTag(tagIdentifiers[0], tags[0]);
+        instance.updateSetTag(tagIdentifiers[0], tags[0]);
 
         instance.openIGO();
     }
