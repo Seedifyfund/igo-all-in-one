@@ -78,6 +78,10 @@ contract IGOWritable is
     ) external override initializer onlyOwner {
         require(owner != address(0), "IGOWritable__owner_ZERO_ADDRESS");
         require(
+            setUp.vestingContract != address(0),
+            "IGOWritable__vestingContract_ZERO_ADDRESS"
+        );
+        require(
             setUp.paymentToken != address(0),
             "IGOWritable__paymentToken_ZERO_ADDRESS"
         );

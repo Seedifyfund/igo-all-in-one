@@ -3,6 +3,8 @@ pragma solidity ^0.8.17;
 
 import "forge-std/Script.sol";
 
+import {IIGOVesting} from "igo-all-in-one/IIGOVesting.sol";
+
 import {ISharedInternal} from "../../src/shared/ISharedInternal.sol";
 import {IGO} from "../../src/IGO.sol";
 import {IGOStorage} from "../../src/IGO.sol";
@@ -39,6 +41,7 @@ contract IGOFactory_create_testnet is Script {
         );
 
         IGOStorage.SetUp memory igoSetUp = IGOStorage.SetUp({
+            vestingContract: address(0),
             paymentToken: address(new Token_Mock()),
             permit2: address(0x000000000022D473030F116dDEE9F6B43aC78BA3), // bsc
             treasuryWallet: vm.addr(privateKey),
@@ -46,12 +49,32 @@ contract IGOFactory_create_testnet is Script {
             summedMaxTagCap: 0
         });
 
+        IIGOVesting.ContractSetup memory contractSetup = IIGOVesting
+            .ContractSetup({
+                _innovator: address(0),
+                _paymentReceiver: address(0),
+                _vestedToken: address(0),
+                _paymentToken: address(0),
+                _tiers: address(0),
+                _totalTokenOnSale: 0,
+                _gracePeriod: 0
+            });
+        IIGOVesting.VestingSetup memory vestingSetup = IIGOVesting
+            .VestingSetup({
+                _startTime: 0,
+                _cliff: 0,
+                _duration: 0,
+                _initialUnlockPercent: 0
+            });
+
         //slither-disable-next-line unused-return
         factory.createIGO(
             "test",
             igoSetUp,
             new string[](0),
-            new ISharedInternal.Tag[](0)
+            new ISharedInternal.Tag[](0),
+            contractSetup,
+            vestingSetup
         );
 
         vm.stopBroadcast();
