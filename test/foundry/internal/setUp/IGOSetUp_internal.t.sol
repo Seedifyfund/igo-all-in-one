@@ -55,7 +55,7 @@ contract IGOSetUp_internal is
             tags.push(
                 Tag(
                     Stage.NOT_STARTED,
-                    bytes32(0),
+                    bytes32("etc"),
                     uint128(block.timestamp) + lastStart,
                     uint128(block.timestamp) + lastEnd,
                     maxTagAllocation,

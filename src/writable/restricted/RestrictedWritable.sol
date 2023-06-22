@@ -35,16 +35,22 @@ contract RestrictedWritable is
     function updateGrandTotal(
         uint256 grandTotal_
     ) external override onlyOwner {
-        require(grandTotal_ >= 1_000, "IGOWritable: grandTotal < 1_000");
+        require(grandTotal_ >= 1_000, "grandTotal_LowerThan__1_000");
+        _isSummedMaxTagCapLteGrandTotal(
+            IGOStorage.layout().setUp.summedMaxTagCap,
+            grandTotal_
+        );
         IGOStorage.layout().setUp.grandTotal = grandTotal_;
     }
 
     /// @inheritdoc IRestrictedWritable
     function updateToken(address token_) external override onlyOwner {
+        require(token_ != address(0), "Token_ZERO_ADDRESS");
         IGOStorage.layout().setUp.paymentToken = token_;
     }
 
     function updateTreasuryWallet(address addr) external override onlyOwner {
+        require(addr != address(0), "TreasuryWallet_ZERO_ADDRESS");
         IGOStorage.layout().setUp.treasuryWallet = addr;
     }
 
@@ -53,6 +59,7 @@ contract RestrictedWritable is
         address token,
         address to
     ) external override onlyOwner {
+        require(token != address(0), "Token_ZERO_ADDRESS");
         uint256 amount = IERC20(token).balanceOf(address(this));
         IERC20(token).safeTransfer(to, amount);
     }
@@ -63,6 +70,7 @@ contract RestrictedWritable is
         string calldata tagId_,
         ISharedInternal.Tag calldata tag_
     ) external override onlyOwner {
+        require(_isValidTag(tag_), "INVALID_TAG");
         ISharedInternal.Tag memory oldTagData = IGOStorage.layout().tags.data[
             tagId_
         ];
@@ -115,6 +123,7 @@ contract RestrictedWritable is
         string memory tagId,
         bytes32 merkleRoot
     ) external override onlyOwner {
+        require(merkleRoot != bytes32(0), "MerkleRoot_EMPTY");
         IGOStorage.layout().tags.data[tagId].merkleRoot = merkleRoot;
     }
 
@@ -122,6 +131,7 @@ contract RestrictedWritable is
         string memory tagId,
         uint128 startAt
     ) external override onlyOwner {
+        require(startAt >= block.timestamp, "START_IN_PAST");
         IGOStorage.layout().tags.data[tagId].startAt = startAt;
     }
 
@@ -129,6 +139,7 @@ contract RestrictedWritable is
         string memory tagId,
         uint128 endAt
     ) external override onlyOwner {
+        require(endAt > block.timestamp, "END_IN_PAST");
         IGOStorage.layout().tags.data[tagId].endAt = endAt;
     }
 

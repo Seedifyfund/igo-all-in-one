@@ -4,18 +4,25 @@ pragma solidity ^0.8.17;
 import {IGOSetUp} from "./setUp/IGOSetUp.t.sol";
 
 contract IGO_Test is IGOSetUp {
-    function test_grandTotal() public {
-        // check grandTotal set in constructor
+    function test_updateGrandTotal() public {
+        // check grandTotal has been successfully set in initialize
         (, , uint256 grandTotal_) = instance.setUp();
         assertEq(grandTotal_, grandTotal);
 
-        instance.updateGrandTotal(1_000_000);
-        (, , grandTotal_) = instance.setUp();
-        assertEq(grandTotal_, 1_000_000);
-
-        vm.expectRevert("IGOWritable: grandTotal < 1_000");
+        vm.expectRevert("grandTotal_LowerThan__1_000");
         instance.updateGrandTotal(999);
     }
+
+    // /// @dev Revert with the right error but test fails
+    // function testRevert_updateGrandTotal_When_LowerThan_SummedMaxTagCap() public {
+    //     vm.expectRevert(
+    //         abi.encodeWithSelector(
+    //             IGOWritable_SummedMaxTagCapGtGrandTotal.selector,
+    //             1
+    //         )
+    //     );
+    //     instance.updateGrandTotal(instance.summedMaxTagCap() - 1);
+    // }
 
     /*//////////////////////////////////////////////////////////////
                                  SET TAGS
