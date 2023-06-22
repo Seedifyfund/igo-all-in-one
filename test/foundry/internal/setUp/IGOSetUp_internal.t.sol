@@ -33,7 +33,7 @@ contract IGOSetUp_internal is
         instance.updateGrandTotal(grandTotal);
 
         __createDefaultTags();
-        instance.setTags(tagIdentifiers, tags);
+        instance.updateSetTags(tagIdentifiers, tags);
         __createDefaultAllocations();
     }
 
@@ -55,7 +55,7 @@ contract IGOSetUp_internal is
             tags.push(
                 Tag(
                     Stage.NOT_STARTED,
-                    bytes32(0),
+                    bytes32("etc"),
                     uint128(block.timestamp) + lastStart,
                     uint128(block.timestamp) + lastEnd,
                     maxTagAllocation,

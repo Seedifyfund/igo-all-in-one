@@ -27,6 +27,8 @@ contract RestrictedWritableInternal is IRestrictedWritableInternal {
         //slither-disable-next-line uninitialized-local
         for (uint256 i; i < length; ++i) {
             oldTagData = tags.data[tagIdentifiers_[i]];
+            require(_isValidTag(tags_[i]), "INVALID_TAG");
+
             _canPaymentTokenOrPriceBeUpdated(
                 oldTagData.stage,
                 oldTagData.paymentToken,
@@ -49,6 +51,16 @@ contract RestrictedWritableInternal is IRestrictedWritableInternal {
             tags.data[tagIdentifiers_[i]] = tags_[i];
         }
         IGOStorage.layout().setUp.summedMaxTagCap = summedMaxTagCap;
+    }
+
+    function _isValidTag(
+        ISharedInternal.Tag memory tag_
+    ) internal view returns (bool) {
+        return
+            tag_.merkleRoot != bytes32(0) &&
+            tag_.startAt >= block.timestamp &&
+            tag_.endAt > block.timestamp &&
+            tag_.maxTagCap > 0;
     }
 
     /**
