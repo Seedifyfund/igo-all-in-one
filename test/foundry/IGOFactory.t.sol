@@ -24,7 +24,7 @@ contract IGOFactory_test is Test, ISharedInternal {
     IIGOVesting.ContractSetup public contractSetup;
     IIGOVesting.VestingSetup public vestingSetup;
 
-    address public treasuryWallet = makeAddr("treasuryWallet");
+    address public vestingContract;
 
     uint256 public grandTotal = 50_000_000 ether;
 
@@ -37,7 +37,6 @@ contract IGOFactory_test is Test, ISharedInternal {
             address(0),
             address(token),
             permit2Addr,
-            treasuryWallet,
             grandTotal,
             0
         );
@@ -52,7 +51,8 @@ contract IGOFactory_test is Test, ISharedInternal {
         );
         vestingSetup = IIGOVesting.VestingSetup(0, 0, 0, 0);
 
-        (address addr, ) = factory.createIGO(
+        address addr;
+        (addr, vestingContract) = factory.createIGO(
             "test",
             igoSetUp,
             new string[](0),

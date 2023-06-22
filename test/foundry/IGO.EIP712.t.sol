@@ -39,7 +39,7 @@ contract IGO_EIP712_Test is IGOSetUp {
         ISignatureTransfer.SignatureTransferDetails memory transferDetails;
         permit = _createPermit(address(token), amount, nonce);
         transferDetails = ISignatureTransfer.SignatureTransferDetails({
-            to: treasuryWallet,
+            to: vestingContract,
             requestedAmount: amount
         });
 
