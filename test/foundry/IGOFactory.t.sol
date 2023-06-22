@@ -8,6 +8,7 @@ import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
 import {ISharedInternal} from "../../src/shared/ISharedInternal.sol";
 
 import {IGO} from "../../src/IGO.sol";
+import {IGOStorage} from "../../src/IGOStorage.sol";
 import {IGOFactory} from "../../src/IGOFactory.sol";
 
 contract IGOFactory_test is Test, ISharedInternal {
@@ -17,6 +18,7 @@ contract IGOFactory_test is Test, ISharedInternal {
     IGOFactory public factory;
     IGO public instance;
     ERC20 public token;
+    IGOStorage.SetUp public igoSetUp;
 
     address public treasuryWallet = makeAddr("treasuryWallet");
 
@@ -26,12 +28,18 @@ contract IGOFactory_test is Test, ISharedInternal {
         factory = new IGOFactory();
 
         token = new ERC20("Mock", "MCK");
-        address addr = factory.createIGO(
-            "test",
+
+        igoSetUp = IGOStorage.SetUp(
             address(token),
             permit2Addr,
             treasuryWallet,
             grandTotal,
+            0
+        );
+
+        address addr = factory.createIGO(
+            "test",
+            igoSetUp,
             new string[](0),
             new Tag[](0)
         );
@@ -58,10 +66,7 @@ contract IGOFactory_test is Test, ISharedInternal {
         vm.expectRevert("Ownable: caller is not the owner");
         factory.createIGO(
             "someone-test",
-            address(token),
-            permit2Addr,
-            treasuryWallet,
-            grandTotal,
+            igoSetUp,
             new string[](0),
             new Tag[](0)
         );
@@ -69,14 +74,6 @@ contract IGOFactory_test is Test, ISharedInternal {
 
     function testRevert_createIGO_If_SameName() public {
         vm.expectRevert("IGOFactory: IGO already exists");
-        factory.createIGO(
-            "test",
-            address(token),
-            permit2Addr,
-            treasuryWallet,
-            grandTotal,
-            new string[](0),
-            new Tag[](0)
-        );
+        factory.createIGO("test", igoSetUp, new string[](0), new Tag[](0));
     }
 }

@@ -5,6 +5,7 @@ import "forge-std/Script.sol";
 
 import {ISharedInternal} from "../../src/shared/ISharedInternal.sol";
 import {IGO} from "../../src/IGO.sol";
+import {IGOStorage} from "../../src/IGO.sol";
 import {IGOFactory} from "../../src/IGOFactory.sol";
 
 import {Token_Mock} from "../../test/mock/Token_Mock.sol";
@@ -37,13 +38,18 @@ contract IGOFactory_create_testnet is Script {
             0x619BE601822B5e5DBD8afCB56431D6676CcA2734
         );
 
+        IGOStorage.SetUp memory igoSetUp = IGOStorage.SetUp({
+            paymentToken: address(new Token_Mock()),
+            permit2: address(0x000000000022D473030F116dDEE9F6B43aC78BA3), // bsc
+            treasuryWallet: vm.addr(privateKey),
+            grandTotal: 1_000_000,
+            summedMaxTagCap: 0
+        });
+
         //slither-disable-next-line unused-return
         factory.createIGO(
             "test",
-            address(new Token_Mock()),
-            0x000000000022D473030F116dDEE9F6B43aC78BA3, // bsc
-            vm.addr(privateKey),
-            1_000_000,
+            igoSetUp,
             new string[](0),
             new ISharedInternal.Tag[](0)
         );

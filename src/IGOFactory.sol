@@ -4,10 +4,9 @@ pragma solidity ^0.8.17;
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 import {ReentrancyGuard} from "openzeppelin-contracts/security/ReentrancyGuard.sol";
 
-import {IIGOWritable} from "./writable/IIGOWritable.sol";
-import {ISharedInternal} from "./shared/ISharedInternal.sol";
-
 import {IGO} from "./IGO.sol";
+
+import {IGOStorage} from "./IGOStorage.sol";
 
 /// @dev Contract to deploy IGOs one the fly, in one transaction
 contract IGOFactory is Ownable, ReentrancyGuard {
@@ -24,12 +23,9 @@ contract IGOFactory is Ownable, ReentrancyGuard {
 
     function createIGO(
         string memory igoName,
-        address token,
-        address permit2,
-        address treasuryWallet,
-        uint256 grandTotal_,
-        string[] memory tagIds_,
-        ISharedInternal.Tag[] memory tags
+        IGOStorage.SetUp memory setUp,
+        string[] memory tagIds,
+        IGO.Tag[] memory tags
     ) external nonReentrant onlyOwner returns (address igo) {
         require(
             address(_igos[igoName]) == address(0),
@@ -46,15 +42,7 @@ contract IGOFactory is Ownable, ReentrancyGuard {
         _igoNames.push(igoName);
         _igos[igoName] = igo;
 
-        IIGOWritable(igo).initialize(
-            _msgSender(),
-            token,
-            permit2,
-            treasuryWallet,
-            grandTotal_,
-            tagIds_,
-            tags
-        );
+        IGO(igo).initialize(_msgSender(), setUp, tagIds, tags);
 
         emit IGOCreated(igoName, address(igo));
     }

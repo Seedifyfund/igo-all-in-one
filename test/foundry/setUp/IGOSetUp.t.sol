@@ -6,6 +6,7 @@ import "forge-std/Test.sol";
 import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
 
 import {IGO} from "../../../src/IGO.sol";
+import {IGOStorage} from "../../../src/IGOStorage.sol";
 import {IGOFactory} from "../../../src/IGOFactory.sol";
 import {IIGOWritableInternal} from "../../../src/writable/IIGOWritableInternal.sol";
 import {IRestrictedWritableInternal} from "../../../src/writable/restricted/IRestrictedWritableInternal.sol";
@@ -30,6 +31,7 @@ contract IGOSetUp is
     IGOFactory public factory;
     IGO public instance;
     ERC20 public token;
+    IGOStorage.SetUp public igoSetUp;
 
     address public treasuryWallet = makeAddr("treasuryWallet");
 
@@ -46,12 +48,18 @@ contract IGOSetUp is
         factory = new IGOFactory();
 
         token = new ERC20("Mock", "MCK");
-        address addr = factory.createIGO(
-            "test",
+
+        igoSetUp = IGOStorage.SetUp(
             address(token),
             address(permit2),
             treasuryWallet,
             grandTotal,
+            0
+        );
+
+        address addr = factory.createIGO(
+            "test",
+            igoSetUp,
             new string[](0),
             new Tag[](0)
         );
