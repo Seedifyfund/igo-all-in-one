@@ -3,6 +3,7 @@ pragma solidity ^0.8.17;
 
 import {Initializable} from "openzeppelin-contracts/proxy/utils/Initializable.sol";
 import {ReentrancyGuard} from "openzeppelin-contracts/security/ReentrancyGuard.sol";
+import {IIGOVesting} from "igo-all-in-one/IIGOVesting.sol";
 
 import {IIGOWritable} from "./IIGOWritable.sol";
 import {ISharedInternal} from "../shared/ISharedInternal.sol";
@@ -59,6 +60,14 @@ contract IGOWritable is
         paymentToken = paymentToken != address(0)
             ? paymentToken
             : setUp.paymentToken;
+
+        IIGOVesting(setUp.vestingContract).setCrowdfundingWhitelist(
+            tagId,
+            allocation.account,
+            amount,
+            paymentToken,
+            (amount * tag.projectTokenPrice) / 1e18
+        );
 
         _reserveFullAllocation(setUp, paymentToken, amount, permission);
 
