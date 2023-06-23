@@ -21,7 +21,7 @@ contract IGOSetUp_internal is
 {
     IGOWritable_Mock public instance;
 
-    address public treasuryWallet = makeAddr("treasuryWallet");
+    address public vestingContract = makeAddr("vestingContract");
     uint256 public grandTotal = 50_000_000 ether;
     string[] public tagIdentifiers;
     Tag[] public tags;

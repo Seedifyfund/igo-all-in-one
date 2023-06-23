@@ -70,6 +70,7 @@ contract IGOFactory is Ownable, ReentrancyGuard {
             contractSetup,
             vestingSetup
         );
+        IGOVesting(vesting).transferOwnership(igo);
 
         emit IGOCreated(igoName, igo, vesting);
     }

@@ -50,11 +50,6 @@ contract RestrictedWritable is
         IGOStorage.layout().setUp.paymentToken = token_;
     }
 
-    function updateTreasuryWallet(address addr) external override onlyOwner {
-        require(addr != address(0), "TreasuryWallet_ZERO_ADDRESS");
-        IGOStorage.layout().setUp.treasuryWallet = addr;
-    }
-
     /// @inheritdoc IRestrictedWritable
     function recoverLostERC20(
         address token,

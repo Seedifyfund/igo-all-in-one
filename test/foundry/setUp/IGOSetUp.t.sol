@@ -3,7 +3,7 @@ pragma solidity ^0.8.17;
 
 import "forge-std/Test.sol";
 
-import {IIGOVesting} from "igo-all-in-one/IIGOVesting.sol";
+import {IIGOVesting} from "igo-all-in-one/interfaces/IIGOVesting.sol";
 
 import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
 
@@ -37,7 +37,7 @@ contract IGOSetUp is
     IIGOVesting.ContractSetup public contractSetup;
     IIGOVesting.VestingSetup public vestingSetup;
 
-    address public treasuryWallet = makeAddr("treasuryWallet");
+    address public vestingContract;
 
     uint256 public grandTotal = 50_000_000 ether;
     string[] public tagIdentifiers;
@@ -57,22 +57,23 @@ contract IGOSetUp is
             address(0),
             address(token),
             address(permit2),
-            treasuryWallet,
             grandTotal,
             0
         );
-        contractSetup = IIGOVesting.ContractSetup(
-            address(0),
-            address(0),
-            address(0),
-            address(0),
-            address(0),
-            0,
-            0
-        );
+        contractSetup = IIGOVesting.ContractSetup({
+            _innovator: address(0),
+            _paymentReceiver: address(0),
+            _admin: address(0),
+            _vestedToken: address(0),
+            _tiers: address(0),
+            _platformFee: 0,
+            _totalTokenOnSale: 0,
+            _gracePeriod: 0
+        });
         vestingSetup = IIGOVesting.VestingSetup(0, 0, 0, 0);
 
-        (address addr, ) = factory.createIGO(
+        address addr;
+        (addr, vestingContract) = factory.createIGO(
             "test",
             igoSetUp,
             new string[](0),

@@ -3,7 +3,7 @@ pragma solidity ^0.8.17;
 
 import "forge-std/Script.sol";
 
-import {IIGOVesting} from "igo-all-in-one/IIGOVesting.sol";
+import {IIGOVesting} from "igo-all-in-one/interfaces/IIGOVesting.sol";
 
 import {ISharedInternal} from "../../src/shared/ISharedInternal.sol";
 import {IGO} from "../../src/IGO.sol";
@@ -44,7 +44,6 @@ contract IGOFactory_create_testnet is Script {
             vestingContract: address(0),
             paymentToken: address(new Token_Mock()),
             permit2: address(0x000000000022D473030F116dDEE9F6B43aC78BA3), // bsc
-            treasuryWallet: vm.addr(privateKey),
             grandTotal: 1_000_000,
             summedMaxTagCap: 0
         });
@@ -53,9 +52,10 @@ contract IGOFactory_create_testnet is Script {
             .ContractSetup({
                 _innovator: address(0),
                 _paymentReceiver: address(0),
+                _admin: address(0),
                 _vestedToken: address(0),
-                _paymentToken: address(0),
                 _tiers: address(0),
+                _platformFee: 0,
                 _totalTokenOnSale: 0,
                 _gracePeriod: 0
             });

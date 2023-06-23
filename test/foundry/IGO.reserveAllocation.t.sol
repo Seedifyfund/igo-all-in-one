@@ -14,7 +14,7 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
     }
 
     function test_token() public {
-        (address token_, , ) = instance.setUp();
+        (, address token_, ) = instance.setUp();
         assertEq(token_, address(token));
     }
 
@@ -23,7 +23,7 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
 
         // before buying tokens
         uint256 balanceBeforeBuy = token.balanceOf(buyer);
-        assertEq(token.balanceOf(treasuryWallet), 0);
+        assertEq(token.balanceOf(vestingContract), 0);
 
         _reserveAllocation(allocations[0], lastProof);
 
@@ -33,7 +33,7 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
             balanceBeforeBuy - allocations[0].paymentTokenAmount
         );
         assertEq(
-            token.balanceOf(treasuryWallet),
+            token.balanceOf(vestingContract),
             allocations[0].paymentTokenAmount
         );
     }
@@ -91,7 +91,7 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
         );
 
         assertEq(
-            tagToken.balanceOf(treasuryWallet),
+            tagToken.balanceOf(vestingContract),
             allocations[0].paymentTokenAmount
         );
         assertEq(tagToken.balanceOf(allocations[0].account), 0);
@@ -107,11 +107,11 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
         vm.stopPrank();
 
         assertEq(token.balanceOf(address(instance)), lost);
-        assertEq(token.balanceOf(treasuryWallet), 0);
+        assertEq(token.balanceOf(vestingContract), 0);
 
         // forge deployer is the owner
-        instance.recoverLostERC20(address(token), treasuryWallet);
+        instance.recoverLostERC20(address(token), vestingContract);
         assertEq(token.balanceOf(address(instance)), 0);
-        assertEq(token.balanceOf(treasuryWallet), lost);
+        assertEq(token.balanceOf(vestingContract), lost);
     }
 }
