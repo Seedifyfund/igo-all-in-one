@@ -72,29 +72,32 @@ contract IGOWritable is
 
     function initialize(
         address owner,
-        address token,
-        address permit2,
-        address treasuryWallet,
-        uint256 grandTotal_,
+        IGOStorage.SetUp memory setUp,
         string[] memory tagIds_,
         ISharedInternal.Tag[] memory tags
     ) external override initializer onlyOwner {
         require(owner != address(0), "IGOWritable__owner_ZERO_ADDRESS");
-        require(token != address(0), "IGOWritable__token_ZERO_ADDRESS");
-        require(permit2 != address(0), "IGOWritable__permit2_ZERO_ADDRESS");
         require(
-            treasuryWallet != address(0),
+            setUp.vestingContract != address(0),
+            "IGOWritable__vestingContract_ZERO_ADDRESS"
+        );
+        require(
+            setUp.paymentToken != address(0),
+            "IGOWritable__paymentToken_ZERO_ADDRESS"
+        );
+        require(
+            setUp.permit2 != address(0),
+            "IGOWritable__permit2_ZERO_ADDRESS"
+        );
+        require(
+            setUp.treasuryWallet != address(0),
             "IGOWritable__treasuryWallet_ZERO_ADDRESS"
         );
-        require(grandTotal_ > 0, "IGOWritable__grandTotal_ZERO");
+        require(setUp.grandTotal > 0, "IGOWritable__grandTotal_ZERO");
 
         _transferOwnership(owner);
 
-        IGOStorage.SetUp storage setUp_ = IGOStorage.layout().setUp;
-        setUp_.paymentToken = token;
-        setUp_.permit2 = permit2;
-        setUp_.treasuryWallet = treasuryWallet;
-        setUp_.grandTotal = grandTotal_;
+        IGOStorage.layout().setUp = setUp;
 
         _setTags(tagIds_, tags);
     }

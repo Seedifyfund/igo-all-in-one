@@ -4,6 +4,8 @@ pragma solidity ^0.8.17;
 import {IIGOWritableInternal} from "./IIGOWritableInternal.sol";
 import {ISharedInternal} from "../shared/ISharedInternal.sol";
 
+import {IGOStorage} from "../IGOStorage.sol";
+
 interface IIGOWritable {
     /**
      * @param amount Amount of tokens to buy in this transaction.
@@ -20,10 +22,7 @@ interface IIGOWritable {
 
     function initialize(
         address owner,
-        address token,
-        address permit2,
-        address treasuryWallet,
-        uint256 grandTotal_,
+        IGOStorage.SetUp memory setUp,
         string[] memory tagIds_,
         ISharedInternal.Tag[] memory tags
     ) external;

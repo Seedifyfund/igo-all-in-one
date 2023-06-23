@@ -1,36 +1,46 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
+import {IGOVesting} from "igo-all-in-one/IGOVesting.sol";
+
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 import {ReentrancyGuard} from "openzeppelin-contracts/security/ReentrancyGuard.sol";
 
-import {IIGOWritable} from "./writable/IIGOWritable.sol";
-import {ISharedInternal} from "./shared/ISharedInternal.sol";
-
 import {IGO} from "./IGO.sol";
+
+import {IGOStorage} from "./IGOStorage.sol";
 
 /// @dev Contract to deploy IGOs one the fly, in one transaction
 contract IGOFactory is Ownable, ReentrancyGuard {
     address public defaultIgo;
+    address public defaultVesting;
     string[] internal _igoNames;
     mapping(string => address) internal _igos;
 
     event DefaultIgoUpdated(address oldDefaultIgo, address newDefaultIgo);
-    event IGOCreated(string indexed igoName, address indexed igo);
+    event DefaultVestingUpdated(
+        address oldDefaultVesting,
+        address newDefaultVesting
+    );
+    event IGOCreated(
+        string indexed igoName,
+        address indexed igo,
+        address indexed vesting
+    );
 
     constructor() {
         defaultIgo = address(new IGO());
+        defaultVesting = address(new IGOVesting());
     }
 
     function createIGO(
         string memory igoName,
-        address token,
-        address permit2,
-        address treasuryWallet,
-        uint256 grandTotal_,
-        string[] memory tagIds_,
-        ISharedInternal.Tag[] memory tags
-    ) external nonReentrant onlyOwner returns (address igo) {
+        IGOStorage.SetUp memory setUp,
+        string[] memory tagIds,
+        IGO.Tag[] memory tags,
+        IGOVesting.ContractSetup memory contractSetup,
+        IGOVesting.VestingSetup memory vestingSetup
+    ) external nonReentrant onlyOwner returns (address igo, address vesting) {
         require(
             address(_igos[igoName]) == address(0),
             "IGOFactory: IGO already exists"
@@ -43,20 +53,25 @@ contract IGOFactory is Ownable, ReentrancyGuard {
             igo := create2(0, add(bytecode, 32), mload(bytecode), salt)
         }
 
+        // slither-disable-next-line too-many-digits
+        bytecode = type(IGOVesting).creationCode;
+        assembly {
+            vesting := create2(0, add(bytecode, 32), mload(bytecode), salt)
+        }
+
+        setUp.vestingContract = vesting;
+        setUp.summedMaxTagCap = 0;
+
         _igoNames.push(igoName);
         _igos[igoName] = igo;
 
-        IIGOWritable(igo).initialize(
-            _msgSender(),
-            token,
-            permit2,
-            treasuryWallet,
-            grandTotal_,
-            tagIds_,
-            tags
+        IGO(igo).initialize(_msgSender(), setUp, tagIds, tags);
+        IGOVesting(vesting).initializeCrowdfunding(
+            contractSetup,
+            vestingSetup
         );
 
-        emit IGOCreated(igoName, address(igo));
+        emit IGOCreated(igoName, igo, vesting);
     }
 
     function igoWithName(
@@ -81,5 +96,17 @@ contract IGOFactory is Ownable, ReentrancyGuard {
         address oldDefaultIgo = defaultIgo;
         defaultIgo = newDefaultIgo;
         emit DefaultIgoUpdated(oldDefaultIgo, newDefaultIgo);
+    }
+
+    function updateDefaultVesting(
+        address newDefaultVesting
+    ) external onlyOwner {
+        require(
+            newDefaultVesting != address(0),
+            "IGOFactory__defaultVesting_ZERO_ADDRESS"
+        );
+        address oldDefaultVesting = defaultVesting;
+        defaultVesting = newDefaultVesting;
+        emit DefaultVestingUpdated(oldDefaultVesting, newDefaultVesting);
     }
 }
