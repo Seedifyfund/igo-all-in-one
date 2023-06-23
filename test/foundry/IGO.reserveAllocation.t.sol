@@ -14,7 +14,7 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
     }
 
     function test_token() public {
-        (address token_, , ) = instance.setUp();
+        (, address token_, ) = instance.setUp();
         assertEq(token_, address(token));
     }
 
