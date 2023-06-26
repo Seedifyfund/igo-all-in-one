@@ -75,7 +75,8 @@ contract IGOSetUp_internal is
                 Allocation(
                     tagIdentifiers[i % tagIdentifiers.length],
                     makeAddr(string.concat("address", Strings.toString(i))),
-                    1_000 ether
+                    1_000 ether,
+                    30 // 30%, refund fee
                 )
             );
         }

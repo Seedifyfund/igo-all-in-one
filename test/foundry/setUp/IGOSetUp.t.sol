@@ -58,7 +58,8 @@ contract IGOSetUp is
             address(token),
             address(permit2),
             grandTotal,
-            0
+            0,
+            2
         );
         contractSetup = IIGOVesting.ContractSetup({
             _innovator: address(0),
@@ -142,7 +143,8 @@ contract IGOSetUp is
                 Allocation(
                     tagIdentifiers[i % tagIdentifiers.length],
                     addr,
-                    1_000 ether
+                    1_000 ether,
+                    30 * igoSetUp.refundFeeDecimals // 30%, refund fee
                 )
             );
             vm.prank(addr);

@@ -9,6 +9,8 @@ interface IIGOWritableInternal {
         address account;
         // amount the user can spend, expressed in IGOStruct.SetUp.paymentToken OR Tag.paymentToken
         uint256 paymentTokenAmount;
+        // take IGOStorage.IGOStruct.SetUp.refundFeeDecimals into account
+        uint256 refundFee;
     }
 
     struct BuyPermission {

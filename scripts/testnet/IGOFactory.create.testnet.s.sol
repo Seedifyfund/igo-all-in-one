@@ -45,7 +45,8 @@ contract IGOFactory_create_testnet is Script {
             paymentToken: address(new Token_Mock()),
             permit2: address(0x000000000022D473030F116dDEE9F6B43aC78BA3), // bsc
             grandTotal: 1_000_000,
-            summedMaxTagCap: 0
+            summedMaxTagCap: 0,
+            refundFeeDecimals: 2
         });
 
         IIGOVesting.ContractSetup memory contractSetup = IIGOVesting

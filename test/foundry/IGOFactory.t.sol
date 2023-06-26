@@ -38,7 +38,8 @@ contract IGOFactory_test is Test, ISharedInternal {
             address(token),
             permit2Addr,
             grandTotal,
-            0
+            0,
+            30 // 30%, refund fee
         );
         contractSetup = IIGOVesting.ContractSetup({
             _innovator: address(0),
