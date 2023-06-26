@@ -3171,7 +3171,7 @@
                         }
                       ],
                       "id": 36079,
-                      "name": "_reserveFullAllocation",
+                      "name": "_reserveAllocation",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 36314,

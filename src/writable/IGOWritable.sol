@@ -69,7 +69,7 @@ contract IGOWritable is
             (amount * tag.projectTokenPrice) / 1e18
         );
 
-        _reserveFullAllocation(setUp, paymentToken, amount, permission);
+        _reserveAllocation(setUp, paymentToken, amount, permission);
 
         emit AllocationReserved(
             tagId,

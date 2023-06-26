@@ -18,7 +18,8 @@ import {IGOStorage} from "../IGOStorage.sol";
 contract IGOWritableInternal is IIGOWritableInternal {
     using SafeERC20 for IERC20;
 
-    function _reserveFullAllocation(
+    /// @dev sends ERC20 from `msg.sender` to vesting schedule
+    function _reserveAllocation(
         IGOStorage.SetUp memory setUp,
         address paymentToken,
         uint256 amount,
