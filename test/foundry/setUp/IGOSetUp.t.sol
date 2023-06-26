@@ -91,13 +91,18 @@ contract IGOSetUp is
         __createDefaultAllocations();
     }
 
-    function test_SetUpState_setTags_SavesSummedMaxTagCap() public {
-        uint256 summedMaxTagCap = 0;
+    function test_SetUpState() public {
+        // Summed max tag cap should be the sum of all max tag caps
+        uint256 summedMaxTagCap_ = 0;
         for (uint256 i; i < tags.length; ++i) {
-            summedMaxTagCap += tags[i].maxTagCap;
+            summedMaxTagCap_ += tags[i].maxTagCap;
         }
+        (, , , uint256 summedMaxTagCap, uint256 refundFeeDecimals) = instance
+            .setUp();
+        assertEq(summedMaxTagCap_, summedMaxTagCap);
 
-        assertEq(summedMaxTagCap, instance.summedMaxTagCap());
+        // Refund fee decimals should be igoSetUp.refundFeeDecimals
+        assertEq(refundFeeDecimals, igoSetUp.refundFeeDecimals);
     }
 
     function __createDefaultTags() private {
