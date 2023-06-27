@@ -58,7 +58,8 @@ contract IGOFactory_create_testnet is Script {
                 _tiers: address(0),
                 _platformFee: 0,
                 _totalTokenOnSale: 0,
-                _gracePeriod: 0
+                _gracePeriod: 0,
+                _decimals: 2
             });
         IIGOVesting.VestingSetup memory vestingSetup = IIGOVesting
             .VestingSetup({

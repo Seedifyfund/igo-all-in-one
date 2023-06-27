@@ -76,7 +76,7 @@ contract IGOSetUp_internal is
                     tagIdentifiers[i % tagIdentifiers.length],
                     makeAddr(string.concat("address", Strings.toString(i))),
                     1_000 ether,
-                    30 // 30%, refund fee
+                    30 * (10 ** 2) // 30%, refund fee with 2 decimals
                 )
             );
         }

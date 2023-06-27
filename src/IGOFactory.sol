@@ -61,6 +61,7 @@ contract IGOFactory is Ownable, ReentrancyGuard {
 
         setUp.vestingContract = vesting;
         setUp.summedMaxTagCap = 0;
+        setUp.refundFeeDecimals = contractSetup._decimals;
 
         _igoNames.push(igoName);
         _igos[igoName] = igo;

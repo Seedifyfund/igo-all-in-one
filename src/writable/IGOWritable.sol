@@ -67,8 +67,7 @@ contract IGOWritable is
             amount,
             paymentToken,
             (amount * tag.projectTokenPrice) / 1e18,
-            allocation.refundFee,
-            setUp.refundFeeDecimals
+            allocation.refundFee
         );
 
         _reserveAllocation(setUp, paymentToken, amount, permission);
