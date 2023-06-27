@@ -36,16 +36,20 @@ contract IGOReadable is
         external
         view
         override
-        returns (address vestingContract, address token, uint256 grandTotal)
+        returns (
+            address vestingContract,
+            address paymentToken,
+            uint256 grandTotal,
+            uint256 summedMaxTagCap,
+            uint256 refundFeeDecimals
+        )
     {
         IGOStorage.SetUp memory setUp_ = IGOStorage.layout().setUp;
         vestingContract = setUp_.vestingContract;
-        token = setUp_.paymentToken;
+        paymentToken = setUp_.paymentToken;
         grandTotal = setUp_.grandTotal;
-    }
-
-    function summedMaxTagCap() external view returns (uint256) {
-        return IGOStorage.layout().setUp.summedMaxTagCap;
+        summedMaxTagCap = setUp_.summedMaxTagCap;
+        refundFeeDecimals = setUp_.refundFeeDecimals;
     }
 
     function tag(

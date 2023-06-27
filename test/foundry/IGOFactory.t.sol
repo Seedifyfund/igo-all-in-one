@@ -38,6 +38,7 @@ contract IGOFactory_test is Test, ISharedInternal {
             address(token),
             permit2Addr,
             grandTotal,
+            0,
             0
         );
         contractSetup = IIGOVesting.ContractSetup({
@@ -48,7 +49,8 @@ contract IGOFactory_test is Test, ISharedInternal {
             _tiers: address(0),
             _platformFee: 0,
             _totalTokenOnSale: 0,
-            _gracePeriod: 0
+            _gracePeriod: 0,
+            _decimals: 2
         });
         vestingSetup = IIGOVesting.VestingSetup(0, 0, 0, 0);
 

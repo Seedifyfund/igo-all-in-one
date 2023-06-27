@@ -58,6 +58,7 @@ contract IGOSetUp is
             address(token),
             address(permit2),
             grandTotal,
+            0,
             0
         );
         contractSetup = IIGOVesting.ContractSetup({
@@ -68,7 +69,8 @@ contract IGOSetUp is
             _tiers: address(0),
             _platformFee: 0,
             _totalTokenOnSale: 0,
-            _gracePeriod: 0
+            _gracePeriod: 0,
+            _decimals: 2
         });
         vestingSetup = IIGOVesting.VestingSetup(0, 0, 0, 0);
 
@@ -90,13 +92,18 @@ contract IGOSetUp is
         __createDefaultAllocations();
     }
 
-    function test_SetUpState_setTags_SavesSummedMaxTagCap() public {
-        uint256 summedMaxTagCap = 0;
+    function test_SetUpState() public {
+        // Summed max tag cap should be the sum of all max tag caps
+        uint256 summedMaxTagCap_ = 0;
         for (uint256 i; i < tags.length; ++i) {
-            summedMaxTagCap += tags[i].maxTagCap;
+            summedMaxTagCap_ += tags[i].maxTagCap;
         }
+        (, , , uint256 summedMaxTagCap, uint256 refundFeeDecimals) = instance
+            .setUp();
+        assertEq(summedMaxTagCap_, summedMaxTagCap);
 
-        assertEq(summedMaxTagCap, instance.summedMaxTagCap());
+        // Refund fee decimals should be igoSetUp.refundFeeDecimals
+        assertEq(refundFeeDecimals, contractSetup._decimals);
     }
 
     function __createDefaultTags() private {
@@ -142,7 +149,8 @@ contract IGOSetUp is
                 Allocation(
                     tagIdentifiers[i % tagIdentifiers.length],
                     addr,
-                    1_000 ether
+                    1_000 ether,
+                    30 * (10 ** contractSetup._decimals) // 30%, refund fee
                 )
             );
             vm.prank(addr);

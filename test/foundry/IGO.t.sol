@@ -6,7 +6,7 @@ import {IGOSetUp} from "./setUp/IGOSetUp.t.sol";
 contract IGO_Test is IGOSetUp {
     function test_updateGrandTotal() public {
         // check grandTotal has been successfully set in initialize
-        (, , uint256 grandTotal_) = instance.setUp();
+        (, , uint256 grandTotal_, , ) = instance.setUp();
         assertEq(grandTotal_, grandTotal);
 
         vm.expectRevert("grandTotal_LowerThan__1_000");
@@ -49,7 +49,7 @@ contract IGO_Test is IGOSetUp {
         public
     {
         // reduce grand total to amount of sum of each tag max cap
-        grandTotal = instance.summedMaxTagCap();
+        (, , , grandTotal, ) = instance.setUp();
         instance.updateGrandTotal(grandTotal);
 
         ++tags[0].maxTagCap;
@@ -103,7 +103,7 @@ contract IGO_Test is IGOSetUp {
         public
     {
         // reduce grand total to amount of sum of each tag max cap
-        grandTotal = instance.summedMaxTagCap();
+        (, , , grandTotal, ) = instance.setUp();
         instance.updateGrandTotal(grandTotal);
 
         ++tags[0].maxTagCap;

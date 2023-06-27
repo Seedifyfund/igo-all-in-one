@@ -19,9 +19,13 @@ interface IIGOReadable {
     function setUp()
         external
         view
-        returns (address vestingContract, address token, uint256 grandTotal);
-
-    function summedMaxTagCap() external view returns (uint256);
+        returns (
+            address vestingContract,
+            address paymentToken,
+            uint256 grandTotal,
+            uint256 summedMaxTagCap,
+            uint256 refundFeeDecimals
+        );
 
     function tag(
         string memory tagId
