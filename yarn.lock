@@ -3108,7 +3108,7 @@ chalk@^2.0.0, chalk@^2.1.0, chalk@^2.4.1, chalk@^2.4.2:
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
 
-chalk@^4.1.0, chalk@^4.1.2:
+chalk@^4.1.0, chalk@^4.1.1, chalk@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.1.2.tgz#aac4e2b7734a740867aeb16bf02aad556a1e7a01"
   integrity sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==
@@ -3360,6 +3360,11 @@ commander@3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/commander/-/commander-3.0.2.tgz#6837c3fb677ad9933d1cfba42dd14d5117d6b39e"
   integrity sha512-Gar0ASD4BDyKC4hl4DwHqDrmvjoxWKZigVnAbn5H1owvm4CxCPdb0HQDehwNYMJpla5+M2tPmPARzhtYuwpHow==
+
+commander@7.2.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-7.2.0.tgz#a36cb57d0b501ce108e4d20559a150a391d97ab7"
+  integrity sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==
 
 compare-func@^2.0.0:
   version "2.0.0"
@@ -3820,6 +3825,15 @@ detect-indent@^4.0.0:
   integrity sha512-BDKtmHlOzwI7iRuEkhzsnPoi5ypEhWAJB5RvHWe1kMr06js3uK5B3734i3ui5Yd+wOJV1cpE4JnivPD283GU/A==
   dependencies:
     repeating "^2.0.0"
+
+devmoji@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/devmoji/-/devmoji-2.3.0.tgz#5cc3764c59899802bcbecd19afeb9a22c0626b89"
+  integrity sha512-ErQdYUsE7tKxqDzQzRos6fKWaRIFUOJvMkQODq9iYDI3o5X6nxD78XEdGNYaW5AaJW4uxj+XQTkCuJkV86Qg6g==
+  dependencies:
+    chalk "^4.1.1"
+    commander "7.2.0"
+    ts-interface-checker "1.0.0"
 
 diff@5.0.0:
   version "5.0.0"
@@ -9606,6 +9620,11 @@ ts-generator@^0.1.1:
     prettier "^2.1.2"
     resolve "^1.8.1"
     ts-essentials "^1.0.0"
+
+ts-interface-checker@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/ts-interface-checker/-/ts-interface-checker-1.0.0.tgz#2c637389f24566e0bf7db8e4482bad1db7d3bd87"
+  integrity sha512-yUeWbFBDiwPodNqrqpvQpGWheL6PvNu2/pVAb9yy2vzdkkflCgwVA4U2akByPCXzYTum3/5/nB92yKuiLpSo/Q==
 
 ts-node@^10.7.0, ts-node@^10.8.1:
   version "10.9.1"
