@@ -19,6 +19,6 @@ interface ISharedInternal {
         // token of the tag, otherwise default IGO token
         address paymentToken;
         // price per token of the project behind the IGO, expressed in `paymentToken` (any ERC20)
-        uint256 projectTokenPrice;
+        uint256 projectTokenPrice; // always 18 decimals
     }
 }

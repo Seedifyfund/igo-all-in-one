@@ -5,7 +5,6 @@ import {IERC20} from "openzeppelin-contracts/token/ERC20/IERC20.sol";
 import {ISignatureTransfer} from "permit2/interfaces/ISignatureTransfer.sol";
 
 import {MerkleProof} from "openzeppelin-contracts/utils/cryptography/MerkleProof.sol";
-import {SafeERC20} from "openzeppelin-contracts/token/ERC20/utils/SafeERC20.sol";
 
 import {ISharedInternal} from "../shared/ISharedInternal.sol";
 import {IIGOWritableInternal} from "./IIGOWritableInternal.sol";
@@ -16,9 +15,8 @@ import {IGOStorage} from "../IGOStorage.sol";
  * @notice Inherits from `ISharedInternal` will create `error[5005]: Linearization of inheritance graph impossible`
  */
 contract IGOWritableInternal is IIGOWritableInternal {
-    using SafeERC20 for IERC20;
-
-    function _reserveFullAllocation(
+    /// @dev sends ERC20 from `msg.sender` to vesting schedule
+    function _reserveAllocation(
         IGOStorage.SetUp memory setUp,
         address paymentToken,
         uint256 amount,
@@ -40,7 +38,7 @@ contract IGOWritableInternal is IIGOWritableInternal {
             deadline: permission.deadline
         });
         transferDetails = ISignatureTransfer.SignatureTransferDetails({
-            to: setUp.treasuryWallet,
+            to: setUp.vestingContract,
             requestedAmount: amount
         });
 

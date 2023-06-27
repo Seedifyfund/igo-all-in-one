@@ -3,6 +3,8 @@ pragma solidity ^0.8.17;
 
 import "forge-std/Test.sol";
 
+import {IIGOVesting} from "igo-all-in-one/interfaces/IIGOVesting.sol";
+
 import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
 
 import {IGO} from "../../../src/IGO.sol";
@@ -32,8 +34,10 @@ contract IGOSetUp is
     IGO public instance;
     ERC20 public token;
     IGOStorage.SetUp public igoSetUp;
+    IIGOVesting.ContractSetup public contractSetup;
+    IIGOVesting.VestingSetup public vestingSetup;
 
-    address public treasuryWallet = makeAddr("treasuryWallet");
+    address public vestingContract;
 
     uint256 public grandTotal = 50_000_000 ether;
     string[] public tagIdentifiers;
@@ -50,18 +54,34 @@ contract IGOSetUp is
         token = new ERC20("Mock", "MCK");
 
         igoSetUp = IGOStorage.SetUp(
+            address(0),
             address(token),
             address(permit2),
-            treasuryWallet,
             grandTotal,
+            0,
             0
         );
+        contractSetup = IIGOVesting.ContractSetup({
+            _innovator: address(0),
+            _paymentReceiver: address(0),
+            _admin: address(0),
+            _vestedToken: address(0),
+            _tiers: address(0),
+            _platformFee: 0,
+            _totalTokenOnSale: 0,
+            _gracePeriod: 0,
+            _decimals: 2
+        });
+        vestingSetup = IIGOVesting.VestingSetup(0, 0, 0, 0);
 
-        address addr = factory.createIGO(
+        address addr;
+        (addr, vestingContract) = factory.createIGO(
             "test",
             igoSetUp,
             new string[](0),
-            new Tag[](0)
+            new Tag[](0),
+            contractSetup,
+            vestingSetup
         );
         instance = IGO(addr);
 
@@ -72,13 +92,18 @@ contract IGOSetUp is
         __createDefaultAllocations();
     }
 
-    function test_SetUpState_setTags_SavesSummedMaxTagCap() public {
-        uint256 summedMaxTagCap = 0;
+    function test_SetUpState() public {
+        // Summed max tag cap should be the sum of all max tag caps
+        uint256 summedMaxTagCap_ = 0;
         for (uint256 i; i < tags.length; ++i) {
-            summedMaxTagCap += tags[i].maxTagCap;
+            summedMaxTagCap_ += tags[i].maxTagCap;
         }
+        (, , , uint256 summedMaxTagCap, uint256 refundFeeDecimals) = instance
+            .setUp();
+        assertEq(summedMaxTagCap_, summedMaxTagCap);
 
-        assertEq(summedMaxTagCap, instance.summedMaxTagCap());
+        // Refund fee decimals should be igoSetUp.refundFeeDecimals
+        assertEq(refundFeeDecimals, contractSetup._decimals);
     }
 
     function __createDefaultTags() private {
@@ -124,7 +149,8 @@ contract IGOSetUp is
                 Allocation(
                     tagIdentifiers[i % tagIdentifiers.length],
                     addr,
-                    1_000 ether
+                    1_000 ether,
+                    30 * (10 ** contractSetup._decimals) // 30%, refund fee
                 )
             );
             vm.prank(addr);

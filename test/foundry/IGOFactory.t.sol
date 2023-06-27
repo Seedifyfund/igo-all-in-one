@@ -3,6 +3,8 @@ pragma solidity ^0.8.17;
 
 import "forge-std/Test.sol";
 
+import {IIGOVesting} from "igo-all-in-one/interfaces/IIGOVesting.sol";
+
 import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
 
 import {ISharedInternal} from "../../src/shared/ISharedInternal.sol";
@@ -19,8 +21,10 @@ contract IGOFactory_test is Test, ISharedInternal {
     IGO public instance;
     ERC20 public token;
     IGOStorage.SetUp public igoSetUp;
+    IIGOVesting.ContractSetup public contractSetup;
+    IIGOVesting.VestingSetup public vestingSetup;
 
-    address public treasuryWallet = makeAddr("treasuryWallet");
+    address public vestingContract;
 
     uint256 public grandTotal = 50_000_000 ether;
 
@@ -30,18 +34,34 @@ contract IGOFactory_test is Test, ISharedInternal {
         token = new ERC20("Mock", "MCK");
 
         igoSetUp = IGOStorage.SetUp(
+            address(0),
             address(token),
             permit2Addr,
-            treasuryWallet,
             grandTotal,
+            0,
             0
         );
+        contractSetup = IIGOVesting.ContractSetup({
+            _innovator: address(0),
+            _paymentReceiver: address(0),
+            _admin: address(0),
+            _vestedToken: address(0),
+            _tiers: address(0),
+            _platformFee: 0,
+            _totalTokenOnSale: 0,
+            _gracePeriod: 0,
+            _decimals: 2
+        });
+        vestingSetup = IIGOVesting.VestingSetup(0, 0, 0, 0);
 
-        address addr = factory.createIGO(
+        address addr;
+        (addr, vestingContract) = factory.createIGO(
             "test",
             igoSetUp,
             new string[](0),
-            new Tag[](0)
+            new Tag[](0),
+            contractSetup,
+            vestingSetup
         );
         instance = IGO(addr);
     }
@@ -68,12 +88,21 @@ contract IGOFactory_test is Test, ISharedInternal {
             "someone-test",
             igoSetUp,
             new string[](0),
-            new Tag[](0)
+            new Tag[](0),
+            contractSetup,
+            vestingSetup
         );
     }
 
     function testRevert_createIGO_If_SameName() public {
         vm.expectRevert("IGOFactory: IGO already exists");
-        factory.createIGO("test", igoSetUp, new string[](0), new Tag[](0));
+        factory.createIGO(
+            "test",
+            igoSetUp,
+            new string[](0),
+            new Tag[](0),
+            contractSetup,
+            vestingSetup
+        );
     }
 }

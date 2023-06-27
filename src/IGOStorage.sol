@@ -7,13 +7,14 @@ import {ISharedInternal} from "./shared/ISharedInternal.sol";
 library IGOStorage {
     // Only updated by owner
     struct SetUp {
+        address vestingContract;
         address paymentToken;
         address permit2;
-        address treasuryWallet;
         uint256 grandTotal;
         // sum of maxTagCap OF all existing tags, can be lower than
         // `grandTotal` and maximum equal to `grandTotal`
         uint256 summedMaxTagCap;
+        uint256 refundFeeDecimals;
     }
 
     // Updated by owner and users interactions
