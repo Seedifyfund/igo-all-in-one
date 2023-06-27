@@ -3,4 +3,3 @@
 
 npx solhint src/*.sol test/*.sol --fix
 npx prettier --check .
-npx devmoji -e
