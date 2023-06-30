@@ -17,10 +17,13 @@ contract IGOFactory is Ownable, ReentrancyGuard {
     string[] internal _igoNames;
     mapping(string => address) internal _igos;
 
-    event DefaultIgoUpdated(address oldDefaultIgo, address newDefaultIgo);
+    event DefaultIgoUpdated(
+        address indexed oldDefaultIgo,
+        address indexed newDefaultIgo
+    );
     event DefaultVestingUpdated(
-        address oldDefaultVesting,
-        address newDefaultVesting
+        address indexed oldDefaultVesting,
+        address indexed newDefaultVesting
     );
     event IGOCreated(
         string indexed igoName,
