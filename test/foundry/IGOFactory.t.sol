@@ -3,7 +3,7 @@ pragma solidity ^0.8.17;
 
 import "forge-std/Test.sol";
 
-import {IIGOVesting} from "igo-all-in-one/interfaces/IIGOVesting.sol";
+import {IIGOVesting} from "vesting-schedule/interfaces/IIGOVesting.sol";
 
 import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
 

@@ -3,7 +3,7 @@ pragma solidity ^0.8.17;
 
 import "forge-std/Script.sol";
 
-import {IIGOVesting} from "igo-all-in-one/interfaces/IIGOVesting.sol";
+import {IIGOVesting} from "vesting-schedule/interfaces/IIGOVesting.sol";
 
 import {ISharedInternal} from "../../src/shared/ISharedInternal.sol";
 import {IGO} from "../../src/IGO.sol";

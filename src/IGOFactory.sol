@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
-import {IGOVesting} from "igo-all-in-one/IGOVesting.sol";
+import {IGOVesting} from "vesting-schedule/IGOVesting.sol";
 
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 import {ReentrancyGuard} from "openzeppelin-contracts/security/ReentrancyGuard.sol";

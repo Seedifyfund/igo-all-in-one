@@ -3,7 +3,7 @@ pragma solidity ^0.8.17;
 
 import {Initializable} from "openzeppelin-contracts/proxy/utils/Initializable.sol";
 import {ReentrancyGuard} from "openzeppelin-contracts/security/ReentrancyGuard.sol";
-import {IIGOVesting} from "igo-all-in-one/interfaces/IIGOVesting.sol";
+import {IIGOVesting} from "vesting-schedule/interfaces/IIGOVesting.sol";
 
 import {IIGOWritable} from "./IIGOWritable.sol";
 import {ISharedInternal} from "../shared/ISharedInternal.sol";
