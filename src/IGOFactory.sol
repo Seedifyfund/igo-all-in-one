@@ -98,9 +98,8 @@ contract IGOFactory is Ownable, ReentrancyGuard {
             newDefaultIgo != address(0),
             "IGOFactory__defaultIgo_ZERO_ADDRESS"
         );
-        address oldDefaultIgo = defaultIgo;
+        emit DefaultIgoUpdated(defaultIgo, newDefaultIgo);
         defaultIgo = newDefaultIgo;
-        emit DefaultIgoUpdated(oldDefaultIgo, newDefaultIgo);
     }
 
     function updateDefaultVesting(
@@ -110,8 +109,7 @@ contract IGOFactory is Ownable, ReentrancyGuard {
             newDefaultVesting != address(0),
             "IGOFactory__defaultVesting_ZERO_ADDRESS"
         );
-        address oldDefaultVesting = defaultVesting;
+        emit DefaultVestingUpdated(defaultVesting, newDefaultVesting);
         defaultVesting = newDefaultVesting;
-        emit DefaultVestingUpdated(oldDefaultVesting, newDefaultVesting);
     }
 }
