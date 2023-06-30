@@ -13,6 +13,6 @@
 [submodule "lib/permit2"]
 	path = lib/permit2
 	url = https://github.com/Uniswap/permit2
-[submodule "lib/igo-all-in-one"]
-	path = lib/igo-all-in-one
+[submodule "lib/vesting-schedule"]
+	path = lib/vesting-schedule
 	url = https://github.com/Decubate-com/igo-all-in-one

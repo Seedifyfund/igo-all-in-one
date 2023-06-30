@@ -8,8 +8,8 @@ import {IGOStorage} from "../../IGOStorage.sol";
 
 contract RestrictedWritableInternal is IRestrictedWritableInternal {
     function _setTags(
-        string[] memory tagIdentifiers_,
-        ISharedInternal.Tag[] memory tags_
+        string[] calldata tagIdentifiers_,
+        ISharedInternal.Tag[] calldata tags_
     ) internal {
         IGOStorage.Tags storage tags = IGOStorage.layout().tags;
 
@@ -54,7 +54,7 @@ contract RestrictedWritableInternal is IRestrictedWritableInternal {
     }
 
     function _isValidTag(
-        ISharedInternal.Tag memory tag_
+        ISharedInternal.Tag calldata tag_
     ) internal view returns (bool) {
         return
             tag_.merkleRoot != bytes32(0) &&

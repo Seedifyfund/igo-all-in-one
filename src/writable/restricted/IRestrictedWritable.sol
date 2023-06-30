@@ -29,24 +29,30 @@ interface IRestrictedWritable {
      *      updated, otherwise it will be created.
      */
     function updateSetTags(
-        string[] memory tagIdentifiers_,
-        ISharedInternal.Tag[] memory tags_
+        string[] calldata tagIdentifiers_,
+        ISharedInternal.Tag[] calldata tags_
     ) external;
 
     // TODO: UX choice to make here, do we need both tag single field update and tag batch update?
     //////////////////////////// TAG SINGLE UPDATE ////////////////////////////
-    function openTag(string memory tagId) external;
+    function openTag(string calldata tagId) external;
 
-    function pauseTag(string memory tagId) external;
+    function pauseTag(string calldata tagId) external;
 
     function updateTagMerkleRoot(
-        string memory tagId,
+        string calldata tagId,
         bytes32 merkleRoot
     ) external;
 
-    function updateTagStartDate(string memory tagId, uint128 startAt) external;
+    function updateTagStartDate(
+        string calldata tagId,
+        uint128 startAt
+    ) external;
 
-    function updateTagEndDate(string memory tagId, uint128 endAt) external;
+    function updateTagEndDate(string calldata tagId, uint128 endAt) external;
 
-    function updateTagMaxCap(string memory tagId, uint256 maxTagCap) external;
+    function updateTagMaxCap(
+        string calldata tagId,
+        uint256 maxTagCap
+    ) external;
 }

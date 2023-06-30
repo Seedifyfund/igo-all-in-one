@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
-import {IGOVesting} from "igo-all-in-one/IGOVesting.sol";
+import {IGOVesting} from "vesting-schedule/IGOVesting.sol";
 
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 import {ReentrancyGuard} from "openzeppelin-contracts/security/ReentrancyGuard.sol";
@@ -17,10 +17,13 @@ contract IGOFactory is Ownable, ReentrancyGuard {
     string[] internal _igoNames;
     mapping(string => address) internal _igos;
 
-    event DefaultIgoUpdated(address oldDefaultIgo, address newDefaultIgo);
+    event DefaultIgoUpdated(
+        address indexed oldDefaultIgo,
+        address indexed newDefaultIgo
+    );
     event DefaultVestingUpdated(
-        address oldDefaultVesting,
-        address newDefaultVesting
+        address indexed oldDefaultVesting,
+        address indexed newDefaultVesting
     );
     event IGOCreated(
         string indexed igoName,
@@ -34,12 +37,12 @@ contract IGOFactory is Ownable, ReentrancyGuard {
     }
 
     function createIGO(
-        string memory igoName,
+        string calldata igoName,
         IGOStorage.SetUp memory setUp,
-        string[] memory tagIds,
-        IGO.Tag[] memory tags,
-        IGOVesting.ContractSetup memory contractSetup,
-        IGOVesting.VestingSetup memory vestingSetup
+        string[] calldata tagIds,
+        IGO.Tag[] calldata tags,
+        IGOVesting.ContractSetup calldata contractSetup,
+        IGOVesting.VestingSetup calldata vestingSetup
     ) external nonReentrant onlyOwner returns (address igo, address vesting) {
         require(
             address(_igos[igoName]) == address(0),
@@ -77,7 +80,7 @@ contract IGOFactory is Ownable, ReentrancyGuard {
     }
 
     function igoWithName(
-        string memory igoName
+        string calldata igoName
     ) external view returns (address) {
         return _igos[igoName];
     }
@@ -95,9 +98,8 @@ contract IGOFactory is Ownable, ReentrancyGuard {
             newDefaultIgo != address(0),
             "IGOFactory__defaultIgo_ZERO_ADDRESS"
         );
-        address oldDefaultIgo = defaultIgo;
+        emit DefaultIgoUpdated(defaultIgo, newDefaultIgo);
         defaultIgo = newDefaultIgo;
-        emit DefaultIgoUpdated(oldDefaultIgo, newDefaultIgo);
     }
 
     function updateDefaultVesting(
@@ -107,8 +109,7 @@ contract IGOFactory is Ownable, ReentrancyGuard {
             newDefaultVesting != address(0),
             "IGOFactory__defaultVesting_ZERO_ADDRESS"
         );
-        address oldDefaultVesting = defaultVesting;
+        emit DefaultVestingUpdated(defaultVesting, newDefaultVesting);
         defaultVesting = newDefaultVesting;
-        emit DefaultVestingUpdated(oldDefaultVesting, newDefaultVesting);
     }
 }

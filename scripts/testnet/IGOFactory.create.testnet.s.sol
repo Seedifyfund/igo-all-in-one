@@ -3,7 +3,7 @@ pragma solidity ^0.8.17;
 
 import "forge-std/Script.sol";
 
-import {IIGOVesting} from "igo-all-in-one/interfaces/IIGOVesting.sol";
+import {IIGOVesting} from "vesting-schedule/interfaces/IIGOVesting.sol";
 
 import {ISharedInternal} from "../../src/shared/ISharedInternal.sol";
 import {IGO} from "../../src/IGO.sol";
@@ -55,7 +55,6 @@ contract IGOFactory_create_testnet is Script {
                 _paymentReceiver: address(0),
                 _admin: address(0),
                 _vestedToken: address(0),
-                _tiers: address(0),
                 _platformFee: 0,
                 _totalTokenOnSale: 0,
                 _gracePeriod: 0,

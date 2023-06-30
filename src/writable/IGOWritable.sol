@@ -3,7 +3,7 @@ pragma solidity ^0.8.17;
 
 import {Initializable} from "openzeppelin-contracts/proxy/utils/Initializable.sol";
 import {ReentrancyGuard} from "openzeppelin-contracts/security/ReentrancyGuard.sol";
-import {IIGOVesting} from "igo-all-in-one/interfaces/IIGOVesting.sol";
+import {IIGOVesting} from "vesting-schedule/interfaces/IIGOVesting.sol";
 
 import {IIGOWritable} from "./IIGOWritable.sol";
 import {ISharedInternal} from "../shared/ISharedInternal.sol";
@@ -82,9 +82,9 @@ contract IGOWritable is
 
     function initialize(
         address owner,
-        IGOStorage.SetUp memory setUp,
-        string[] memory tagIds_,
-        ISharedInternal.Tag[] memory tags
+        IGOStorage.SetUp calldata setUp,
+        string[] calldata tagIds_,
+        ISharedInternal.Tag[] calldata tags
     ) external override initializer onlyOwner {
         require(owner != address(0), "IGOWritable__owner_ZERO_ADDRESS");
         require(
