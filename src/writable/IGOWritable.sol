@@ -83,8 +83,8 @@ contract IGOWritable is
     function initialize(
         address owner,
         IGOStorage.SetUp memory setUp,
-        string[] memory tagIds_,
-        ISharedInternal.Tag[] memory tags
+        string[] calldata tagIds_,
+        ISharedInternal.Tag[] calldata tags
     ) external override initializer onlyOwner {
         require(owner != address(0), "IGOWritable__owner_ZERO_ADDRESS");
         require(

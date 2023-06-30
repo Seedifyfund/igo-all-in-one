@@ -96,27 +96,27 @@ contract RestrictedWritable is
 
     /// @inheritdoc IRestrictedWritable
     function updateSetTags(
-        string[] memory tagIdentifiers_,
-        ISharedInternal.Tag[] memory tags_
+        string[] calldata tagIdentifiers_,
+        ISharedInternal.Tag[] calldata tags_
     ) public override onlyOwner {
         _setTags(tagIdentifiers_, tags_);
     }
 
     //////////////////////////// TAG SINGLE UPDATE ////////////////////////////
-    function openTag(string memory tagId) external override onlyOwner {
+    function openTag(string calldata tagId) external override onlyOwner {
         IGOStorage.layout().tags.data[tagId].stage = ISharedInternal
             .Stage
             .OPENED;
     }
 
-    function pauseTag(string memory tagId) external override onlyOwner {
+    function pauseTag(string calldata tagId) external override onlyOwner {
         IGOStorage.layout().tags.data[tagId].stage = ISharedInternal
             .Stage
             .PAUSED;
     }
 
     function updateTagMerkleRoot(
-        string memory tagId,
+        string calldata tagId,
         bytes32 merkleRoot
     ) external override onlyOwner {
         require(merkleRoot != bytes32(0), "MerkleRoot_EMPTY");
@@ -124,7 +124,7 @@ contract RestrictedWritable is
     }
 
     function updateTagStartDate(
-        string memory tagId,
+        string calldata tagId,
         uint128 startAt
     ) external override onlyOwner {
         require(startAt >= block.timestamp, "START_IN_PAST");
@@ -132,7 +132,7 @@ contract RestrictedWritable is
     }
 
     function updateTagEndDate(
-        string memory tagId,
+        string calldata tagId,
         uint128 endAt
     ) external override onlyOwner {
         require(endAt > block.timestamp, "END_IN_PAST");
@@ -140,7 +140,7 @@ contract RestrictedWritable is
     }
 
     function updateTagMaxCap(
-        string memory tagId,
+        string calldata tagId,
         uint256 maxTagCap
     ) external override onlyOwner {
         IGOStorage.SetUp memory setUp = IGOStorage.layout().setUp;

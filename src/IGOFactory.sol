@@ -37,12 +37,12 @@ contract IGOFactory is Ownable, ReentrancyGuard {
     }
 
     function createIGO(
-        string memory igoName,
+        string calldata igoName,
         IGOStorage.SetUp memory setUp,
-        string[] memory tagIds,
-        IGO.Tag[] memory tags,
-        IGOVesting.ContractSetup memory contractSetup,
-        IGOVesting.VestingSetup memory vestingSetup
+        string[] calldata tagIds,
+        IGO.Tag[] calldata tags,
+        IGOVesting.ContractSetup calldata contractSetup,
+        IGOVesting.VestingSetup calldata vestingSetup
     ) external nonReentrant onlyOwner returns (address igo, address vesting) {
         require(
             address(_igos[igoName]) == address(0),
@@ -80,7 +80,7 @@ contract IGOFactory is Ownable, ReentrancyGuard {
     }
 
     function igoWithName(
-        string memory igoName
+        string calldata igoName
     ) external view returns (address) {
         return _igos[igoName];
     }
