@@ -22,7 +22,7 @@ interface IIGOWritable {
 
     function initialize(
         address owner,
-        IGOStorage.SetUp memory setUp,
+        IGOStorage.SetUp calldata setUp,
         string[] calldata tagIds_,
         ISharedInternal.Tag[] calldata tags
     ) external;
