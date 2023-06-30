@@ -46,7 +46,6 @@ contract IGOFactory_test is Test, ISharedInternal {
             _paymentReceiver: address(0),
             _admin: address(0),
             _vestedToken: address(0),
-            _tiers: address(0),
             _platformFee: 0,
             _totalTokenOnSale: 0,
             _gracePeriod: 0,
