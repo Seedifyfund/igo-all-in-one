@@ -148,6 +148,10 @@ Other tools for a deeper analysis:
 ## Deployed Addresses
 
 -   Factory:
-    -   `0x619BE601822B5e5DBD8afCB56431D6676CcA2734` [bsc testnet](https://testnet.bscscan.com/address/0x619be601822b5e5dbd8afcb56431d6676cca2734)
+    -   v1.0: `0x619BE601822B5e5DBD8afCB56431D6676CcA2734` [bsc testnet](https://testnet.bscscan.com/address/0x619be601822b5e5dbd8afcb56431d6676cca2734)
+    -   v1.1 (vesting schedue): `0x624a8706ebE0Fd71ed3442e52448958ae0a15583` [bsc testnet](https://testnet.bscscan.com/address/0x624a8706ebE0Fd71ed3442e52448958ae0a15583)
 -   IGO:
-    -   `0x64b22ECcFC51829E4Ed7bED684CD1C8E5304E544` [bsc testnet](https://testnet.bscscan.com/address/0x64b22ECcFC51829E4Ed7bED684CD1C8E5304E544)
+    -   v1.0: `0x64b22ECcFC51829E4Ed7bED684CD1C8E5304E544` [bsc testnet](https://testnet.bscscan.com/address/0x64b22ECcFC51829E4Ed7bED684CD1C8E5304E544)
+    -   v1.1 (vesting schedue): `` [bsc testnet](https://testnet.bscscan.com/address/)
+-   Vesting Schedule:
+    -   v1.0: `` [bsc testnet](https://testnet.bscscan.com/address/)
