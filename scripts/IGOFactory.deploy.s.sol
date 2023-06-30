@@ -2,6 +2,7 @@
 pragma solidity ^0.8.17;
 
 import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
+import {IGOVesting} from "vesting-schedule/IGOVesting.sol";
 
 import "forge-std/Script.sol";
 
@@ -10,7 +11,7 @@ import {IGO} from "../src/IGO.sol";
 import {IGOFactory} from "../src/IGOFactory.sol";
 
 /**
-* @dev forge script IGOFactory_deploy_testnet \
+* @dev forge script IGOFactory_deploy \
         --rpc-url $BSC_RPC --broadcast \
         --verify --etherscan-api-key $BSC_KEY \
         -vvvv --optimize --optimizer-runs 20000 -w
@@ -33,7 +34,12 @@ contract IGOFactory_deploy is Script {
         uint256 privateKey = vm.deriveKey(SEED, 0); // address at index 0
         vm.startBroadcast(privateKey);
 
-        new IGOFactory();
+        new IGOFactory(
+            address(new IGO()),
+            type(IGO).creationCode,
+            address(new IGOVesting()),
+            type(IGOVesting).creationCode
+        );
 
         vm.stopBroadcast();
     }

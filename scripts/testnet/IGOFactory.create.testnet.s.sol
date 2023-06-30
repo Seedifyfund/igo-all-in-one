@@ -40,9 +40,11 @@ contract IGOFactory_create_testnet is Script {
             0x619BE601822B5e5DBD8afCB56431D6676CcA2734
         );
 
+        address mockedToken = address(new Token_Mock());
+
         IGOStorage.SetUp memory igoSetUp = IGOStorage.SetUp({
             vestingContract: address(0),
-            paymentToken: address(new Token_Mock()),
+            paymentToken: mockedToken,
             permit2: address(0x000000000022D473030F116dDEE9F6B43aC78BA3), // bsc
             grandTotal: 1_000_000,
             summedMaxTagCap: 0,
@@ -51,10 +53,10 @@ contract IGOFactory_create_testnet is Script {
 
         IIGOVesting.ContractSetup memory contractSetup = IIGOVesting
             .ContractSetup({
-                _innovator: address(0),
-                _paymentReceiver: address(0),
-                _admin: address(0),
-                _vestedToken: address(0),
+                _innovator: vm.addr(privateKey),
+                _paymentReceiver: vm.addr(privateKey),
+                _admin: vm.addr(privateKey),
+                _vestedToken: mockedToken,
                 _platformFee: 0,
                 _totalTokenOnSale: 0,
                 _gracePeriod: 0,
