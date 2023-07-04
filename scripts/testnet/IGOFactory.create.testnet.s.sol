@@ -24,7 +24,7 @@ import {Token_Mock} from "../../test/mock/Token_Mock.sol";
     --num-of-optimizations 20000 \
     --compiler-version v0.8.17+commit.87f61d96 \
     --watch 0xb7DEBdA47C1014763188E69fc823B973eC1749D6 \
-    IGO $BSC_KEY
+    IGO -e $BSC_KEY
 *
 * @dev VRFCoordinatorV2Interface: https://docs.chain.link/docs/vrf-contracts/
 */
