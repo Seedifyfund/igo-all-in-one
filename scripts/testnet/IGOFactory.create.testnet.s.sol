@@ -6,46 +6,33 @@ import "forge-std/Script.sol";
 import {IIGOVesting} from "vesting-schedule/interfaces/IIGOVesting.sol";
 
 import {ISharedInternal} from "../../src/shared/ISharedInternal.sol";
-import {IGO} from "../../src/IGO.sol";
 import {IGOStorage} from "../../src/IGO.sol";
 import {IGOFactory} from "../../src/IGOFactory.sol";
-
-import {Token_Mock} from "../../test/mock/Token_Mock.sol";
 
 /**
 * @dev forge script IGOFactory_create_testnet \
         --rpc-url $BSC_RPC --broadcast \
         --verify --etherscan-api-key $BSC_KEY \
         -vvvv --optimize --optimizer-runs 20000 -w
-*
-* @dev If verification fails:
-* forge verify-contract \
-    --chain 97 \
-    --num-of-optimizations 20000 \
-    --compiler-version v0.8.17+commit.87f61d96 \
-    --watch 0xb7DEBdA47C1014763188E69fc823B973eC1749D6 \
-    IGO -e $BSC_KEY
-*
-* @dev VRFCoordinatorV2Interface: https://docs.chain.link/docs/vrf-contracts/
 */
 
-contract IGOFactory_create_testnet is Script {
+contract IGOFactory_createIGO_testnet is Script, ISharedInternal {
     function run() external {
         ///@dev Configure .env file
         string memory SEED = vm.envString("SEED");
         uint256 privateKey = vm.deriveKey(SEED, 0); // address at index 0
         vm.startBroadcast(privateKey);
 
+        address mockedToken = 0xad1b8650f8ef766046C00EBaC94E575343B5C797;
+
         IGOFactory factory = IGOFactory(
-            0x619BE601822B5e5DBD8afCB56431D6676CcA2734
+            0x08b0F6490085d1E845024ee8fa2c4651D77e2E6f
         );
 
-        address mockedToken = address(new Token_Mock());
-
         IGOStorage.SetUp memory igoSetUp = IGOStorage.SetUp({
-            vestingContract: address(0),
+            vestingContract: 0x890E2c3Cd8F041dF1a6734fD9fCf3F4AefB31B31,
             paymentToken: mockedToken,
-            permit2: address(0x000000000022D473030F116dDEE9F6B43aC78BA3), // bsc
+            permit2: 0x000000000022D473030F116dDEE9F6B43aC78BA3, // bsc
             grandTotal: 1_000_000,
             summedMaxTagCap: 0,
             refundFeeDecimals: 2
@@ -70,12 +57,14 @@ contract IGOFactory_create_testnet is Script {
                 _initialUnlockPercent: 0
             });
 
+        string memory name = "test-00";
+
         //slither-disable-next-line unused-return
         factory.createIGO(
-            "test",
+            name,
             igoSetUp,
-            new string[](0),
-            new ISharedInternal.Tag[](0),
+            new string[](1),
+            new Tag[](1),
             contractSetup,
             vestingSetup
         );

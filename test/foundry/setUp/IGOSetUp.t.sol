@@ -50,7 +50,8 @@ contract IGOSetUp is
     function setUp() public virtual override {
         super.setUp();
 
-        factory = new IGOFactory(
+        factory = new IGOFactory();
+        factory.init(
             address(new IGO()),
             type(IGO).creationCode,
             address(new IGOVesting()),

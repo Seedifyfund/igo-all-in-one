@@ -30,7 +30,8 @@ contract IGOFactory_test is Test, ISharedInternal {
     uint256 public grandTotal = 50_000_000 ether;
 
     function setUp() public {
-        factory = new IGOFactory(
+        factory = new IGOFactory();
+        factory.init(
             address(new IGO()),
             type(IGO).creationCode,
             address(new IGOVesting()),

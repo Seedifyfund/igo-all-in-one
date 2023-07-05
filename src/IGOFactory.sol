@@ -5,13 +5,14 @@ import {IIGOVesting} from "vesting-schedule/interfaces/IIGOVesting.sol";
 import {IIGOWritable} from "./writable/IIGOWritable.sol";
 import {ISharedInternal} from "./shared/ISharedInternal.sol";
 
+import {Initializable} from "openzeppelin-contracts/proxy/utils/Initializable.sol";
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 import {ReentrancyGuard} from "openzeppelin-contracts/security/ReentrancyGuard.sol";
 
 import {IGOStorage} from "./IGOStorage.sol";
 
 /// @dev Contract to deploy IGOs one the fly, in one transaction
-contract IGOFactory is Ownable, ReentrancyGuard {
+contract IGOFactory is Initializable, Ownable, ReentrancyGuard {
     address public defaultIgo;
     bytes public igoCreationCode;
     address public defaultVesting;
@@ -37,12 +38,12 @@ contract IGOFactory is Ownable, ReentrancyGuard {
         address indexed vesting
     );
 
-    constructor(
+    function init(
         address igo_,
         bytes memory igoCreationCode_,
         address vesting_,
         bytes memory vestingCreationCode_
-    ) {
+    ) external initializer onlyOwner {
         defaultIgo = igo_;
         igoCreationCode = igoCreationCode_;
         defaultVesting = vesting_;

@@ -1,11 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
-import {IGOVesting} from "vesting-schedule/IGOVesting.sol";
-
 import "forge-std/Script.sol";
 
-import {IGO} from "../src/IGO.sol";
 import {IGOFactory} from "../src/IGOFactory.sol";
 
 /**
@@ -32,12 +29,7 @@ contract IGOFactory_deploy is Script {
         uint256 privateKey = vm.deriveKey(SEED, 0); // address at index 0
         vm.startBroadcast(privateKey);
 
-        new IGOFactory(
-            0x7D9214B96579E66d0ac23DE40B91B5469e27ef73,
-            type(IGO).creationCode,
-            0x7588Bc42f6d17621B96569a48a4FDb47367f00f4,
-            type(IGOVesting).creationCode
-        );
+        new IGOFactory();
 
         vm.stopBroadcast();
     }
