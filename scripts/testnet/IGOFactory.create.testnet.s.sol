@@ -23,15 +23,15 @@ contract IGOFactory_createIGO_testnet is Script, ISharedInternal {
         uint256 privateKey = vm.deriveKey(SEED, 0); // address at index 0
         vm.startBroadcast(privateKey);
 
-        address mockedToken = 0xad1b8650f8ef766046C00EBaC94E575343B5C797;
+        address factoryAddr = vm.envAddress("FACTORY");
+        address vesting = vm.envAddress("VESTING");
+        address token = vm.envAddress("TOKEN");
 
-        IGOFactory factory = IGOFactory(
-            0x08b0F6490085d1E845024ee8fa2c4651D77e2E6f
-        );
+        IGOFactory factory = IGOFactory(factoryAddr);
 
         IGOStorage.SetUp memory igoSetUp = IGOStorage.SetUp({
-            vestingContract: 0x890E2c3Cd8F041dF1a6734fD9fCf3F4AefB31B31,
-            paymentToken: mockedToken,
+            vestingContract: vesting,
+            paymentToken: token,
             permit2: 0x000000000022D473030F116dDEE9F6B43aC78BA3, // bsc
             grandTotal: 1_000_000,
             summedMaxTagCap: 0,
@@ -43,7 +43,7 @@ contract IGOFactory_createIGO_testnet is Script, ISharedInternal {
                 _innovator: vm.addr(privateKey),
                 _paymentReceiver: vm.addr(privateKey),
                 _admin: vm.addr(privateKey),
-                _vestedToken: mockedToken,
+                _vestedToken: token,
                 _platformFee: 0,
                 _totalTokenOnSale: 0,
                 _gracePeriod: 0,
