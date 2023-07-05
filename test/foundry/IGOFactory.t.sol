@@ -31,9 +31,7 @@ contract IGOFactory_test is Test, ISharedInternal {
 
     function setUp() public {
         factory = new IGOFactory();
-        factory.init(
-            address(new IGO()),
-            type(IGO).creationCode,
+        factory.updateDefaultVesting(
             address(new IGOVesting()),
             type(IGOVesting).creationCode
         );

@@ -2,30 +2,21 @@
 pragma solidity ^0.8.17;
 
 import {IIGOVesting} from "vesting-schedule/interfaces/IIGOVesting.sol";
-import {IIGOWritable} from "./writable/IIGOWritable.sol";
+import {IGO} from "./IGO.sol";
 import {ISharedInternal} from "./shared/ISharedInternal.sol";
 
-import {Initializable} from "openzeppelin-contracts/proxy/utils/Initializable.sol";
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 import {ReentrancyGuard} from "openzeppelin-contracts/security/ReentrancyGuard.sol";
 
 import {IGOStorage} from "./IGOStorage.sol";
 
 /// @dev Contract to deploy IGOs one the fly, in one transaction
-contract IGOFactory is Initializable, Ownable, ReentrancyGuard {
-    address public defaultIgo;
-    bytes public igoCreationCode;
+contract IGOFactory is Ownable, ReentrancyGuard {
     address public defaultVesting;
     bytes public vestingCreationCode;
     string[] internal _igoNames;
     mapping(string => address) internal _igos;
 
-    event DefaultIgoUpdated(
-        address indexed oldDefaultIgo,
-        bytes oldIgoCreationCode,
-        address indexed newDefaultIgo,
-        bytes indexed newIgoCreationCode
-    );
     event DefaultVestingUpdated(
         address indexed oldDefaultVesting,
         bytes oldVestingCreationCode,
@@ -37,18 +28,6 @@ contract IGOFactory is Initializable, Ownable, ReentrancyGuard {
         address indexed igo,
         address indexed vesting
     );
-
-    function init(
-        address igo_,
-        bytes memory igoCreationCode_,
-        address vesting_,
-        bytes memory vestingCreationCode_
-    ) external initializer onlyOwner {
-        defaultIgo = igo_;
-        igoCreationCode = igoCreationCode_;
-        defaultVesting = vesting_;
-        vestingCreationCode = vestingCreationCode_;
-    }
 
     function createIGO(
         string calldata igoName,
@@ -65,12 +44,9 @@ contract IGOFactory is Initializable, Ownable, ReentrancyGuard {
 
         bytes32 salt = keccak256(abi.encodePacked(_msgSender(), igoName));
 
-        bytes memory code = igoCreationCode;
-        assembly {
-            igo := create2(0, add(code, 32), mload(code), salt)
-        }
+        igo = address(new IGO());
 
-        code = vestingCreationCode;
+        bytes memory code = vestingCreationCode;
         assembly {
             vesting := create2(0, add(code, 32), mload(code), salt)
         }
@@ -82,7 +58,7 @@ contract IGOFactory is Initializable, Ownable, ReentrancyGuard {
         _igoNames.push(igoName);
         _igos[igoName] = igo;
 
-        IIGOWritable(igo).initialize(_msgSender(), setUp, tagIds, tags);
+        IGO(igo).initialize(_msgSender(), setUp, tagIds, tags);
         IIGOVesting(vesting).initializeCrowdfunding(
             contractSetup,
             vestingSetup
@@ -104,28 +80,6 @@ contract IGOFactory is Initializable, Ownable, ReentrancyGuard {
 
     function igoNames() external view returns (string[] memory) {
         return _igoNames;
-    }
-
-    function updateDefaultIgo(
-        address newDefaultIgo,
-        bytes memory newIgoCreationCode
-    ) external onlyOwner {
-        require(
-            newDefaultIgo != address(0),
-            "IGOFactory__defaultIgo_ZERO_ADDRESS"
-        );
-        require(
-            newIgoCreationCode.length > 0,
-            "IGOFactory__defaultIgo_ZERO_CODE"
-        );
-        emit DefaultIgoUpdated(
-            defaultIgo,
-            igoCreationCode,
-            newDefaultIgo,
-            newIgoCreationCode
-        );
-        defaultIgo = newDefaultIgo;
-        igoCreationCode = newIgoCreationCode;
     }
 
     function updateDefaultVesting(

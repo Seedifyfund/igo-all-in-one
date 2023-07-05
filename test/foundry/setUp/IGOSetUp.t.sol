@@ -51,9 +51,7 @@ contract IGOSetUp is
         super.setUp();
 
         factory = new IGOFactory();
-        factory.init(
-            address(new IGO()),
-            type(IGO).creationCode,
+        factory.updateDefaultVesting(
             address(new IGOVesting()),
             type(IGOVesting).creationCode
         );
