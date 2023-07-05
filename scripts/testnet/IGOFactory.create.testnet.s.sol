@@ -12,7 +12,6 @@ import {IGOFactory} from "../../src/IGOFactory.sol";
 /**
 * @dev forge script IGOFactory_create_testnet \
         --rpc-url $BSC_RPC --broadcast \
-        --verify --etherscan-api-key $BSC_KEY \
         -vvvv --optimize --optimizer-runs 20000 -w
 */
 
@@ -59,12 +58,26 @@ contract IGOFactory_createIGO_testnet is Script, ISharedInternal {
 
         string memory name = "test-00";
 
+        string[] memory tagIds = new string[](1);
+        tagIds[0] = "phase-1";
+
+        Tag[] memory tags = new Tag[](1);
+        tags[0] = Tag({
+            stage: Stage.NOT_STARTED,
+            merkleRoot: bytes32("merkleroot"),
+            startAt: uint128(block.timestamp + 1 hours),
+            endAt: uint128(block.timestamp + 1 hours + 1 days),
+            maxTagCap: 1_000_000,
+            paymentToken: token,
+            projectTokenPrice: 1 ether
+        });
+
         //slither-disable-next-line unused-return
         factory.createIGO(
             name,
             igoSetUp,
-            new string[](1),
-            new Tag[](1),
+            tagIds,
+            tags,
             contractSetup,
             vestingSetup
         );

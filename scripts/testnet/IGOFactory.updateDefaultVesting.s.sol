@@ -6,13 +6,12 @@ import "forge-std/Script.sol";
 import {IGOFactory} from "../../src/IGOFactory.sol";
 
 /**
-* @dev forge script IGOFactory_init \
+* @dev forge script IGOFactory_updateDefaultVesting \
         --rpc-url $FMT_RPC --broadcast \
-        --verify --etherscan-api-key $FMT_KEY \
         -vvvv --optimize --optimizer-runs 20000 -w
 */
 
-contract IGOFactory_init is Script {
+contract IGOFactory_updateDefaultVesting is Script {
     function run() external {
         ///@dev Configure .env file
         string memory SEED = vm.envString("SEED");
@@ -20,15 +19,13 @@ contract IGOFactory_init is Script {
         vm.startBroadcast(privateKey);
 
         address factoryAddr = vm.envAddress("FACTORY");
-        address igoAddr = vm.envAddress("IGO");
         address vestingAddr = vm.envAddress("VESTING");
 
-        bytes memory igoCode = vm.envBytes("IGO_CODE");
         bytes memory vestingCode = vm.envBytes("VESTING_CODE");
 
         IGOFactory factory = IGOFactory(factoryAddr);
 
-        factory.init(igoAddr, igoCode, vestingAddr, vestingCode);
+        factory.updateDefaultVesting(vestingAddr, vestingCode);
 
         vm.stopBroadcast();
     }
