@@ -19,5 +19,8 @@
     },
     "[toml]": {
         "editor.defaultFormatter": "tamasfe.even-better-toml"
-    }
+    },
+    "solidity.packageDefaultDependenciesContractsDirectory": "src",
+    "solidity.packageDefaultDependenciesDirectory": "lib",
+    "solidity.compileUsingRemoteVersion": "v0.8.17"
 }
