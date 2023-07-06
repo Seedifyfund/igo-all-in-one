@@ -10,7 +10,7 @@ import {IGOStorage} from "../../src/IGO.sol";
 import {IGOFactory} from "../../src/IGOFactory.sol";
 
 /**
-* @dev forge script IGOFactory_create_testnet \
+* @dev forge script IGOFactory_createIGO_testnet \
         --rpc-url $BSC_RPC --broadcast \
         -vvvv --optimize --optimizer-runs 20000 -w
 */
