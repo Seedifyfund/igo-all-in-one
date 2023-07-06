@@ -7,8 +7,8 @@ interface IIGOWritableInternal {
     struct Allocation {
         string tagId;
         address account;
-        // amount the user can spend, expressed in IGOStruct.SetUp.paymentToken OR Tag.paymentToken
-        uint256 paymentTokenAmount;
+        // maximum amount the user can spend, expressed in IGOStruct.SetUp.paymentToken OR Tag.paymentToken
+        uint256 maxAllocation;
         // take IGOStorage.IGOStruct.SetUp.refundFeeDecimals into account
         uint256 refundFee;
     }
@@ -25,14 +25,14 @@ interface IIGOWritableInternal {
     event AllocationReserved(
         string indexed tagId,
         address indexed buyer,
-        uint256 indexed paymentTokenAmount,
+        uint256 indexed maxAllocation,
         address paymentToken
     );
 
-    error IGOWritableInternal_IGONotOpened(ISharedInternal.Stage current);
+    error IGOWritableInternal_IGONotOpened(ISharedInternal.Status current);
     error IGOWritableInternal_TagNotOpened(
         string tagId,
-        ISharedInternal.Stage current
+        ISharedInternal.Status current
     );
     error IGOWritable_AllocationExceeded(
         uint256 allocation,

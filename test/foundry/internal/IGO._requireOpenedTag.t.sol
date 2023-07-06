@@ -9,7 +9,7 @@ contract IGO_Test__requireOpenedTag is IGOSetUp_internal {
             abi.encodeWithSelector(
                 IGOWritableInternal_TagNotOpened.selector,
                 tagIdentifiers[0],
-                Stage.NOT_STARTED
+                Status.NOT_STARTED
             )
         );
         instance.exposed_requireOpenedTag(tagIdentifiers[0]);
@@ -23,7 +23,7 @@ contract IGO_Test__requireOpenedTag is IGOSetUp_internal {
             abi.encodeWithSelector(
                 IGOWritableInternal_TagNotOpened.selector,
                 tagIdentifiers[0],
-                Stage.NOT_STARTED
+                Status.NOT_STARTED
             )
         );
         instance.exposed_requireOpenedTag(tagIdentifiers[0]);
@@ -32,12 +32,12 @@ contract IGO_Test__requireOpenedTag is IGOSetUp_internal {
     function testRevert_requireOpenedTag_If_PAUSED() public {
         instance.pauseTag(tagIdentifiers[0]);
         Tag memory tag_ = instance.tag(tagIdentifiers[0]);
-        assertEq(uint256(tag_.stage), uint256(Stage.PAUSED));
+        assertEq(uint256(tag_.status), uint256(Status.PAUSED));
         vm.expectRevert(
             abi.encodeWithSelector(
                 IGOWritableInternal_TagNotOpened.selector,
                 tagIdentifiers[0],
-                Stage.PAUSED
+                Status.PAUSED
             )
         );
         instance.exposed_requireOpenedTag(tagIdentifiers[0]);
@@ -46,12 +46,12 @@ contract IGO_Test__requireOpenedTag is IGOSetUp_internal {
     function testRevert_requireOpenedTag_If_COMPLETED() public {
         instance.exposed_closeTag(tagIdentifiers[0]);
         Tag memory tag_ = instance.tag(tagIdentifiers[0]);
-        assertEq(uint256(tag_.stage), uint256(Stage.COMPLETED));
+        assertEq(uint256(tag_.status), uint256(Status.COMPLETED));
         vm.expectRevert(
             abi.encodeWithSelector(
                 IGOWritableInternal_TagNotOpened.selector,
                 tagIdentifiers[0],
-                Stage.COMPLETED
+                Status.COMPLETED
             )
         );
         instance.exposed_requireOpenedTag(tagIdentifiers[0]);
@@ -60,7 +60,7 @@ contract IGO_Test__requireOpenedTag is IGOSetUp_internal {
     function test_requireOpenedTag() public {
         instance.openTag(tagIdentifiers[0]);
         Tag memory tag_ = instance.tag(tagIdentifiers[0]);
-        assertEq(uint256(tag_.stage), uint256(Stage.OPENED));
+        assertEq(uint256(tag_.status), uint256(Status.OPENED));
         assertTrue(instance.exposed_requireOpenedTag(tagIdentifiers[0]));
     }
 
@@ -72,6 +72,6 @@ contract IGO_Test__requireOpenedTag is IGOSetUp_internal {
         assertTrue(instance.exposed_requireOpenedTag(tagIdentifiers[0]));
 
         Tag memory tag_ = instance.tag(tagIdentifiers[0]);
-        assertEq(uint256(tag_.stage), uint256(Stage.OPENED));
+        assertEq(uint256(tag_.status), uint256(Status.OPENED));
     }
 }

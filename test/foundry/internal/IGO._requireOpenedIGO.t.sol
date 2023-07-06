@@ -8,7 +8,7 @@ contract IGO_Test__requireOpenedIGO is IGOSetUp_internal {
         vm.expectRevert(
             abi.encodeWithSelector(
                 IGOWritableInternal_IGONotOpened.selector,
-                Stage.NOT_STARTED
+                Status.NOT_STARTED
             )
         );
         instance.exposed_requireOpenedIGO();
@@ -16,11 +16,11 @@ contract IGO_Test__requireOpenedIGO is IGOSetUp_internal {
 
     function testRevert_requireOpenedIGO_If_PAUSED() public {
         instance.pauseIGO();
-        assertEq(uint256(instance.igoStage()), uint256(Stage.PAUSED));
+        assertEq(uint256(instance.igoStatus()), uint256(Status.PAUSED));
         vm.expectRevert(
             abi.encodeWithSelector(
                 IGOWritableInternal_IGONotOpened.selector,
-                Stage.PAUSED
+                Status.PAUSED
             )
         );
         instance.exposed_requireOpenedIGO();
@@ -28,11 +28,11 @@ contract IGO_Test__requireOpenedIGO is IGOSetUp_internal {
 
     function testRevert_requireOpenedIGO_If_COMPLETED() public {
         instance.exposed_closeIGO();
-        assertEq(uint256(instance.igoStage()), uint256(Stage.COMPLETED));
+        assertEq(uint256(instance.igoStatus()), uint256(Status.COMPLETED));
         vm.expectRevert(
             abi.encodeWithSelector(
                 IGOWritableInternal_IGONotOpened.selector,
-                Stage.COMPLETED
+                Status.COMPLETED
             )
         );
         instance.exposed_requireOpenedIGO();
@@ -40,7 +40,7 @@ contract IGO_Test__requireOpenedIGO is IGOSetUp_internal {
 
     function test_requireOpenedIGO() public {
         instance.openIGO();
-        assertEq(uint256(instance.igoStage()), uint256(Stage.OPENED));
+        assertEq(uint256(instance.igoStatus()), uint256(Status.OPENED));
         assertTrue(instance.exposed_requireOpenedIGO());
     }
 }

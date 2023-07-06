@@ -25,11 +25,11 @@ contract RestrictedWritable is
     using SafeERC20 for IERC20;
 
     function openIGO() external override onlyOwner {
-        IGOStorage.layout().ledger.stage = ISharedInternal.Stage.OPENED;
+        IGOStorage.layout().ledger.status = ISharedInternal.Status.OPENED;
     }
 
     function pauseIGO() external override onlyOwner {
-        IGOStorage.layout().ledger.stage = ISharedInternal.Stage.PAUSED;
+        IGOStorage.layout().ledger.status = ISharedInternal.Status.PAUSED;
     }
 
     function updateGrandTotal(
@@ -90,14 +90,14 @@ contract RestrictedWritable is
 
     //////////////////////////// TAG SINGLE UPDATE ////////////////////////////
     function openTag(string calldata tagId) external override onlyOwner {
-        IGOStorage.layout().tags.data[tagId].stage = ISharedInternal
-            .Stage
+        IGOStorage.layout().tags.data[tagId].status = ISharedInternal
+            .Status
             .OPENED;
     }
 
     function pauseTag(string calldata tagId) external override onlyOwner {
-        IGOStorage.layout().tags.data[tagId].stage = ISharedInternal
-            .Stage
+        IGOStorage.layout().tags.data[tagId].status = ISharedInternal
+            .Status
             .PAUSED;
     }
 

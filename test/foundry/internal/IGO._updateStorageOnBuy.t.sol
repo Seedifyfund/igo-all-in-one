@@ -5,7 +5,7 @@ import {IGOSetUp_internal} from "./setUp/IGOSetUp_internal.t.sol";
 
 contract IGO_Test__updateStorageOnBuy is IGOSetUp_internal {
     function test_updateStorageOnBuy_CloseTagWhenEndDateReached() public {
-        // block.timestamp == tag.endAt --> tag.stage = COMPLETED
+        // block.timestamp == tag.endAt --> tag.status = COMPLETED
         vm.warp(tags[0].endAt);
         assertTrue(
             instance.exposed_updateStorageOnBuy(
@@ -18,6 +18,6 @@ contract IGO_Test__updateStorageOnBuy is IGOSetUp_internal {
         );
 
         Tag memory tag_ = instance.tag(tagIdentifiers[0]);
-        assertEq(uint256(tag_.stage), uint256(Stage.COMPLETED));
+        assertEq(uint256(tag_.status), uint256(Status.COMPLETED));
     }
 }
