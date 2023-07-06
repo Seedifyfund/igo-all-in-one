@@ -63,7 +63,7 @@ contract IGOFactory_createIGO_testnet is Script, ISharedInternal {
 
         Tag[] memory tags = new Tag[](1);
         tags[0] = Tag({
-            stage: Stage.NOT_STARTED,
+            stage: Status.NOT_STARTED,
             merkleRoot: bytes32("merkleroot"),
             startAt: uint128(block.timestamp + 1 hours),
             endAt: uint128(block.timestamp + 1 hours + 1 days),
