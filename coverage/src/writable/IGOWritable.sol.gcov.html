@@ -118,7 +118,7 @@
 <a name="47"><span class="lineNum">      47 </span>                :            :         // update storage</a>
 <a name="48"><span class="lineNum">      48 </span>                :<span class="lineCov">          5 :         ledger.totalRaised += amount;</span></a>
 <a name="49"><span class="lineNum">      49 </span>                :<span class="lineCov">          5 :         ledger.raisedInTag[tagId] += amount;</span></a>
-<a name="50"><span class="lineNum">      50 </span>                :<span class="lineCov">          5 :         ledger.boughtByIn[allocation.account][tagId] += amount;</span></a>
+<a name="50"><span class="lineNum">      50 </span>                :<span class="lineCov">          5 :         ledger.allocationReservedByIn[allocation.account][tagId] += amount;</span></a>
 <a name="51"><span class="lineNum">      51 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">          5 :         if (ledger.totalRaised == grandTotal) _closeIGO();</span></a>
 <a name="52"><span class="lineNum">      52 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">          5 :         if (ledger.raisedInTag[tagId] == maxTagCap) _closeTag(tagId);</span></a>
 <a name="53"><span class="lineNum">      53 </span>                :            : </a>

@@ -5,9 +5,10 @@ import {ISharedInternal} from "../shared/ISharedInternal.sol";
 
 interface IIGOReadable {
     /**
-     * @return Amount of tokens bought by the account in a tag.
+     * @return Allocation amount reserved by the account in a tag, expressed
+     *         in IGOStruct.SetUp.paymentToken OR Tag.paymentToken
      */
-    function boughtByIn(
+    function allocationReservedByIn(
         address account,
         string calldata tagId
     ) external view returns (uint256);

@@ -104,7 +104,7 @@
 <a name="33"><span class="lineNum">      33 </span>                :            :         string calldata tagId</a>
 <a name="34"><span class="lineNum">      34 </span>                :            :     ) internal view {</a>
 <a name="35"><span class="lineNum">      35 </span>                :<span class="lineCov">         18 :         uint256 totalAfterPurchase = toBuy +</span></a>
-<a name="36"><span class="lineNum">      36 </span>                :            :             IGOStorage.layout().ledger.boughtByIn[rewardee][tagId];</a>
+<a name="36"><span class="lineNum">      36 </span>                :            :             IGOStorage.layout().ledger.allocationReservedByIn[rewardee][tagId];</a>
 <a name="37"><span class="lineNum">      37 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 17 times"> + </span>]:<span class="lineCov">         18 :         if (totalAfterPurchase &gt; allocated) {</span></a>
 <a name="38"><span class="lineNum">      38 </span>                :<span class="lineCov">          1 :             revert IGOWritable_AllocationExceeded(</span></a>
 <a name="39"><span class="lineNum">      39 </span>                :            :                 allocated,</a>

@@ -13,8 +13,8 @@ BRH:0
 end_of_record
 TN:
 SF:src/readable/IGOReadable.sol
-FN:18,IGOReadable.boughtByIn
-FNDA:2,IGOReadable.boughtByIn
+FN:18,IGOReadable.allocationReservedByIn
+FNDA:2,IGOReadable.allocationReservedByIn
 DA:22,2
 FN:25,IGOReadable.igoStatus
 FNDA:4,IGOReadable.igoStatus

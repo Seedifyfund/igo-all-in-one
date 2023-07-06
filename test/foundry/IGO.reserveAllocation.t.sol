@@ -47,13 +47,16 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
 
         /////////////////// buy first 25% of allocation ///////////////////
         _reserveAllocation(firstPart, allocations[0], lastProof);
-        // verify `ledger.boughtByIn[allocation.account][tagId]` has been updated
-        assertEq(instance.boughtByIn(buyer, allocations[0].tagId), firstPart);
+        // verify `ledger.allocationReservedByIn[allocation.account][tagId]` has been updated
+        assertEq(
+            instance.allocationReservedByIn(buyer, allocations[0].tagId),
+            firstPart
+        );
         /////////////////// buys the rest of their allocation ///////////////////
         amount -= firstPart;
         _reserveAllocation(amount, allocations[0], lastProof);
         assertEq(
-            instance.boughtByIn(buyer, allocations[0].tagId),
+            instance.allocationReservedByIn(buyer, allocations[0].tagId),
             allocations[0].maxAllocation
         );
     }

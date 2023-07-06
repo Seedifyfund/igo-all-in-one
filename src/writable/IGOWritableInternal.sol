@@ -72,7 +72,7 @@ contract IGOWritableInternal is IIGOWritableInternal {
         // update raised amount
         ledger.totalRaised += amount;
         ledger.raisedInTag[tagId] += amount;
-        ledger.boughtByIn[buyer][tagId] += amount;
+        ledger.allocationReservedByIn[buyer][tagId] += amount;
         // close if limit reached
         if (ledger.totalRaised == grandTotal) _closeIGO();
         if (ledger.raisedInTag[tagId] == maxTagCap) _closeTag(tagId);
@@ -93,7 +93,7 @@ contract IGOWritableInternal is IIGOWritableInternal {
         string calldata tagId
     ) internal view {
         uint256 totalAfterPurchase = toBuy +
-            IGOStorage.layout().ledger.boughtByIn[rewardee][tagId];
+            IGOStorage.layout().ledger.allocationReservedByIn[rewardee][tagId];
         if (totalAfterPurchase > allocated) {
             revert IGOWritable_AllocationExceeded(
                 allocated,
