@@ -16,8 +16,8 @@ SF:src/readable/IGOReadable.sol
 FN:18,IGOReadable.boughtByIn
 FNDA:2,IGOReadable.boughtByIn
 DA:22,2
-FN:25,IGOReadable.igoStage
-FNDA:4,IGOReadable.igoStage
+FN:25,IGOReadable.igoStatus
+FNDA:4,IGOReadable.igoStatus
 DA:26,4
 FN:29,IGOReadable.raisedInTag
 FNDA:0,IGOReadable.raisedInTag

@@ -51,12 +51,12 @@ contract IGOWritableInternal is IIGOWritableInternal {
     }
 
     function _closeIGO() internal {
-        IGOStorage.layout().ledger.stage = ISharedInternal.Stage.COMPLETED;
+        IGOStorage.layout().ledger.status = ISharedInternal.Status.COMPLETED;
     }
 
     function _closeTag(string memory tagId) internal {
-        IGOStorage.layout().tags.data[tagId].stage = ISharedInternal
-            .Stage
+        IGOStorage.layout().tags.data[tagId].status = ISharedInternal
+            .Status
             .COMPLETED;
     }
 
@@ -123,8 +123,8 @@ contract IGOWritableInternal is IIGOWritableInternal {
     }
 
     function _requireOpenedIGO() internal view {
-        ISharedInternal.Stage current = IGOStorage.layout().ledger.stage;
-        if (current != ISharedInternal.Stage.OPENED) {
+        ISharedInternal.Status current = IGOStorage.layout().ledger.status;
+        if (current != ISharedInternal.Status.OPENED) {
             revert IGOWritableInternal_IGONotOpened(current);
         }
     }
@@ -133,18 +133,18 @@ contract IGOWritableInternal is IIGOWritableInternal {
         ISharedInternal.Tag memory tag = IGOStorage.layout().tags.data[tagId];
         // open tag if necessary
         if (
-            tag.stage == ISharedInternal.Stage.NOT_STARTED &&
+            tag.status == ISharedInternal.Status.NOT_STARTED &&
             block.timestamp >= tag.startAt &&
             block.timestamp < tag.endAt
         ) {
-            IGOStorage.layout().tags.data[tagId].stage = ISharedInternal
-                .Stage
+            IGOStorage.layout().tags.data[tagId].status = ISharedInternal
+                .Status
                 .OPENED;
             return;
         }
         // revert if tag not opened
-        if (tag.stage != ISharedInternal.Stage.OPENED) {
-            revert IGOWritableInternal_TagNotOpened(tagId, tag.stage);
+        if (tag.status != ISharedInternal.Status.OPENED) {
+            revert IGOWritableInternal_TagNotOpened(tagId, tag.status);
         }
     }
 

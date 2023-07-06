@@ -25,7 +25,7 @@ library IGOStorage {
 
     // Only updated by users interactions
     struct Ledger {
-        ISharedInternal.Stage stage;
+        ISharedInternal.Status status;
         uint256 totalRaised;
         mapping(string => uint256) raisedInTag;
         mapping(address => mapping(string => uint256)) boughtByIn;

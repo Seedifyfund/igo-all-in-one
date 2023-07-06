@@ -22,8 +22,8 @@ contract IGOReadable is
         return IGOStorage.layout().ledger.boughtByIn[account][tagId];
     }
 
-    function igoStage() external view override returns (Stage) {
-        return IGOStorage.layout().ledger.stage;
+    function igoStatus() external view override returns (Status) {
+        return IGOStorage.layout().ledger.status;
     }
 
     function raisedInTag(

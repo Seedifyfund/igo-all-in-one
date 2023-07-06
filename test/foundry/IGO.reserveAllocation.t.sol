@@ -64,7 +64,7 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
         _reserveAllocation(allocations[0], lastProof);
 
         Tag memory tag = instance.tag(allocations[0].tagId);
-        assertEq(uint256(tag.stage), uint256(Stage.COMPLETED));
+        assertEq(uint256(tag.status), uint256(Status.COMPLETED));
     }
 
     function test_reserveAllocation_WithSpecificTagToken() public {

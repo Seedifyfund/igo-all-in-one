@@ -12,7 +12,7 @@ interface IIGOReadable {
         string calldata tagId
     ) external view returns (uint256);
 
-    function igoStage() external view returns (ISharedInternal.Stage);
+    function igoStatus() external view returns (ISharedInternal.Status);
 
     function raisedInTag(string memory tagId) external view returns (uint256);
 

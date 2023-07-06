@@ -78,13 +78,13 @@ contract RestrictedWritableInternal is IRestrictedWritableInternal {
      *      see `IGOWritable.reserveAllocation` --> paymentToken.
      */
     function _canPaymentTokenOrPriceBeUpdated(
-        ISharedInternal.Stage stage,
+        ISharedInternal.Status status,
         address oldPaymentToken,
         address newPaymentToken,
         uint256 oldProjectTokenPrice,
         uint256 newProjectTokenPrice
     ) internal pure {
-        if (stage == ISharedInternal.Stage.NOT_STARTED) {
+        if (status == ISharedInternal.Status.NOT_STARTED) {
             if (newProjectTokenPrice == 0) {
                 revert IGOWritable_ProjectTokenPrice_ZERO();
             }
@@ -113,7 +113,7 @@ contract RestrictedWritableInternal is IRestrictedWritableInternal {
     ) internal view {
         require(_notEmptyTag(tag_), "EMPTY_TAG");
         _canPaymentTokenOrPriceBeUpdated(
-            oldTag.stage,
+            oldTag.status,
             oldTag.paymentToken,
             tag_.paymentToken,
             oldTag.projectTokenPrice,

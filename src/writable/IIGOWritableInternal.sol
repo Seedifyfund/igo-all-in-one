@@ -29,10 +29,10 @@ interface IIGOWritableInternal {
         address paymentToken
     );
 
-    error IGOWritableInternal_IGONotOpened(ISharedInternal.Stage current);
+    error IGOWritableInternal_IGONotOpened(ISharedInternal.Status current);
     error IGOWritableInternal_TagNotOpened(
         string tagId,
-        ISharedInternal.Stage current
+        ISharedInternal.Status current
     );
     error IGOWritable_AllocationExceeded(
         uint256 allocation,
