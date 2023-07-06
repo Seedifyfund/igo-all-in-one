@@ -30,11 +30,11 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
         uint256 balanceAfterBuy = token.balanceOf(buyer);
         assertEq(
             balanceAfterBuy,
-            balanceBeforeBuy - allocations[0].paymentTokenAmount
+            balanceBeforeBuy - allocations[0].maxAllocation
         );
         assertEq(
             token.balanceOf(vestingContract),
-            allocations[0].paymentTokenAmount
+            allocations[0].maxAllocation
         );
     }
 
@@ -42,7 +42,7 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
         public
     {
         _setUpTestData();
-        uint256 amount = allocations[0].paymentTokenAmount;
+        uint256 amount = allocations[0].maxAllocation;
         uint256 firstPart = amount / 4;
 
         /////////////////// buy first 25% of allocation ///////////////////
@@ -54,7 +54,7 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
         _reserveAllocation(amount, allocations[0], lastProof);
         assertEq(
             instance.boughtByIn(buyer, allocations[0].tagId),
-            allocations[0].paymentTokenAmount
+            allocations[0].maxAllocation
         );
     }
 
@@ -74,11 +74,11 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
         deal(
             address(tagToken),
             allocations[0].account,
-            allocations[0].paymentTokenAmount
+            allocations[0].maxAllocation
         );
         assertEq(
             tagToken.balanceOf(allocations[0].account),
-            allocations[0].paymentTokenAmount
+            allocations[0].maxAllocation
         );
         // unlimited allowance to permit2
         vm.prank(allocations[0].account);
@@ -92,7 +92,7 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
 
         assertEq(
             tagToken.balanceOf(vestingContract),
-            allocations[0].paymentTokenAmount
+            allocations[0].maxAllocation
         );
         assertEq(tagToken.balanceOf(allocations[0].account), 0);
     }
