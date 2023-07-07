@@ -155,3 +155,11 @@ Other tools for a deeper analysis:
     -   v1.1 (vesting schedue): `` [bsc testnet](https://testnet.bscscan.com/address/)
 -   Vesting Schedule:
     -   v1.0: `` [bsc testnet](https://testnet.bscscan.com/address/)
+
+## Git Release Flow
+
+`beta-*` is forked off `dev` and merged into `rc-*` (once integratoin issues fixed). `rc-*` is merged into `main` (once audit fixes are done).
+
+-   `beta-*` branches contain fixes found during frontend/backend integrations, updated ABIs & new testnet addresses
+-   `rc-*` branches contain audit fixes, audit report and mainnet addresses
+-   `main` branch freeze latest `rc-*`
