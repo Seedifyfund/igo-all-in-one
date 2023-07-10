@@ -92,9 +92,11 @@ contract IGOFactory is Ownable, ReentrancyGuard {
 
         if (to > _igoDetails.length) to = _igoDetails.length;
 
-        igos = new IGODetail[](to - from);
-        for (uint256 i = from; i < to; ++i) {
-            igos[i - from] = _igoDetails[i];
+        unchecked {
+            igos = new IGODetail[](to - from);
+            for (uint256 i = from; i < to; ++i) {
+                igos[i - from] = _igoDetails[i];
+            }
         }
 
         lastEvaludatedIndex = to;
