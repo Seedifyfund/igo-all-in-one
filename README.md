@@ -158,8 +158,10 @@ Other tools for a deeper analysis:
 
 ## Git Release Flow
 
-`beta-*` is forked off `dev` and merged into `rc-*` (once integratoin issues fixed). `rc-*` is merged into `main` (once audit fixes are done).
+`beta-*` is forked off from `dev` and merged into `main` once vetted, then `dev` must rebased from `main`.
+
+The same workflow will be applied to `rc-*`
 
 -   `beta-*` branches contain fixes found during frontend/backend integrations, updated ABIs & new testnet addresses
 -   `rc-*` branches contain audit fixes, audit report and mainnet addresses
--   `main` branch freeze latest `rc-*`
+-   `main` branch freeze latest `beta-*` and `rc-*`
