@@ -1,0 +1,81 @@
+name: Production Release
+on:
+    push:
+        branches:
+            - main
+        paths:
+            - '**'
+            - '!.github/CODEOWNERS'
+
+env:
+    AWS_REGION: us-east-1
+    CURRENT_BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+
+permissions:
+    contents: write
+    issues: write
+    pull-requests: write
+
+jobs:
+    release:
+        name: All-In-One IGO Release
+        runs-on: ubuntu-latest
+        environment:
+            name: prod
+            url: https://seedify.fund
+        # Map a step output to a job output
+        outputs:
+            version: ${{ steps.release.outputs.version }}
+        steps:
+            - name: Clean up all files from the root directory
+              uses: AutoModality/action-clean@v1
+
+            - name: Checkout
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+                  persist-credentials: false
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  cache: 'yarn'
+                  node-version: 18
+
+            - name: Get yarn cache directory
+              id: yarn-cache-dir
+              shell: bash
+              run: echo "dir=$(yarn config get cache)" >> ${GITHUB_OUTPUT}
+
+            - name: Persist NodeJS build cache
+              uses: actions/cache@v3
+              id: yarn-cache
+              with:
+                  path: ${{ steps.yarn-cache-dir.outputs.dir }}
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-node-
+
+            - name: Install dependencies
+              run: yarn install --frozen-lockfile --ignore-scripts
+
+            - name: Release
+              id: release
+              env:
+                  GH_TOKEN: ${{ secrets.GH_PAT }}
+                  GIT_AUTHOR_NAME: seedify-bot
+              run: |
+                  npx semantic-release@21
+                  echo "New release version is $(cat VERSION)"
+                  echo "version=$(cat VERSION)" >> $GITHUB_OUTPUT
+
+            - name: Send message to Slack channel
+              uses: 8398a7/action-slack@v3
+              id: slack
+              if: always()
+              with:
+                  job_name: All-In-One IGO Release
+                  status: ${{ job.status }}
+                  fields: repo,message,commit,author,action,eventName,ref,workflow,job,took,pullRequest # selectable (default: repo,message)
+              env:
+                  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
