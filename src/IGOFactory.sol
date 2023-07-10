@@ -81,9 +81,18 @@ contract IGOFactory is Ownable, ReentrancyGuard {
     function getIgosDetails(
         uint256 from,
         uint256 to
-    ) external view returns (IGO[] memory igos, uint256 lastEvaludatedIndex) {
-        require(from < to, "IGOFactory_INDEXES_REVERSED");
-        require(to <= igoDetails.length, "IGOFactory_OUT_OF_BOUNDS");
+    )
+        external
+        view
+        returns (
+            IGO[] memory igos,
+            uint256 lastEvaludatedIndex,
+            uint256 totalItems
+        )
+    {
+        require(from <= to, "IGOFactory_INDEXES_REVERSED");
+
+        if (to > igoDetails.length) to = igoDetails.length;
 
         igos = new IGO[](to - from);
         for (uint256 i = from; i < to; ++i) {
@@ -91,6 +100,7 @@ contract IGOFactory is Ownable, ReentrancyGuard {
         }
 
         lastEvaludatedIndex = to;
+        totalItems = igoDetails.length;
     }
 
     function igoWithName(
