@@ -18,7 +18,7 @@
     },
     "release": {
         "branches": [
-            "main",
+            "main-test",
             "next",
             {
                 "name": "beta",
@@ -36,7 +36,7 @@
                 "@saithodev/semantic-release-backmerge",
                 {
                     "backmergeBranches": [
-                        "dev"
+                        "dev-test"
                     ]
                 }
             ],
