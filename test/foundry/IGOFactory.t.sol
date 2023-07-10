@@ -4,6 +4,7 @@ pragma solidity ^0.8.17;
 import "forge-std/Test.sol";
 
 import {IIGOVesting} from "vesting-schedule/interfaces/IIGOVesting.sol";
+import {IGOVesting} from "vesting-schedule/IGOVesting.sol";
 
 import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
 
@@ -30,6 +31,10 @@ contract IGOFactory_test is Test, ISharedInternal {
 
     function setUp() public {
         factory = new IGOFactory();
+        factory.updateDefaultVesting(
+            address(new IGOVesting()),
+            type(IGOVesting).creationCode
+        );
 
         token = new ERC20("Mock", "MCK");
 

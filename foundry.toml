@@ -23,7 +23,7 @@ fantom-testnet = "https://rpc.ankr.com/fantom_testnet"
 mumbai = "${MUMBAI_RPC}"
 
 [etherscan]
-fantom-testnet = { key = "${FANTOM_KEY}" }
+fantom-testnet = { key = "${FMT_KEY}" }
 mumbai = { key = "${POLYGON_KEY}" }
 
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config

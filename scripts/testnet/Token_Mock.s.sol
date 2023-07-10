@@ -1,12 +1,11 @@
-// SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
 import "forge-std/Script.sol";
 
-import {IGOFactory} from "../src/IGOFactory.sol";
+import {Token_Mock} from "../../test/mock/Token_Mock.sol";
 
 /**
-* @dev forge script IGOFactory_deploy \
+* @dev forge script Token_Mock_deploy_testnet \
         --rpc-url $BSC_RPC --broadcast \
         --verify --etherscan-api-key $BSC_KEY \
         -vvvv --optimize --optimizer-runs 20000 -w
@@ -16,23 +15,18 @@ import {IGOFactory} from "../src/IGOFactory.sol";
     --chain 97 \
     --num-of-optimizations 20000 \
     --compiler-version v0.8.17+commit.87f61d96 \
-    --watch 0x679354ca67B5A03986e449E9a0e8914807E86e87 \
-    IGOFactory -e $BSC_KEY
-*
-* @dev VRFCoordinatorV2Interface: https://docs.chain.link/docs/vrf-contracts/
+    --watch 0xad1b8650f8ef766046C00EBaC94E575343B5C797 \
+    Token_Mock -e $BSC_KEY
 */
 
-contract IGOFactory_deploy is Script {
+contract Token_Mock_deploy_testnet is Script {
     function run() external {
-        ///@dev Configure .env file
         string memory SEED = vm.envString("SEED");
         uint256 privateKey = vm.deriveKey(SEED, 0); // address at index 0
         vm.startBroadcast(privateKey);
 
-        new IGOFactory();
+        new Token_Mock();
 
         vm.stopBroadcast();
     }
-
-    function test() public {}
 }
