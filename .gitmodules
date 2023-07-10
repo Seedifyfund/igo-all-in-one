@@ -13,3 +13,6 @@
 [submodule "lib/vesting-schedule"]
 	path = lib/vesting-schedule
 	url = https://github.com/Decubate-com/igo-all-in-one
+[submodule "lib/solmate"]
+	path = lib/solmate
+	url = https://github.com/rari-capital/solmate
