@@ -12,6 +12,15 @@ import {IGOStorage} from "./IGOStorage.sol";
 
 /// @dev Contract to deploy IGOs one the fly, in one transaction
 contract IGOFactory is Ownable, ReentrancyGuard {
+    struct IGODetail {
+        string name;
+        address igo;
+        address vesting;
+        IGOStorage.SetUp setUp;
+    }
+
+    IGODetail[] public igoDetails;
+
     address public defaultVesting;
     bytes public vestingCreationCode;
     string[] internal _igoNames;
@@ -57,6 +66,7 @@ contract IGOFactory is Ownable, ReentrancyGuard {
 
         _igoNames.push(igoName);
         _igos[igoName] = igo;
+        igoDetails.push(IGODetail(igoName, igo, vesting, setUp));
 
         IGO(igo).initialize(_msgSender(), setUp, tagIds, tags);
         IIGOVesting(vesting).initializeCrowdfunding(
@@ -66,6 +76,31 @@ contract IGOFactory is Ownable, ReentrancyGuard {
         IIGOVesting(vesting).transferOwnership(igo);
 
         emit IGOCreated(igoName, igo, vesting);
+    }
+
+    function getIgosDetails(
+        uint256 from,
+        uint256 to
+    )
+        external
+        view
+        returns (
+            IGO[] memory igos,
+            uint256 lastEvaludatedIndex,
+            uint256 totalItems
+        )
+    {
+        require(from <= to, "IGOFactory_INDEXES_REVERSED");
+
+        if (to > igoDetails.length) to = igoDetails.length;
+
+        igos = new IGO[](to - from);
+        for (uint256 i = from; i < to; ++i) {
+            igos[i - from] = IGO(igoDetails[i].igo);
+        }
+
+        lastEvaludatedIndex = to;
+        totalItems = igoDetails.length;
     }
 
     function igoWithName(
