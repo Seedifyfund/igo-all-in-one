@@ -43,13 +43,6 @@ contract RestrictedWritable is
         IGOStorage.layout().setUp.grandTotal = grandTotal_;
     }
 
-    function updateDefaultPaymentToken(
-        address token_
-    ) external override onlyOwner {
-        require(token_ != address(0), "Token_ZERO_ADDRESS");
-        IGOStorage.layout().setUp.paymentToken = token_;
-    }
-
     /// @inheritdoc IRestrictedWritable
     function recoverLostERC20(
         address token,
