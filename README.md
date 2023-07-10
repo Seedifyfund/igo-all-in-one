@@ -149,12 +149,12 @@ Other tools for a deeper analysis:
 
 -   Factory:
     -   v1.0: `0x619BE601822B5e5DBD8afCB56431D6676CcA2734` [bsc testnet](https://testnet.bscscan.com/address/0x619be601822b5e5dbd8afcb56431d6676cca2734)
-    -   v1.1 (vesting schedue): `0x624a8706ebE0Fd71ed3442e52448958ae0a15583` [bsc testnet](https://testnet.bscscan.com/address/0x624a8706ebE0Fd71ed3442e52448958ae0a15583)
+    -   v1.1 (vesting schedue): `0x35C2309555b7B44e3f889A417ec9e4f757B9717e` [bsc testnet](https://testnet.bscscan.com/address/0x35C2309555b7B44e3f889A417ec9e4f757B9717e)
 -   IGO:
     -   v1.0: `0x64b22ECcFC51829E4Ed7bED684CD1C8E5304E544` [bsc testnet](https://testnet.bscscan.com/address/0x64b22ECcFC51829E4Ed7bED684CD1C8E5304E544)
-    -   v1.1 (vesting schedue): `` [bsc testnet](https://testnet.bscscan.com/address/)
+    -   v1.1 (vesting schedue): 0xA2bEe26Ac82240144038548727755EfDF8a68811`` [bsc testnet](https://testnet.bscscan.com/address/0xA2bEe26Ac82240144038548727755EfDF8a68811)
 -   Vesting Schedule:
-    -   v1.0: `` [bsc testnet](https://testnet.bscscan.com/address/)
+    -   v1.1: `0xDF8bCCDB0E9609d7C358CADee6c88d8B6057d1d5` [bsc testnet](https://testnet.bscscan.com/address/0xDF8bCCDB0E9609d7C358CADee6c88d8B6057d1d5)
 
 ## Git Release Flow
 

@@ -3,7 +3,7 @@
     {
       "inputs": [
         {
-          "internalType": "enum ISharedInternal.Stage",
+          "internalType": "enum ISharedInternal.Status",
           "name": "current",
           "type": "uint8"
         }
@@ -19,7 +19,7 @@
           "type": "string"
         },
         {
-          "internalType": "enum ISharedInternal.Stage",
+          "internalType": "enum ISharedInternal.Status",
           "name": "current",
           "type": "uint8"
         }
@@ -119,7 +119,7 @@
         {
           "indexed": true,
           "internalType": "uint256",
-          "name": "paymentTokenAmount",
+          "name": "maxAllocation",
           "type": "uint256"
         },
         {
@@ -145,7 +145,7 @@
           "type": "string"
         }
       ],
-      "name": "boughtByIn",
+      "name": "allocationReservedByIn",
       "outputs": [
         {
           "internalType": "uint256",
@@ -158,10 +158,10 @@
     },
     {
       "inputs": [],
-      "name": "igoStage",
+      "name": "igoStatus",
       "outputs": [
         {
-          "internalType": "enum ISharedInternal.Stage",
+          "internalType": "enum ISharedInternal.Status",
           "name": "",
           "type": "uint8"
         }
@@ -234,8 +234,8 @@
         {
           "components": [
             {
-              "internalType": "enum ISharedInternal.Stage",
-              "name": "stage",
+              "internalType": "enum ISharedInternal.Status",
+              "name": "status",
               "type": "uint8"
             },
             {
@@ -305,25 +305,25 @@
     }
   ],
   "bytecode": {
-    "object": "0x60808060405234610016576109dc908161001c8239f35b600080fdfe608060408181526004918236101561001657600080fd5b600092833560e01c9182630a9254e41461066b575081630fa34ede146105925781637518d35c1461041d5781637eae687e1461018e57508063ae00ee1f14610129578063c5c4744c146100ce5763ff77d0be1461007257600080fd5b346100ca576020906100998261008736610895565b81845193828580945193849201610983565b81017ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b26815203019020549051908152f35b5080fd5b50346100ca57817ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126100ca576020907ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b25549051908152f35b50346100ca57817ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126100ca5760209061018c60ff7ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b24541691518092610947565bf35b839150346100ca57817ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126100ca577ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b2290815467ffffffffffffffff81116103f1579290845190602094610209868260051b0184610854565b808352858301809585527f65081cd3ad5fc84209c8310f7404cee8bc03efec5e3d920e46e7ba762f27ce4c85915b8383106102ec5750505050508451938085019181865251809252858501958260051b8601019392955b82871061026d5785850386f35b90919293828080837fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc08a600196030186527fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f8a516102d881518092818752878088019101610983565b011601019601920196019592919092610260565b899895969851899183549160019280841c9084811680156103e7575b8b831081146103bb578284528b9493929181156103815750600114610349575b50610337816001960382610854565b81520192019201919097959497610237565b868e52838e2095508d905b80821061036a5750810183019450610337610328565b8654838301860152958501958b9490910190610354565b7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00168584015250151560051b810183019450610337610328565b60248f60228d7f4e487b7100000000000000000000000000000000000000000000000000000000835252fd5b91607f1691610308565b6024846041847f4e487b7100000000000000000000000000000000000000000000000000000000835252fd5b839150346100ca57610474602061043336610895565b8460c0875161044181610809565b828152828582015282898201528260608201528260808201528260a0820152015281865193828580945193849201610983565b81017ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b23815203019020908351916104aa83610809565b60ff8154169382851015610566575060e094848452600182015490602085019182526002830154818601916fffffffffffffffffffffffffffffffff80938184168152606089019360801c845260038701549560808a0196875260c0600573ffffffffffffffffffffffffffffffffffffffff809b8b0154169960a08d019a8b5201549a01998a5261053e8451809c610947565b5160208b015251169088015251166060860152516080850152511660a08301525160c0820152f35b806021847f4e487b71000000000000000000000000000000000000000000000000000000006024945252fd5b82843461066857817ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126106685782359073ffffffffffffffffffffffffffffffffffffffff8216809203610668576024359167ffffffffffffffff948584116106645736602385011215610664578301359485116100ca5736602486850101116100ca579160209484836024958895527ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b2785522090808651958694018437820190815203019020549051908152f35b8280fd5b80fd5b9150923461066857807ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126106685760c082019082821067ffffffffffffffff8311176107dd5760a084818585835273ffffffffffffffffffffffffffffffffffffffff807ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b1c541693848352817ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b1d5416918260208501527ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b1e5416818401527ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b1f54918260608501527ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b2054938460808201527ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b215495869101528151958652602086015284015260608301526080820152f35b806041867f4e487b71000000000000000000000000000000000000000000000000000000006024945252fd5b60e0810190811067ffffffffffffffff82111761082557604052565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b90601f7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0910116810190811067ffffffffffffffff82111761082557604052565b60207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc8201126109425767ffffffffffffffff6004358181116109425782602382011215610942578060040135918211610825576040519261091f60207fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f8601160185610854565b828452602483830101116109425781600092602460209301838601378301015290565b600080fd5b9060048210156109545752565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052602160045260246000fd5b60005b8381106109965750506000910152565b818101518382015260200161098656fea264697066735822122002f5988c3724d4853b58bb0e9f3e467482acfd6611e90d244078e0e8b8bb25da64736f6c63430008110033",
-    "sourceMap": "410:1715:58:-:0;;;;;;;;;;;;;;;;;",
+    "object": "0x60808060405234610016576109dd908161001c8239f35b600080fdfe608060408181526004918236101561001657600080fd5b600092833560e01c9182630a9254e41461066c5750816333e21bec146106065781637518d35c146104915781637eae687e14610202578163839308081461012957508063c5c4744c146100ce5763ff77d0be1461007257600080fd5b346100ca5760209061009982610087366108d2565b81845193828580945193849201610984565b81017ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b26815203019020549051908152f35b5080fd5b50346100ca57817ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126100ca576020907ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b25549051908152f35b8284346101ff57817ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126101ff5782359073ffffffffffffffffffffffffffffffffffffffff82168092036101ff576024359167ffffffffffffffff948584116101fb57366023850112156101fb578301359485116100ca5736602486850101116100ca579160209484836024958895527ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b2785522090808651958694018437820190815203019020549051908152f35b8280fd5b80fd5b839150346100ca57817ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126100ca577ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b2290815467ffffffffffffffff811161046557929084519060209461027d868260051b0184610891565b808352858301809585527f65081cd3ad5fc84209c8310f7404cee8bc03efec5e3d920e46e7ba762f27ce4c85915b8383106103605750505050508451938085019181865251809252858501958260051b8601019392955b8287106102e15785850386f35b90919293828080837fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc08a600196030186527fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f8a5161034c81518092818752878088019101610984565b0116010196019201960195929190926102d4565b899895969851899183549160019280841c90848116801561045b575b8b8310811461042f578284528b9493929181156103f557506001146103bd575b506103ab816001960382610891565b815201920192019190979594976102ab565b868e52838e2095508d905b8082106103de57508101830194506103ab61039c565b8654838301860152958501958b94909101906103c8565b7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00168584015250151560051b8101830194506103ab61039c565b60248f60228d7f4e487b7100000000000000000000000000000000000000000000000000000000835252fd5b91607f169161037c565b6024846041847f4e487b7100000000000000000000000000000000000000000000000000000000835252fd5b839150346100ca576104e860206104a7366108d2565b8460c087516104b581610846565b828152828582015282898201528260608201528260808201528260a0820152015281865193828580945193849201610984565b81017ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b238152030190209083519161051e83610846565b60ff81541693828510156105da575060e094848452600182015490602085019182526002830154818601916fffffffffffffffffffffffffffffffff80938184168152606089019360801c845260038701549560808a0196875260c0600573ffffffffffffffffffffffffffffffffffffffff809b8b0154169960a08d019a8b5201549a01998a526105b28451809c61080a565b5160208b015251169088015251166060860152516080850152511660a08301525160c0820152f35b806021847f4e487b71000000000000000000000000000000000000000000000000000000006024945252fd5b5050346100ca57817ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126100ca5760209061066a60ff7ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b2454169151809261080a565bf35b915092346101ff57807ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126101ff5760c082019082821067ffffffffffffffff8311176107de5760a084818585835273ffffffffffffffffffffffffffffffffffffffff807ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b1c541693848352817ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b1d5416918260208501527ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b1e5416818401527ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b1f54918260608501527ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b2054938460808201527ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b215495869101528151958652602086015284015260608301526080820152f35b806041867f4e487b71000000000000000000000000000000000000000000000000000000006024945252fd5b9060048210156108175752565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052602160045260246000fd5b60e0810190811067ffffffffffffffff82111761086257604052565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b90601f7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0910116810190811067ffffffffffffffff82111761086257604052565b60207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc82011261097f5767ffffffffffffffff60043581811161097f578260238201121561097f578060040135918211610862576040519261095c60207fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f8601160185610891565b8284526024838301011161097f5781600092602460209301838601378301015290565b600080fd5b60005b8381106109975750506000910152565b818101518382015260200161098756fea2646970667358221220fffec200bfcd094e54a51c6e193316cb885ec747de188828488646dc8a29ea6964736f6c63430008110033",
+    "sourceMap": "410:1754:58:-:0;;;;;;;;;;;;;;;;;",
     "linkReferences": {}
   },
   "deployedBytecode": {
-    "object": "0x608060408181526004918236101561001657600080fd5b600092833560e01c9182630a9254e41461066b575081630fa34ede146105925781637518d35c1461041d5781637eae687e1461018e57508063ae00ee1f14610129578063c5c4744c146100ce5763ff77d0be1461007257600080fd5b346100ca576020906100998261008736610895565b81845193828580945193849201610983565b81017ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b26815203019020549051908152f35b5080fd5b50346100ca57817ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126100ca576020907ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b25549051908152f35b50346100ca57817ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126100ca5760209061018c60ff7ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b24541691518092610947565bf35b839150346100ca57817ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126100ca577ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b2290815467ffffffffffffffff81116103f1579290845190602094610209868260051b0184610854565b808352858301809585527f65081cd3ad5fc84209c8310f7404cee8bc03efec5e3d920e46e7ba762f27ce4c85915b8383106102ec5750505050508451938085019181865251809252858501958260051b8601019392955b82871061026d5785850386f35b90919293828080837fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc08a600196030186527fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f8a516102d881518092818752878088019101610983565b011601019601920196019592919092610260565b899895969851899183549160019280841c9084811680156103e7575b8b831081146103bb578284528b9493929181156103815750600114610349575b50610337816001960382610854565b81520192019201919097959497610237565b868e52838e2095508d905b80821061036a5750810183019450610337610328565b8654838301860152958501958b9490910190610354565b7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00168584015250151560051b810183019450610337610328565b60248f60228d7f4e487b7100000000000000000000000000000000000000000000000000000000835252fd5b91607f1691610308565b6024846041847f4e487b7100000000000000000000000000000000000000000000000000000000835252fd5b839150346100ca57610474602061043336610895565b8460c0875161044181610809565b828152828582015282898201528260608201528260808201528260a0820152015281865193828580945193849201610983565b81017ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b23815203019020908351916104aa83610809565b60ff8154169382851015610566575060e094848452600182015490602085019182526002830154818601916fffffffffffffffffffffffffffffffff80938184168152606089019360801c845260038701549560808a0196875260c0600573ffffffffffffffffffffffffffffffffffffffff809b8b0154169960a08d019a8b5201549a01998a5261053e8451809c610947565b5160208b015251169088015251166060860152516080850152511660a08301525160c0820152f35b806021847f4e487b71000000000000000000000000000000000000000000000000000000006024945252fd5b82843461066857817ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126106685782359073ffffffffffffffffffffffffffffffffffffffff8216809203610668576024359167ffffffffffffffff948584116106645736602385011215610664578301359485116100ca5736602486850101116100ca579160209484836024958895527ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b2785522090808651958694018437820190815203019020549051908152f35b8280fd5b80fd5b9150923461066857807ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126106685760c082019082821067ffffffffffffffff8311176107dd5760a084818585835273ffffffffffffffffffffffffffffffffffffffff807ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b1c541693848352817ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b1d5416918260208501527ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b1e5416818401527ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b1f54918260608501527ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b2054938460808201527ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b215495869101528151958652602086015284015260608301526080820152f35b806041867f4e487b71000000000000000000000000000000000000000000000000000000006024945252fd5b60e0810190811067ffffffffffffffff82111761082557604052565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b90601f7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0910116810190811067ffffffffffffffff82111761082557604052565b60207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc8201126109425767ffffffffffffffff6004358181116109425782602382011215610942578060040135918211610825576040519261091f60207fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f8601160185610854565b828452602483830101116109425781600092602460209301838601378301015290565b600080fd5b9060048210156109545752565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052602160045260246000fd5b60005b8381106109965750506000910152565b818101518382015260200161098656fea264697066735822122002f5988c3724d4853b58bb0e9f3e467482acfd6611e90d244078e0e8b8bb25da64736f6c63430008110033",
-    "sourceMap": "410:1715:58:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;:::i;:::-;;;1011:38;410:1715;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2078:38;410:1715;;;;;;;;;;;;;;;;;;;;;;;852:26;410:1715;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;1956:24;410:1715;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;410:1715:58;;;;;;;;-1:-1:-1;410:1715:58;;;;;-1:-1:-1;410:1715:58;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;410:1715:58;;;;;;;;;-1:-1:-1;410:1715:58;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;1776:29;410:1715;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;1776:29;410:1715;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;710:37;410:1715;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1086:24:57;410:1715:58;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;-1:-1:-1;410:1715:58;;;;;;;;;;;;;;:::o;:::-;-1:-1:-1;410:1715:58;;;;;;;;;;;:::o;:::-;;-1:-1:-1;410:1715:58;;;;;-1:-1:-1;410:1715:58;;;;;;;;;-1:-1:-1;;410:1715:58;;;;:::o;:::-;;;;;;;;;;;;",
+    "object": "0x608060408181526004918236101561001657600080fd5b600092833560e01c9182630a9254e41461066c5750816333e21bec146106065781637518d35c146104915781637eae687e14610202578163839308081461012957508063c5c4744c146100ce5763ff77d0be1461007257600080fd5b346100ca5760209061009982610087366108d2565b81845193828580945193849201610984565b81017ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b26815203019020549051908152f35b5080fd5b50346100ca57817ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126100ca576020907ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b25549051908152f35b8284346101ff57817ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126101ff5782359073ffffffffffffffffffffffffffffffffffffffff82168092036101ff576024359167ffffffffffffffff948584116101fb57366023850112156101fb578301359485116100ca5736602486850101116100ca579160209484836024958895527ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b2785522090808651958694018437820190815203019020549051908152f35b8280fd5b80fd5b839150346100ca57817ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126100ca577ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b2290815467ffffffffffffffff811161046557929084519060209461027d868260051b0184610891565b808352858301809585527f65081cd3ad5fc84209c8310f7404cee8bc03efec5e3d920e46e7ba762f27ce4c85915b8383106103605750505050508451938085019181865251809252858501958260051b8601019392955b8287106102e15785850386f35b90919293828080837fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc08a600196030186527fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f8a5161034c81518092818752878088019101610984565b0116010196019201960195929190926102d4565b899895969851899183549160019280841c90848116801561045b575b8b8310811461042f578284528b9493929181156103f557506001146103bd575b506103ab816001960382610891565b815201920192019190979594976102ab565b868e52838e2095508d905b8082106103de57508101830194506103ab61039c565b8654838301860152958501958b94909101906103c8565b7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00168584015250151560051b8101830194506103ab61039c565b60248f60228d7f4e487b7100000000000000000000000000000000000000000000000000000000835252fd5b91607f169161037c565b6024846041847f4e487b7100000000000000000000000000000000000000000000000000000000835252fd5b839150346100ca576104e860206104a7366108d2565b8460c087516104b581610846565b828152828582015282898201528260608201528260808201528260a0820152015281865193828580945193849201610984565b81017ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b238152030190209083519161051e83610846565b60ff81541693828510156105da575060e094848452600182015490602085019182526002830154818601916fffffffffffffffffffffffffffffffff80938184168152606089019360801c845260038701549560808a0196875260c0600573ffffffffffffffffffffffffffffffffffffffff809b8b0154169960a08d019a8b5201549a01998a526105b28451809c61080a565b5160208b015251169088015251166060860152516080850152511660a08301525160c0820152f35b806021847f4e487b71000000000000000000000000000000000000000000000000000000006024945252fd5b5050346100ca57817ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126100ca5760209061066a60ff7ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b2454169151809261080a565bf35b915092346101ff57807ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126101ff5760c082019082821067ffffffffffffffff8311176107de5760a084818585835273ffffffffffffffffffffffffffffffffffffffff807ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b1c541693848352817ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b1d5416918260208501527ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b1e5416818401527ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b1f54918260608501527ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b2054938460808201527ff8bb2a4b5b30792eb350607495ebe7f79c5a5066287187429654459fae715b215495869101528151958652602086015284015260608301526080820152f35b806041867f4e487b71000000000000000000000000000000000000000000000000000000006024945252fd5b9060048210156108175752565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052602160045260246000fd5b60e0810190811067ffffffffffffffff82111761086257604052565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b90601f7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0910116810190811067ffffffffffffffff82111761086257604052565b60207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc82011261097f5767ffffffffffffffff60043581811161097f578260238201121561097f578060040135918211610862576040519261095c60207fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f8601160185610891565b8284526024838301011161097f5781600092602460209301838601378301015290565b600080fd5b60005b8381106109975750506000910152565b818101518382015260200161098756fea2646970667358221220fffec200bfcd094e54a51c6e193316cb885ec747de188828488646dc8a29ea6964736f6c63430008110033",
+    "sourceMap": "410:1754:58:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;:::i;:::-;;;1050:38;410:1754;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2117:38;410:1754;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;734:49;410:1754;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1995:24;410:1754;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;410:1754:58;;;;;;;;-1:-1:-1;410:1754:58;;;;;-1:-1:-1;410:1754:58;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;410:1754:58;;;;;;;;;-1:-1:-1;410:1754:58;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;1815:29;410:1754;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;1815:29;410:1754;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;890:26;410:1754;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1161:24:57;410:1754:58;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;:::-;;-1:-1:-1;410:1754:58;;;;;-1:-1:-1;410:1754:58;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;-1:-1:-1;410:1754:58;;;;;;;;;;;;;;:::o;:::-;-1:-1:-1;410:1754:58;;;;;;;;;;-1:-1:-1;;410:1754:58;;;;:::o;:::-;;;;;;;;;;;;",
     "linkReferences": {}
   },
   "methodIdentifiers": {
-    "boughtByIn(address,string)": "0fa34ede",
-    "igoStage()": "ae00ee1f",
+    "allocationReservedByIn(address,string)": "83930808",
+    "igoStatus()": "33e21bec",
     "raisedInTag(string)": "ff77d0be",
     "setUp()": "0a9254e4",
     "tag(string)": "7518d35c",
     "tagIds()": "7eae687e",
     "totalRaised()": "c5c4744c"
   },
-  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"enum ISharedInternal.Stage\",\"name\":\"current\",\"type\":\"uint8\"}],\"name\":\"IGOWritableInternal_IGONotOpened\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"tagId\",\"type\":\"string\"},{\"internalType\":\"enum ISharedInternal.Stage\",\"name\":\"current\",\"type\":\"uint8\"}],\"name\":\"IGOWritableInternal_TagNotOpened\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"allocation\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"exceedsBy\",\"type\":\"uint256\"}],\"name\":\"IGOWritable_AllocationExceeded\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"grandTotal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"exceedsBy\",\"type\":\"uint256\"}],\"name\":\"IGOWritable_GrandTotalExceeded\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"tagId\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"maxTagCap\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"exceedsBy\",\"type\":\"uint256\"}],\"name\":\"IGOWritable_MaxTagCapExceeded\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"IGOWritable_NoPaymentTokenOrPriceUpdate\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"IGOWritable_ProjectTokenPrice_ZERO\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"greaterBy\",\"type\":\"uint256\"}],\"name\":\"IGOWritable_SummedMaxTagCapGtGrandTotal\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"string\",\"name\":\"tagId\",\"type\":\"string\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"buyer\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"paymentTokenAmount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"paymentToken\",\"type\":\"address\"}],\"name\":\"AllocationReserved\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"tagId\",\"type\":\"string\"}],\"name\":\"boughtByIn\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"igoStage\",\"outputs\":[{\"internalType\":\"enum ISharedInternal.Stage\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"tagId\",\"type\":\"string\"}],\"name\":\"raisedInTag\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"setUp\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"vestingContract\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"paymentToken\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"grandTotal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"summedMaxTagCap\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"refundFeeDecimals\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"tagId\",\"type\":\"string\"}],\"name\":\"tag\",\"outputs\":[{\"components\":[{\"internalType\":\"enum ISharedInternal.Stage\",\"name\":\"stage\",\"type\":\"uint8\"},{\"internalType\":\"bytes32\",\"name\":\"merkleRoot\",\"type\":\"bytes32\"},{\"internalType\":\"uint128\",\"name\":\"startAt\",\"type\":\"uint128\"},{\"internalType\":\"uint128\",\"name\":\"endAt\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"maxTagCap\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"paymentToken\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"projectTokenPrice\",\"type\":\"uint256\"}],\"internalType\":\"struct ISharedInternal.Tag\",\"name\":\"tag_\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"tagIds\",\"outputs\":[{\"internalType\":\"string[]\",\"name\":\"tagIds_\",\"type\":\"string[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalRaised\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"boughtByIn(address,string)\":{\"returns\":{\"_0\":\"Amount of tokens bought by the account in a tag.\"}}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/readable/IGOReadable.sol\":\"IGOReadable\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":20000},\"remappings\":[\":@ensdomains/=node_modules/@ensdomains/\",\":@prb/test/=lib/vesting-schedule/lib/prb-test/src/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/\",\":forge-std/=lib/forge-std/src/\",\":hardhat/=node_modules/hardhat/\",\":murky/=lib/murky/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/\",\":openzeppelin/=lib/openzeppelin-contracts/contracts/\",\":permit2/=lib/permit2/src/\",\":prb-test/=lib/vesting-schedule/lib/prb-test/src/\",\":solmate/=lib/solmate/\",\":vesting-schedule/=lib/vesting-schedule/src/\"],\"viaIR\":true},\"sources\":{\"src/IGOStorage.sol\":{\"keccak256\":\"0xc060f2729a0eaa9da4aa6fbc00a46066fde0e585b70126645b486cd344a938d5\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://74942f43d196cc06a96996c61390f3b8b56da947280b6f07cbf94fcfbea483c7\",\"dweb:/ipfs/QmW5JxGEqX37LajV49bACwgy9YG9AsYSdHeqeBR7LciYFq\"]},\"src/readable/IGOReadable.sol\":{\"keccak256\":\"0x0687b67e13bd96ed489a11273eac843e77764501f386cc030f79b6899bf855f4\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://eeffb42b3419f1f962a456750fa8112e4f1cd6dbdc79aa3283a9ff786cb10b8d\",\"dweb:/ipfs/QmdJfKB2Y3wQRn6V8NVWEdB4os1As218QpumatvSVvfeJm\"]},\"src/readable/IIGOReadable.sol\":{\"keccak256\":\"0xe007b5bd4e36406327b61c7d54e78929b1d605ddf47b97c93bd87a87c9f3f425\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://ba614d8cc219a0c883c0d05d16a51380144156bb441ccc77e8171771fa6791c3\",\"dweb:/ipfs/QmasRCugBS1Q737ZsaAofue67sLN5ZazyAAxMCTZ9tceAW\"]},\"src/shared/ISharedInternal.sol\":{\"keccak256\":\"0x6fbb7cb2c94564db125b506f20707862cf3ab5cf781e2f5bc444e78c0dc51ae3\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://201452880dcbea79450808df78409519d641c256e281089185953d324a4686db\",\"dweb:/ipfs/QmbMVrvAyjxkkVN9KUM97KWmCLGRhuQiGzASk9JSRbceir\"]},\"src/writable/IIGOWritableInternal.sol\":{\"keccak256\":\"0xe3fa5f7d05a29fde7d361a7d608deaea3a9b596533528fcbc6c1306462bfe037\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://1af39ecfa0adbcb3e6c278acb887ddd062b89c12e524fd463dec7e2e90261d5c\",\"dweb:/ipfs/QmW3VCVCosds7So81T7bWq5svQud31ZMGXhm5pWqw1GQ3R\"]},\"src/writable/restricted/IRestrictedWritableInternal.sol\":{\"keccak256\":\"0xc7b4edcd0f191cf6a1177a02912dc917ec4321f5cf4f0f52ca9d98f8d8f1f015\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://61b0680d31356270bf34b378f82a329247da53b1951571ad087d220ef845b0a1\",\"dweb:/ipfs/QmQ1KCbZxu3noh9qm4TWCCVhWx6QzqBkNpM268bXW6FFcj\"]}},\"version\":1}",
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"enum ISharedInternal.Status\",\"name\":\"current\",\"type\":\"uint8\"}],\"name\":\"IGOWritableInternal_IGONotOpened\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"tagId\",\"type\":\"string\"},{\"internalType\":\"enum ISharedInternal.Status\",\"name\":\"current\",\"type\":\"uint8\"}],\"name\":\"IGOWritableInternal_TagNotOpened\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"allocation\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"exceedsBy\",\"type\":\"uint256\"}],\"name\":\"IGOWritable_AllocationExceeded\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"grandTotal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"exceedsBy\",\"type\":\"uint256\"}],\"name\":\"IGOWritable_GrandTotalExceeded\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"tagId\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"maxTagCap\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"exceedsBy\",\"type\":\"uint256\"}],\"name\":\"IGOWritable_MaxTagCapExceeded\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"IGOWritable_NoPaymentTokenOrPriceUpdate\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"IGOWritable_ProjectTokenPrice_ZERO\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"greaterBy\",\"type\":\"uint256\"}],\"name\":\"IGOWritable_SummedMaxTagCapGtGrandTotal\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"string\",\"name\":\"tagId\",\"type\":\"string\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"buyer\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"maxAllocation\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"paymentToken\",\"type\":\"address\"}],\"name\":\"AllocationReserved\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"tagId\",\"type\":\"string\"}],\"name\":\"allocationReservedByIn\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"igoStatus\",\"outputs\":[{\"internalType\":\"enum ISharedInternal.Status\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"tagId\",\"type\":\"string\"}],\"name\":\"raisedInTag\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"setUp\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"vestingContract\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"paymentToken\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"grandTotal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"summedMaxTagCap\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"refundFeeDecimals\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"tagId\",\"type\":\"string\"}],\"name\":\"tag\",\"outputs\":[{\"components\":[{\"internalType\":\"enum ISharedInternal.Status\",\"name\":\"status\",\"type\":\"uint8\"},{\"internalType\":\"bytes32\",\"name\":\"merkleRoot\",\"type\":\"bytes32\"},{\"internalType\":\"uint128\",\"name\":\"startAt\",\"type\":\"uint128\"},{\"internalType\":\"uint128\",\"name\":\"endAt\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"maxTagCap\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"paymentToken\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"projectTokenPrice\",\"type\":\"uint256\"}],\"internalType\":\"struct ISharedInternal.Tag\",\"name\":\"tag_\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"tagIds\",\"outputs\":[{\"internalType\":\"string[]\",\"name\":\"tagIds_\",\"type\":\"string[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalRaised\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"allocationReservedByIn(address,string)\":{\"returns\":{\"_0\":\"Allocation amount reserved by the account in a tag, expressed         in IGOStruct.SetUp.paymentToken OR Tag.paymentToken\"}}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/readable/IGOReadable.sol\":\"IGOReadable\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":20000},\"remappings\":[\":@ensdomains/=node_modules/@ensdomains/\",\":@prb/test/=lib/vesting-schedule/lib/prb-test/src/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/\",\":forge-std/=lib/forge-std/src/\",\":hardhat/=node_modules/hardhat/\",\":murky/=lib/murky/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/\",\":openzeppelin/=lib/openzeppelin-contracts/contracts/\",\":permit2/=lib/permit2/src/\",\":prb-test/=lib/vesting-schedule/lib/prb-test/src/\",\":solmate/=lib/solmate/\",\":vesting-schedule/=lib/vesting-schedule/src/\"],\"viaIR\":true},\"sources\":{\"src/IGOStorage.sol\":{\"keccak256\":\"0x8316d56b202f9b4be6d7923d7a1970d57a0787d0212673cf2cdf3862d752e6d0\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://06bd67becaf134a6288903dc4c8d97416359ab72f3e15dd05f80568fe9956453\",\"dweb:/ipfs/QmSgTEdBkzP3hHuo2fCHCvXnCMNid4AfDzDeeSU4SYpbqS\"]},\"src/readable/IGOReadable.sol\":{\"keccak256\":\"0xfe3b94008548f988fbe1583106a06b531d8f3020f17818c64dc698fa8eddff60\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://397f33240be25c646034f1224237233e79111330ffbf96c95c3f07f2185d3da9\",\"dweb:/ipfs/QmPbGxu6egduiZZDSJTX2iq9H6CaDdKKoNx63SFY1nAYQT\"]},\"src/readable/IIGOReadable.sol\":{\"keccak256\":\"0x71af56169aaff408517816a208f9dde5c8bab4c23950e6280323dde0f50a6f0f\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://70173a6045760eaff3008a30764fb78595a4f5cd6f55e3cb28432f5e700862f1\",\"dweb:/ipfs/QmX72QP9dbQaF9oq2a1xaZUmjUHE7U4vJ5WioidQPUcTmv\"]},\"src/shared/ISharedInternal.sol\":{\"keccak256\":\"0x62e345d914b8c8050ddce50f5167162198dfe34d6daa6edbf0a320d4da996e30\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://c6a850b14e6b7bfa5dd5d0370ec00e354af5752aa1d1f6577287fa85cde94e10\",\"dweb:/ipfs/QmRnrNVzS7nxpAwoyck5CMQRW864kFNYJV9efhj7MMJv5v\"]},\"src/writable/IIGOWritableInternal.sol\":{\"keccak256\":\"0xc7199f0a1868a7c71c0d661e1bbb63eca69038fa85d58fede70688e9b6add824\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://05839974831178ddd64bf64975ea7bd40ed68e2c3db9c5eb01c48ca4adbbc8f7\",\"dweb:/ipfs/QmaAPeDrsb3WuYuUKHyu3JB7zFuQyPGYTGDVZKSFn8DGPB\"]},\"src/writable/restricted/IRestrictedWritableInternal.sol\":{\"keccak256\":\"0xc7b4edcd0f191cf6a1177a02912dc917ec4321f5cf4f0f52ca9d98f8d8f1f015\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://61b0680d31356270bf34b378f82a329247da53b1951571ad087d220ef845b0a1\",\"dweb:/ipfs/QmQ1KCbZxu3noh9qm4TWCCVhWx6QzqBkNpM268bXW6FFcj\"]}},\"version\":1}",
   "metadata": {
     "compiler": {
       "version": "0.8.17+commit.8df45f5f"
@@ -334,7 +334,7 @@
         {
           "inputs": [
             {
-              "internalType": "enum ISharedInternal.Stage",
+              "internalType": "enum ISharedInternal.Status",
               "name": "current",
               "type": "uint8"
             }
@@ -350,7 +350,7 @@
               "type": "string"
             },
             {
-              "internalType": "enum ISharedInternal.Stage",
+              "internalType": "enum ISharedInternal.Status",
               "name": "current",
               "type": "uint8"
             }
@@ -448,7 +448,7 @@
             },
             {
               "internalType": "uint256",
-              "name": "paymentTokenAmount",
+              "name": "maxAllocation",
               "type": "uint256",
               "indexed": true
             },
@@ -478,7 +478,7 @@
           ],
           "stateMutability": "view",
           "type": "function",
-          "name": "boughtByIn",
+          "name": "allocationReservedByIn",
           "outputs": [
             {
               "internalType": "uint256",
@@ -491,10 +491,10 @@
           "inputs": [],
           "stateMutability": "view",
           "type": "function",
-          "name": "igoStage",
+          "name": "igoStatus",
           "outputs": [
             {
-              "internalType": "enum ISharedInternal.Stage",
+              "internalType": "enum ISharedInternal.Status",
               "name": "",
               "type": "uint8"
             }
@@ -570,8 +570,8 @@
               "type": "tuple",
               "components": [
                 {
-                  "internalType": "enum ISharedInternal.Stage",
-                  "name": "stage",
+                  "internalType": "enum ISharedInternal.Status",
+                  "name": "status",
                   "type": "uint8"
                 },
                 {
@@ -638,9 +638,9 @@
       "devdoc": {
         "kind": "dev",
         "methods": {
-          "boughtByIn(address,string)": {
+          "allocationReservedByIn(address,string)": {
             "returns": {
-              "_0": "Amount of tokens bought by the account in a tag."
+              "_0": "Allocation amount reserved by the account in a tag, expressed         in IGOStruct.SetUp.paymentToken OR Tag.paymentToken"
             }
           }
         },
@@ -683,42 +683,42 @@
     },
     "sources": {
       "src/IGOStorage.sol": {
-        "keccak256": "0xc060f2729a0eaa9da4aa6fbc00a46066fde0e585b70126645b486cd344a938d5",
+        "keccak256": "0x8316d56b202f9b4be6d7923d7a1970d57a0787d0212673cf2cdf3862d752e6d0",
         "urls": [
-          "bzz-raw://74942f43d196cc06a96996c61390f3b8b56da947280b6f07cbf94fcfbea483c7",
-          "dweb:/ipfs/QmW5JxGEqX37LajV49bACwgy9YG9AsYSdHeqeBR7LciYFq"
+          "bzz-raw://06bd67becaf134a6288903dc4c8d97416359ab72f3e15dd05f80568fe9956453",
+          "dweb:/ipfs/QmSgTEdBkzP3hHuo2fCHCvXnCMNid4AfDzDeeSU4SYpbqS"
         ],
         "license": "UNLICENSED"
       },
       "src/readable/IGOReadable.sol": {
-        "keccak256": "0x0687b67e13bd96ed489a11273eac843e77764501f386cc030f79b6899bf855f4",
+        "keccak256": "0xfe3b94008548f988fbe1583106a06b531d8f3020f17818c64dc698fa8eddff60",
         "urls": [
-          "bzz-raw://eeffb42b3419f1f962a456750fa8112e4f1cd6dbdc79aa3283a9ff786cb10b8d",
-          "dweb:/ipfs/QmdJfKB2Y3wQRn6V8NVWEdB4os1As218QpumatvSVvfeJm"
+          "bzz-raw://397f33240be25c646034f1224237233e79111330ffbf96c95c3f07f2185d3da9",
+          "dweb:/ipfs/QmPbGxu6egduiZZDSJTX2iq9H6CaDdKKoNx63SFY1nAYQT"
         ],
         "license": "UNLICENSED"
       },
       "src/readable/IIGOReadable.sol": {
-        "keccak256": "0xe007b5bd4e36406327b61c7d54e78929b1d605ddf47b97c93bd87a87c9f3f425",
+        "keccak256": "0x71af56169aaff408517816a208f9dde5c8bab4c23950e6280323dde0f50a6f0f",
         "urls": [
-          "bzz-raw://ba614d8cc219a0c883c0d05d16a51380144156bb441ccc77e8171771fa6791c3",
-          "dweb:/ipfs/QmasRCugBS1Q737ZsaAofue67sLN5ZazyAAxMCTZ9tceAW"
+          "bzz-raw://70173a6045760eaff3008a30764fb78595a4f5cd6f55e3cb28432f5e700862f1",
+          "dweb:/ipfs/QmX72QP9dbQaF9oq2a1xaZUmjUHE7U4vJ5WioidQPUcTmv"
         ],
         "license": "UNLICENSED"
       },
       "src/shared/ISharedInternal.sol": {
-        "keccak256": "0x6fbb7cb2c94564db125b506f20707862cf3ab5cf781e2f5bc444e78c0dc51ae3",
+        "keccak256": "0x62e345d914b8c8050ddce50f5167162198dfe34d6daa6edbf0a320d4da996e30",
         "urls": [
-          "bzz-raw://201452880dcbea79450808df78409519d641c256e281089185953d324a4686db",
-          "dweb:/ipfs/QmbMVrvAyjxkkVN9KUM97KWmCLGRhuQiGzASk9JSRbceir"
+          "bzz-raw://c6a850b14e6b7bfa5dd5d0370ec00e354af5752aa1d1f6577287fa85cde94e10",
+          "dweb:/ipfs/QmRnrNVzS7nxpAwoyck5CMQRW864kFNYJV9efhj7MMJv5v"
         ],
         "license": "UNLICENSED"
       },
       "src/writable/IIGOWritableInternal.sol": {
-        "keccak256": "0xe3fa5f7d05a29fde7d361a7d608deaea3a9b596533528fcbc6c1306462bfe037",
+        "keccak256": "0xc7199f0a1868a7c71c0d661e1bbb63eca69038fa85d58fede70688e9b6add824",
         "urls": [
-          "bzz-raw://1af39ecfa0adbcb3e6c278acb887ddd062b89c12e524fd463dec7e2e90261d5c",
-          "dweb:/ipfs/QmW3VCVCosds7So81T7bWq5svQud31ZMGXhm5pWqw1GQ3R"
+          "bzz-raw://05839974831178ddd64bf64975ea7bd40ed68e2c3db9c5eb01c48ca4adbbc8f7",
+          "dweb:/ipfs/QmaAPeDrsb3WuYuUKHyu3JB7zFuQyPGYTGDVZKSFn8DGPB"
         ],
         "license": "UNLICENSED"
       },
@@ -747,17 +747,17 @@
         37983
       ],
       "IIGOWritableInternal": [
-        38851
+        38850
       ],
       "IRestrictedWritableInternal": [
-        38950
+        38949
       ],
       "ISharedInternal": [
         38007
       ]
     },
     "nodeType": "SourceUnit",
-    "src": "39:2087:58",
+    "src": "39:2126:58",
     "nodes": [
       {
         "id": 37752,
@@ -806,7 +806,7 @@
         "file": "../writable/restricted/IRestrictedWritableInternal.sol",
         "nameLocation": "-1:-1:-1",
         "scope": 37924,
-        "sourceUnit": 38951,
+        "sourceUnit": 38950,
         "symbolAliases": [
           {
             "foreign": {
@@ -814,7 +814,7 @@
               "name": "IRestrictedWritableInternal",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "referencedDeclaration": 38950,
+              "referencedDeclaration": 38949,
               "src": "132:27:58",
               "typeDescriptions": {}
             },
@@ -858,7 +858,7 @@
         "file": "../writable/IIGOWritableInternal.sol",
         "nameLocation": "-1:-1:-1",
         "scope": 37924,
-        "sourceUnit": 38852,
+        "sourceUnit": 38851,
         "symbolAliases": [
           {
             "foreign": {
@@ -866,7 +866,7 @@
               "name": "IIGOWritableInternal",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "referencedDeclaration": 38851,
+              "referencedDeclaration": 38850,
               "src": "295:20:58",
               "typeDescriptions": {}
             },
@@ -904,17 +904,17 @@
       {
         "id": 37923,
         "nodeType": "ContractDefinition",
-        "src": "410:1715:58",
+        "src": "410:1754:58",
         "nodes": [
           {
             "id": 37792,
             "nodeType": "FunctionDefinition",
-            "src": "570:200:58",
+            "src": "570:236:58",
             "nodes": [],
             "body": {
               "id": 37791,
               "nodeType": "Block",
-              "src": "693:77:58",
+              "src": "705:101:58",
               "nodes": [],
               "statements": [
                 {
@@ -932,7 +932,7 @@
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
                                 "referencedDeclaration": 37750,
-                                "src": "710:10:58",
+                                "src": "734:10:58",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_type$_t_contract$_IGOStorage_$37750_$",
                                   "typeString": "type(library IGOStorage)"
@@ -943,11 +943,11 @@
                               "isLValue": false,
                               "isPure": false,
                               "lValueRequested": false,
-                              "memberLocation": "721:6:58",
+                              "memberLocation": "745:6:58",
                               "memberName": "layout",
                               "nodeType": "MemberAccess",
                               "referencedDeclaration": 37749,
-                              "src": "710:17:58",
+                              "src": "734:17:58",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_function_internal_pure$__$returns$_t_struct$_IGOStruct_$37732_storage_ptr_$",
                                 "typeString": "function () pure returns (struct IGOStorage.IGOStruct storage pointer)"
@@ -962,7 +962,7 @@
                             "nameLocations": [],
                             "names": [],
                             "nodeType": "FunctionCall",
-                            "src": "710:19:58",
+                            "src": "734:19:58",
                             "tryCall": false,
                             "typeDescriptions": {
                               "typeIdentifier": "t_struct$_IGOStruct_$37732_storage_ptr",
@@ -974,11 +974,11 @@
                           "isLValue": true,
                           "isPure": false,
                           "lValueRequested": false,
-                          "memberLocation": "730:6:58",
+                          "memberLocation": "754:6:58",
                           "memberName": "ledger",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": 37731,
-                          "src": "710:26:58",
+                          "src": "734:26:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_struct$_Ledger_$37722_storage",
                             "typeString": "struct IGOStorage.Ledger storage ref"
@@ -989,11 +989,11 @@
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "737:10:58",
-                        "memberName": "boughtByIn",
+                        "memberLocation": "761:22:58",
+                        "memberName": "allocationReservedByIn",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 37721,
-                        "src": "710:37:58",
+                        "src": "734:49:58",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_mapping$_t_string_memory_ptr_$_t_uint256_$_$",
                           "typeString": "mapping(address => mapping(string memory => uint256))"
@@ -1006,7 +1006,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 37773,
-                        "src": "748:7:58",
+                        "src": "784:7:58",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -1017,7 +1017,7 @@
                       "isPure": false,
                       "lValueRequested": false,
                       "nodeType": "IndexAccess",
-                      "src": "710:46:58",
+                      "src": "734:58:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_mapping$_t_string_memory_ptr_$_t_uint256_$",
                         "typeString": "mapping(string memory => uint256)"
@@ -1030,7 +1030,7 @@
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 37775,
-                      "src": "757:5:58",
+                      "src": "793:5:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_string_calldata_ptr",
                         "typeString": "string calldata"
@@ -1041,7 +1041,7 @@
                     "isPure": false,
                     "lValueRequested": false,
                     "nodeType": "IndexAccess",
-                    "src": "710:53:58",
+                    "src": "734:65:58",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1050,7 +1050,7 @@
                   "functionReturnParameters": 37780,
                   "id": 37790,
                   "nodeType": "Return",
-                  "src": "703:60:58"
+                  "src": "715:84:58"
                 }
               ]
             },
@@ -1063,17 +1063,17 @@
               "src": "537:28:58",
               "text": "@inheritdoc IIGOReadable"
             },
-            "functionSelector": "0fa34ede",
+            "functionSelector": "83930808",
             "implemented": true,
             "kind": "function",
             "modifiers": [],
-            "name": "boughtByIn",
-            "nameLocation": "579:10:58",
+            "name": "allocationReservedByIn",
+            "nameLocation": "579:22:58",
             "overrides": {
               "id": 37777,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
-              "src": "666:8:58"
+              "src": "678:8:58"
             },
             "parameters": {
               "id": 37776,
@@ -1084,10 +1084,10 @@
                   "id": 37773,
                   "mutability": "mutable",
                   "name": "account",
-                  "nameLocation": "607:7:58",
+                  "nameLocation": "619:7:58",
                   "nodeType": "VariableDeclaration",
                   "scope": 37792,
-                  "src": "599:15:58",
+                  "src": "611:15:58",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1098,7 +1098,7 @@
                     "id": 37772,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "599:7:58",
+                    "src": "611:7:58",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1112,10 +1112,10 @@
                   "id": 37775,
                   "mutability": "mutable",
                   "name": "tagId",
-                  "nameLocation": "640:5:58",
+                  "nameLocation": "652:5:58",
                   "nodeType": "VariableDeclaration",
                   "scope": 37792,
-                  "src": "624:21:58",
+                  "src": "636:21:58",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
@@ -1126,7 +1126,7 @@
                     "id": 37774,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "624:6:58",
+                    "src": "636:6:58",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -1135,7 +1135,7 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "589:62:58"
+              "src": "601:62:58"
             },
             "returnParameters": {
               "id": 37780,
@@ -1149,7 +1149,7 @@
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
                   "scope": 37792,
-                  "src": "684:7:58",
+                  "src": "696:7:58",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1160,7 +1160,7 @@
                     "id": 37778,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "684:7:58",
+                    "src": "696:7:58",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1169,7 +1169,7 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "683:9:58"
+              "src": "695:9:58"
             },
             "scope": 37923,
             "stateMutability": "view",
@@ -1179,12 +1179,12 @@
           {
             "id": 37806,
             "nodeType": "FunctionDefinition",
-            "src": "776:115:58",
+            "src": "812:118:58",
             "nodes": [],
             "body": {
               "id": 37805,
               "nodeType": "Block",
-              "src": "835:56:58",
+              "src": "873:57:58",
               "nodes": [],
               "statements": [
                 {
@@ -1200,7 +1200,7 @@
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
                             "referencedDeclaration": 37750,
-                            "src": "852:10:58",
+                            "src": "890:10:58",
                             "typeDescriptions": {
                               "typeIdentifier": "t_type$_t_contract$_IGOStorage_$37750_$",
                               "typeString": "type(library IGOStorage)"
@@ -1211,11 +1211,11 @@
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
-                          "memberLocation": "863:6:58",
+                          "memberLocation": "901:6:58",
                           "memberName": "layout",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": 37749,
-                          "src": "852:17:58",
+                          "src": "890:17:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_pure$__$returns$_t_struct$_IGOStruct_$37732_storage_ptr_$",
                             "typeString": "function () pure returns (struct IGOStorage.IGOStruct storage pointer)"
@@ -1230,7 +1230,7 @@
                         "nameLocations": [],
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "852:19:58",
+                        "src": "890:19:58",
                         "tryCall": false,
                         "typeDescriptions": {
                           "typeIdentifier": "t_struct$_IGOStruct_$37732_storage_ptr",
@@ -1242,11 +1242,11 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
-                      "memberLocation": "872:6:58",
+                      "memberLocation": "910:6:58",
                       "memberName": "ledger",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 37731,
-                      "src": "852:26:58",
+                      "src": "890:26:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_struct$_Ledger_$37722_storage",
                         "typeString": "struct IGOStorage.Ledger storage ref"
@@ -1257,43 +1257,43 @@
                     "isLValue": true,
                     "isPure": false,
                     "lValueRequested": false,
-                    "memberLocation": "879:5:58",
-                    "memberName": "stage",
+                    "memberLocation": "917:6:58",
+                    "memberName": "status",
                     "nodeType": "MemberAccess",
                     "referencedDeclaration": 37709,
-                    "src": "852:32:58",
+                    "src": "890:33:58",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_Stage_$37990",
-                      "typeString": "enum ISharedInternal.Stage"
+                      "typeIdentifier": "t_enum$_Status_$37990",
+                      "typeString": "enum ISharedInternal.Status"
                     }
                   },
                   "functionReturnParameters": 37798,
                   "id": 37804,
                   "nodeType": "Return",
-                  "src": "845:39:58"
+                  "src": "883:40:58"
                 }
               ]
             },
             "baseFunctions": [
               37943
             ],
-            "functionSelector": "ae00ee1f",
+            "functionSelector": "33e21bec",
             "implemented": true,
             "kind": "function",
             "modifiers": [],
-            "name": "igoStage",
-            "nameLocation": "785:8:58",
+            "name": "igoStatus",
+            "nameLocation": "821:9:58",
             "overrides": {
               "id": 37794,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
-              "src": "810:8:58"
+              "src": "847:8:58"
             },
             "parameters": {
               "id": 37793,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "793:2:58"
+              "src": "830:2:58"
             },
             "returnParameters": {
               "id": 37798,
@@ -1307,37 +1307,37 @@
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
                   "scope": 37806,
-                  "src": "828:5:58",
+                  "src": "865:6:58",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_Stage_$37990",
-                    "typeString": "enum ISharedInternal.Stage"
+                    "typeIdentifier": "t_enum$_Status_$37990",
+                    "typeString": "enum ISharedInternal.Status"
                   },
                   "typeName": {
                     "id": 37796,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
                       "id": 37795,
-                      "name": "Stage",
+                      "name": "Status",
                       "nameLocations": [
-                        "828:5:58"
+                        "865:6:58"
                       ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 37990,
-                      "src": "828:5:58"
+                      "src": "865:6:58"
                     },
                     "referencedDeclaration": 37990,
-                    "src": "828:5:58",
+                    "src": "865:6:58",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_Stage_$37990",
-                      "typeString": "enum ISharedInternal.Stage"
+                      "typeIdentifier": "t_enum$_Status_$37990",
+                      "typeString": "enum ISharedInternal.Status"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "827:7:58"
+              "src": "864:8:58"
             },
             "scope": 37923,
             "stateMutability": "view",
@@ -1347,12 +1347,12 @@
           {
             "id": 37823,
             "nodeType": "FunctionDefinition",
-            "src": "897:166:58",
+            "src": "936:166:58",
             "nodes": [],
             "body": {
               "id": 37822,
               "nodeType": "Block",
-              "src": "994:69:58",
+              "src": "1033:69:58",
               "nodes": [],
               "statements": [
                 {
@@ -1369,7 +1369,7 @@
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
                               "referencedDeclaration": 37750,
-                              "src": "1011:10:58",
+                              "src": "1050:10:58",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_type$_t_contract$_IGOStorage_$37750_$",
                                 "typeString": "type(library IGOStorage)"
@@ -1380,11 +1380,11 @@
                             "isLValue": false,
                             "isPure": false,
                             "lValueRequested": false,
-                            "memberLocation": "1022:6:58",
+                            "memberLocation": "1061:6:58",
                             "memberName": "layout",
                             "nodeType": "MemberAccess",
                             "referencedDeclaration": 37749,
-                            "src": "1011:17:58",
+                            "src": "1050:17:58",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_pure$__$returns$_t_struct$_IGOStruct_$37732_storage_ptr_$",
                               "typeString": "function () pure returns (struct IGOStorage.IGOStruct storage pointer)"
@@ -1399,7 +1399,7 @@
                           "nameLocations": [],
                           "names": [],
                           "nodeType": "FunctionCall",
-                          "src": "1011:19:58",
+                          "src": "1050:19:58",
                           "tryCall": false,
                           "typeDescriptions": {
                             "typeIdentifier": "t_struct$_IGOStruct_$37732_storage_ptr",
@@ -1411,11 +1411,11 @@
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "1031:6:58",
+                        "memberLocation": "1070:6:58",
                         "memberName": "ledger",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 37731,
-                        "src": "1011:26:58",
+                        "src": "1050:26:58",
                         "typeDescriptions": {
                           "typeIdentifier": "t_struct$_Ledger_$37722_storage",
                           "typeString": "struct IGOStorage.Ledger storage ref"
@@ -1426,11 +1426,11 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
-                      "memberLocation": "1038:11:58",
+                      "memberLocation": "1077:11:58",
                       "memberName": "raisedInTag",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 37715,
-                      "src": "1011:38:58",
+                      "src": "1050:38:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_mapping$_t_string_memory_ptr_$_t_uint256_$",
                         "typeString": "mapping(string memory => uint256)"
@@ -1443,7 +1443,7 @@
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 37808,
-                      "src": "1050:5:58",
+                      "src": "1089:5:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_string_memory_ptr",
                         "typeString": "string memory"
@@ -1454,7 +1454,7 @@
                     "isPure": false,
                     "lValueRequested": false,
                     "nodeType": "IndexAccess",
-                    "src": "1011:45:58",
+                    "src": "1050:45:58",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1463,7 +1463,7 @@
                   "functionReturnParameters": 37813,
                   "id": 37821,
                   "nodeType": "Return",
-                  "src": "1004:52:58"
+                  "src": "1043:52:58"
                 }
               ]
             },
@@ -1475,12 +1475,12 @@
             "kind": "function",
             "modifiers": [],
             "name": "raisedInTag",
-            "nameLocation": "906:11:58",
+            "nameLocation": "945:11:58",
             "overrides": {
               "id": 37810,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
-              "src": "967:8:58"
+              "src": "1006:8:58"
             },
             "parameters": {
               "id": 37809,
@@ -1491,10 +1491,10 @@
                   "id": 37808,
                   "mutability": "mutable",
                   "name": "tagId",
-                  "nameLocation": "941:5:58",
+                  "nameLocation": "980:5:58",
                   "nodeType": "VariableDeclaration",
                   "scope": 37823,
-                  "src": "927:19:58",
+                  "src": "966:19:58",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -1505,7 +1505,7 @@
                     "id": 37807,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "927:6:58",
+                    "src": "966:6:58",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -1514,7 +1514,7 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "917:35:58"
+              "src": "956:35:58"
             },
             "returnParameters": {
               "id": 37813,
@@ -1528,7 +1528,7 @@
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
                   "scope": 37823,
-                  "src": "985:7:58",
+                  "src": "1024:7:58",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1539,7 +1539,7 @@
                     "id": 37811,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "985:7:58",
+                    "src": "1024:7:58",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1548,7 +1548,7 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "984:9:58"
+              "src": "1023:9:58"
             },
             "scope": 37923,
             "stateMutability": "view",
@@ -1558,12 +1558,12 @@
           {
             "id": 37873,
             "nodeType": "FunctionDefinition",
-            "src": "1069:587:58",
+            "src": "1108:587:58",
             "nodes": [],
             "body": {
               "id": 37872,
               "nodeType": "Block",
-              "src": "1343:313:58",
+              "src": "1382:313:58",
               "nodes": [],
               "statements": [
                 {
@@ -1576,10 +1576,10 @@
                       "id": 37841,
                       "mutability": "mutable",
                       "name": "setUp_",
-                      "nameLocation": "1377:6:58",
+                      "nameLocation": "1416:6:58",
                       "nodeType": "VariableDeclaration",
                       "scope": 37872,
-                      "src": "1353:30:58",
+                      "src": "1392:30:58",
                       "stateVariable": false,
                       "storageLocation": "memory",
                       "typeDescriptions": {
@@ -1593,15 +1593,15 @@
                           "id": 37839,
                           "name": "IGOStorage.SetUp",
                           "nameLocations": [
-                            "1353:10:58",
-                            "1364:5:58"
+                            "1392:10:58",
+                            "1403:5:58"
                           ],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 37697,
-                          "src": "1353:16:58"
+                          "src": "1392:16:58"
                         },
                         "referencedDeclaration": 37697,
-                        "src": "1353:16:58",
+                        "src": "1392:16:58",
                         "typeDescriptions": {
                           "typeIdentifier": "t_struct$_SetUp_$37697_storage_ptr",
                           "typeString": "struct IGOStorage.SetUp"
@@ -1622,7 +1622,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 37750,
-                          "src": "1386:10:58",
+                          "src": "1425:10:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_type$_t_contract$_IGOStorage_$37750_$",
                             "typeString": "type(library IGOStorage)"
@@ -1633,11 +1633,11 @@
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "1397:6:58",
+                        "memberLocation": "1436:6:58",
                         "memberName": "layout",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 37749,
-                        "src": "1386:17:58",
+                        "src": "1425:17:58",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_pure$__$returns$_t_struct$_IGOStruct_$37732_storage_ptr_$",
                           "typeString": "function () pure returns (struct IGOStorage.IGOStruct storage pointer)"
@@ -1652,7 +1652,7 @@
                       "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
-                      "src": "1386:19:58",
+                      "src": "1425:19:58",
                       "tryCall": false,
                       "typeDescriptions": {
                         "typeIdentifier": "t_struct$_IGOStruct_$37732_storage_ptr",
@@ -1664,18 +1664,18 @@
                     "isLValue": true,
                     "isPure": false,
                     "lValueRequested": false,
-                    "memberLocation": "1406:5:58",
+                    "memberLocation": "1445:5:58",
                     "memberName": "setUp",
                     "nodeType": "MemberAccess",
                     "referencedDeclaration": 37725,
-                    "src": "1386:25:58",
+                    "src": "1425:25:58",
                     "typeDescriptions": {
                       "typeIdentifier": "t_struct$_SetUp_$37697_storage",
                       "typeString": "struct IGOStorage.SetUp storage ref"
                     }
                   },
                   "nodeType": "VariableDeclarationStatement",
-                  "src": "1353:58:58"
+                  "src": "1392:58:58"
                 },
                 {
                   "expression": {
@@ -1690,7 +1690,7 @@
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 37827,
-                      "src": "1421:15:58",
+                      "src": "1460:15:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
@@ -1705,7 +1705,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 37841,
-                        "src": "1439:6:58",
+                        "src": "1478:6:58",
                         "typeDescriptions": {
                           "typeIdentifier": "t_struct$_SetUp_$37697_memory_ptr",
                           "typeString": "struct IGOStorage.SetUp memory"
@@ -1716,17 +1716,17 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
-                      "memberLocation": "1446:15:58",
+                      "memberLocation": "1485:15:58",
                       "memberName": "vestingContract",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 37686,
-                      "src": "1439:22:58",
+                      "src": "1478:22:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       }
                     },
-                    "src": "1421:40:58",
+                    "src": "1460:40:58",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -1734,7 +1734,7 @@
                   },
                   "id": 37851,
                   "nodeType": "ExpressionStatement",
-                  "src": "1421:40:58"
+                  "src": "1460:40:58"
                 },
                 {
                   "expression": {
@@ -1749,7 +1749,7 @@
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 37829,
-                      "src": "1471:12:58",
+                      "src": "1510:12:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
@@ -1764,7 +1764,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 37841,
-                        "src": "1486:6:58",
+                        "src": "1525:6:58",
                         "typeDescriptions": {
                           "typeIdentifier": "t_struct$_SetUp_$37697_memory_ptr",
                           "typeString": "struct IGOStorage.SetUp memory"
@@ -1775,17 +1775,17 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
-                      "memberLocation": "1493:12:58",
+                      "memberLocation": "1532:12:58",
                       "memberName": "paymentToken",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 37688,
-                      "src": "1486:19:58",
+                      "src": "1525:19:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       }
                     },
-                    "src": "1471:34:58",
+                    "src": "1510:34:58",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -1793,7 +1793,7 @@
                   },
                   "id": 37856,
                   "nodeType": "ExpressionStatement",
-                  "src": "1471:34:58"
+                  "src": "1510:34:58"
                 },
                 {
                   "expression": {
@@ -1808,7 +1808,7 @@
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 37831,
-                      "src": "1515:10:58",
+                      "src": "1554:10:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -1823,7 +1823,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 37841,
-                        "src": "1528:6:58",
+                        "src": "1567:6:58",
                         "typeDescriptions": {
                           "typeIdentifier": "t_struct$_SetUp_$37697_memory_ptr",
                           "typeString": "struct IGOStorage.SetUp memory"
@@ -1834,17 +1834,17 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
-                      "memberLocation": "1535:10:58",
+                      "memberLocation": "1574:10:58",
                       "memberName": "grandTotal",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 37692,
-                      "src": "1528:17:58",
+                      "src": "1567:17:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
-                    "src": "1515:30:58",
+                    "src": "1554:30:58",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1852,7 +1852,7 @@
                   },
                   "id": 37861,
                   "nodeType": "ExpressionStatement",
-                  "src": "1515:30:58"
+                  "src": "1554:30:58"
                 },
                 {
                   "expression": {
@@ -1867,7 +1867,7 @@
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 37833,
-                      "src": "1555:15:58",
+                      "src": "1594:15:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -1882,7 +1882,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 37841,
-                        "src": "1573:6:58",
+                        "src": "1612:6:58",
                         "typeDescriptions": {
                           "typeIdentifier": "t_struct$_SetUp_$37697_memory_ptr",
                           "typeString": "struct IGOStorage.SetUp memory"
@@ -1893,17 +1893,17 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
-                      "memberLocation": "1580:15:58",
+                      "memberLocation": "1619:15:58",
                       "memberName": "summedMaxTagCap",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 37694,
-                      "src": "1573:22:58",
+                      "src": "1612:22:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
-                    "src": "1555:40:58",
+                    "src": "1594:40:58",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1911,7 +1911,7 @@
                   },
                   "id": 37866,
                   "nodeType": "ExpressionStatement",
-                  "src": "1555:40:58"
+                  "src": "1594:40:58"
                 },
                 {
                   "expression": {
@@ -1926,7 +1926,7 @@
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 37835,
-                      "src": "1605:17:58",
+                      "src": "1644:17:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -1941,7 +1941,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 37841,
-                        "src": "1625:6:58",
+                        "src": "1664:6:58",
                         "typeDescriptions": {
                           "typeIdentifier": "t_struct$_SetUp_$37697_memory_ptr",
                           "typeString": "struct IGOStorage.SetUp memory"
@@ -1952,17 +1952,17 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
-                      "memberLocation": "1632:17:58",
+                      "memberLocation": "1671:17:58",
                       "memberName": "refundFeeDecimals",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 37696,
-                      "src": "1625:24:58",
+                      "src": "1664:24:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
-                    "src": "1605:44:58",
+                    "src": "1644:44:58",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1970,7 +1970,7 @@
                   },
                   "id": 37871,
                   "nodeType": "ExpressionStatement",
-                  "src": "1605:44:58"
+                  "src": "1644:44:58"
                 }
               ]
             },
@@ -1982,18 +1982,18 @@
             "kind": "function",
             "modifiers": [],
             "name": "setUp",
-            "nameLocation": "1078:5:58",
+            "nameLocation": "1117:5:58",
             "overrides": {
               "id": 37825,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
-              "src": "1124:8:58"
+              "src": "1163:8:58"
             },
             "parameters": {
               "id": 37824,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1083:2:58"
+              "src": "1122:2:58"
             },
             "returnParameters": {
               "id": 37836,
@@ -2004,10 +2004,10 @@
                   "id": 37827,
                   "mutability": "mutable",
                   "name": "vestingContract",
-                  "nameLocation": "1171:15:58",
+                  "nameLocation": "1210:15:58",
                   "nodeType": "VariableDeclaration",
                   "scope": 37873,
-                  "src": "1163:23:58",
+                  "src": "1202:23:58",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2018,7 +2018,7 @@
                     "id": 37826,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1163:7:58",
+                    "src": "1202:7:58",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -2032,10 +2032,10 @@
                   "id": 37829,
                   "mutability": "mutable",
                   "name": "paymentToken",
-                  "nameLocation": "1208:12:58",
+                  "nameLocation": "1247:12:58",
                   "nodeType": "VariableDeclaration",
                   "scope": 37873,
-                  "src": "1200:20:58",
+                  "src": "1239:20:58",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2046,7 +2046,7 @@
                     "id": 37828,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1200:7:58",
+                    "src": "1239:7:58",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -2060,10 +2060,10 @@
                   "id": 37831,
                   "mutability": "mutable",
                   "name": "grandTotal",
-                  "nameLocation": "1242:10:58",
+                  "nameLocation": "1281:10:58",
                   "nodeType": "VariableDeclaration",
                   "scope": 37873,
-                  "src": "1234:18:58",
+                  "src": "1273:18:58",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2074,7 +2074,7 @@
                     "id": 37830,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1234:7:58",
+                    "src": "1273:7:58",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2087,10 +2087,10 @@
                   "id": 37833,
                   "mutability": "mutable",
                   "name": "summedMaxTagCap",
-                  "nameLocation": "1274:15:58",
+                  "nameLocation": "1313:15:58",
                   "nodeType": "VariableDeclaration",
                   "scope": 37873,
-                  "src": "1266:23:58",
+                  "src": "1305:23:58",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2101,7 +2101,7 @@
                     "id": 37832,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1266:7:58",
+                    "src": "1305:7:58",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2114,10 +2114,10 @@
                   "id": 37835,
                   "mutability": "mutable",
                   "name": "refundFeeDecimals",
-                  "nameLocation": "1311:17:58",
+                  "nameLocation": "1350:17:58",
                   "nodeType": "VariableDeclaration",
                   "scope": 37873,
-                  "src": "1303:25:58",
+                  "src": "1342:25:58",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2128,7 +2128,7 @@
                     "id": 37834,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1303:7:58",
+                    "src": "1342:7:58",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2137,7 +2137,7 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1149:189:58"
+              "src": "1188:189:58"
             },
             "scope": 37923,
             "stateMutability": "view",
@@ -2147,12 +2147,12 @@
           {
             "id": 37893,
             "nodeType": "FunctionDefinition",
-            "src": "1662:157:58",
+            "src": "1701:157:58",
             "nodes": [],
             "body": {
               "id": 37892,
               "nodeType": "Block",
-              "src": "1759:60:58",
+              "src": "1798:60:58",
               "nodes": [],
               "statements": [
                 {
@@ -2168,7 +2168,7 @@
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 37880,
-                      "src": "1769:4:58",
+                      "src": "1808:4:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_struct$_Tag_$38006_memory_ptr",
                         "typeString": "struct ISharedInternal.Tag memory"
@@ -2189,7 +2189,7 @@
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
                                 "referencedDeclaration": 37750,
-                                "src": "1776:10:58",
+                                "src": "1815:10:58",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_type$_t_contract$_IGOStorage_$37750_$",
                                   "typeString": "type(library IGOStorage)"
@@ -2200,11 +2200,11 @@
                               "isLValue": false,
                               "isPure": false,
                               "lValueRequested": false,
-                              "memberLocation": "1787:6:58",
+                              "memberLocation": "1826:6:58",
                               "memberName": "layout",
                               "nodeType": "MemberAccess",
                               "referencedDeclaration": 37749,
-                              "src": "1776:17:58",
+                              "src": "1815:17:58",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_function_internal_pure$__$returns$_t_struct$_IGOStruct_$37732_storage_ptr_$",
                                 "typeString": "function () pure returns (struct IGOStorage.IGOStruct storage pointer)"
@@ -2219,7 +2219,7 @@
                             "nameLocations": [],
                             "names": [],
                             "nodeType": "FunctionCall",
-                            "src": "1776:19:58",
+                            "src": "1815:19:58",
                             "tryCall": false,
                             "typeDescriptions": {
                               "typeIdentifier": "t_struct$_IGOStruct_$37732_storage_ptr",
@@ -2231,11 +2231,11 @@
                           "isLValue": true,
                           "isPure": false,
                           "lValueRequested": false,
-                          "memberLocation": "1796:4:58",
+                          "memberLocation": "1835:4:58",
                           "memberName": "tags",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": 37728,
-                          "src": "1776:24:58",
+                          "src": "1815:24:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_struct$_Tags_$37706_storage",
                             "typeString": "struct IGOStorage.Tags storage ref"
@@ -2246,11 +2246,11 @@
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "1801:4:58",
+                        "memberLocation": "1840:4:58",
                         "memberName": "data",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 37705,
-                        "src": "1776:29:58",
+                        "src": "1815:29:58",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_string_memory_ptr_$_t_struct$_Tag_$38006_storage_$",
                           "typeString": "mapping(string memory => struct ISharedInternal.Tag storage ref)"
@@ -2263,7 +2263,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 37875,
-                        "src": "1806:5:58",
+                        "src": "1845:5:58",
                         "typeDescriptions": {
                           "typeIdentifier": "t_string_memory_ptr",
                           "typeString": "string memory"
@@ -2274,13 +2274,13 @@
                       "isPure": false,
                       "lValueRequested": false,
                       "nodeType": "IndexAccess",
-                      "src": "1776:36:58",
+                      "src": "1815:36:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_struct$_Tag_$38006_storage",
                         "typeString": "struct ISharedInternal.Tag storage ref"
                       }
                     },
-                    "src": "1769:43:58",
+                    "src": "1808:43:58",
                     "typeDescriptions": {
                       "typeIdentifier": "t_struct$_Tag_$38006_memory_ptr",
                       "typeString": "struct ISharedInternal.Tag memory"
@@ -2288,7 +2288,7 @@
                   },
                   "id": 37891,
                   "nodeType": "ExpressionStatement",
-                  "src": "1769:43:58"
+                  "src": "1808:43:58"
                 }
               ]
             },
@@ -2300,12 +2300,12 @@
             "kind": "function",
             "modifiers": [],
             "name": "tag",
-            "nameLocation": "1671:3:58",
+            "nameLocation": "1710:3:58",
             "overrides": {
               "id": 37877,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
-              "src": "1724:8:58"
+              "src": "1763:8:58"
             },
             "parameters": {
               "id": 37876,
@@ -2316,10 +2316,10 @@
                   "id": 37875,
                   "mutability": "mutable",
                   "name": "tagId",
-                  "nameLocation": "1698:5:58",
+                  "nameLocation": "1737:5:58",
                   "nodeType": "VariableDeclaration",
                   "scope": 37893,
-                  "src": "1684:19:58",
+                  "src": "1723:19:58",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -2330,7 +2330,7 @@
                     "id": 37874,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1684:6:58",
+                    "src": "1723:6:58",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -2339,7 +2339,7 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1674:35:58"
+              "src": "1713:35:58"
             },
             "returnParameters": {
               "id": 37881,
@@ -2350,10 +2350,10 @@
                   "id": 37880,
                   "mutability": "mutable",
                   "name": "tag_",
-                  "nameLocation": "1753:4:58",
+                  "nameLocation": "1792:4:58",
                   "nodeType": "VariableDeclaration",
                   "scope": 37893,
-                  "src": "1742:15:58",
+                  "src": "1781:15:58",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -2367,14 +2367,14 @@
                       "id": 37878,
                       "name": "Tag",
                       "nameLocations": [
-                        "1742:3:58"
+                        "1781:3:58"
                       ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 38006,
-                      "src": "1742:3:58"
+                      "src": "1781:3:58"
                     },
                     "referencedDeclaration": 38006,
-                    "src": "1742:3:58",
+                    "src": "1781:3:58",
                     "typeDescriptions": {
                       "typeIdentifier": "t_struct$_Tag_$38006_storage_ptr",
                       "typeString": "struct ISharedInternal.Tag"
@@ -2383,7 +2383,7 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1741:17:58"
+              "src": "1780:17:58"
             },
             "scope": 37923,
             "stateMutability": "view",
@@ -2393,12 +2393,12 @@
           {
             "id": 37909,
             "nodeType": "FunctionDefinition",
-            "src": "1825:166:58",
+            "src": "1864:166:58",
             "nodes": [],
             "body": {
               "id": 37908,
               "nodeType": "Block",
-              "src": "1936:55:58",
+              "src": "1975:55:58",
               "nodes": [],
               "statements": [
                 {
@@ -2414,7 +2414,7 @@
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 37898,
-                      "src": "1946:7:58",
+                      "src": "1985:7:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_string_memory_ptr_$dyn_memory_ptr",
                         "typeString": "string memory[] memory"
@@ -2434,7 +2434,7 @@
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
                               "referencedDeclaration": 37750,
-                              "src": "1956:10:58",
+                              "src": "1995:10:58",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_type$_t_contract$_IGOStorage_$37750_$",
                                 "typeString": "type(library IGOStorage)"
@@ -2445,11 +2445,11 @@
                             "isLValue": false,
                             "isPure": false,
                             "lValueRequested": false,
-                            "memberLocation": "1967:6:58",
+                            "memberLocation": "2006:6:58",
                             "memberName": "layout",
                             "nodeType": "MemberAccess",
                             "referencedDeclaration": 37749,
-                            "src": "1956:17:58",
+                            "src": "1995:17:58",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_pure$__$returns$_t_struct$_IGOStruct_$37732_storage_ptr_$",
                               "typeString": "function () pure returns (struct IGOStorage.IGOStruct storage pointer)"
@@ -2464,7 +2464,7 @@
                           "nameLocations": [],
                           "names": [],
                           "nodeType": "FunctionCall",
-                          "src": "1956:19:58",
+                          "src": "1995:19:58",
                           "tryCall": false,
                           "typeDescriptions": {
                             "typeIdentifier": "t_struct$_IGOStruct_$37732_storage_ptr",
@@ -2476,11 +2476,11 @@
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "1976:4:58",
+                        "memberLocation": "2015:4:58",
                         "memberName": "tags",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 37728,
-                        "src": "1956:24:58",
+                        "src": "1995:24:58",
                         "typeDescriptions": {
                           "typeIdentifier": "t_struct$_Tags_$37706_storage",
                           "typeString": "struct IGOStorage.Tags storage ref"
@@ -2491,17 +2491,17 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
-                      "memberLocation": "1981:3:58",
+                      "memberLocation": "2020:3:58",
                       "memberName": "ids",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 37700,
-                      "src": "1956:28:58",
+                      "src": "1995:28:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_string_storage_$dyn_storage",
                         "typeString": "string storage ref[] storage ref"
                       }
                     },
-                    "src": "1946:38:58",
+                    "src": "1985:38:58",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_string_memory_ptr_$dyn_memory_ptr",
                       "typeString": "string memory[] memory"
@@ -2509,7 +2509,7 @@
                   },
                   "id": 37907,
                   "nodeType": "ExpressionStatement",
-                  "src": "1946:38:58"
+                  "src": "1985:38:58"
                 }
               ]
             },
@@ -2521,18 +2521,18 @@
             "kind": "function",
             "modifiers": [],
             "name": "tagIds",
-            "nameLocation": "1834:6:58",
+            "nameLocation": "1873:6:58",
             "overrides": {
               "id": 37895,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
-              "src": "1881:8:58"
+              "src": "1920:8:58"
             },
             "parameters": {
               "id": 37894,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1840:2:58"
+              "src": "1879:2:58"
             },
             "returnParameters": {
               "id": 37899,
@@ -2543,10 +2543,10 @@
                   "id": 37898,
                   "mutability": "mutable",
                   "name": "tagIds_",
-                  "nameLocation": "1923:7:58",
+                  "nameLocation": "1962:7:58",
                   "nodeType": "VariableDeclaration",
                   "scope": 37909,
-                  "src": "1907:23:58",
+                  "src": "1946:23:58",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -2558,7 +2558,7 @@
                       "id": 37896,
                       "name": "string",
                       "nodeType": "ElementaryTypeName",
-                      "src": "1907:6:58",
+                      "src": "1946:6:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_string_storage_ptr",
                         "typeString": "string"
@@ -2566,7 +2566,7 @@
                     },
                     "id": 37897,
                     "nodeType": "ArrayTypeName",
-                    "src": "1907:8:58",
+                    "src": "1946:8:58",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_string_storage_$dyn_storage_ptr",
                       "typeString": "string[]"
@@ -2575,7 +2575,7 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1906:25:58"
+              "src": "1945:25:58"
             },
             "scope": 37923,
             "stateMutability": "view",
@@ -2585,12 +2585,12 @@
           {
             "id": 37922,
             "nodeType": "FunctionDefinition",
-            "src": "1997:126:58",
+            "src": "2036:126:58",
             "nodes": [],
             "body": {
               "id": 37921,
               "nodeType": "Block",
-              "src": "2061:62:58",
+              "src": "2100:62:58",
               "nodes": [],
               "statements": [
                 {
@@ -2606,7 +2606,7 @@
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
                             "referencedDeclaration": 37750,
-                            "src": "2078:10:58",
+                            "src": "2117:10:58",
                             "typeDescriptions": {
                               "typeIdentifier": "t_type$_t_contract$_IGOStorage_$37750_$",
                               "typeString": "type(library IGOStorage)"
@@ -2617,11 +2617,11 @@
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
-                          "memberLocation": "2089:6:58",
+                          "memberLocation": "2128:6:58",
                           "memberName": "layout",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": 37749,
-                          "src": "2078:17:58",
+                          "src": "2117:17:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_pure$__$returns$_t_struct$_IGOStruct_$37732_storage_ptr_$",
                             "typeString": "function () pure returns (struct IGOStorage.IGOStruct storage pointer)"
@@ -2636,7 +2636,7 @@
                         "nameLocations": [],
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "2078:19:58",
+                        "src": "2117:19:58",
                         "tryCall": false,
                         "typeDescriptions": {
                           "typeIdentifier": "t_struct$_IGOStruct_$37732_storage_ptr",
@@ -2648,11 +2648,11 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
-                      "memberLocation": "2098:6:58",
+                      "memberLocation": "2137:6:58",
                       "memberName": "ledger",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 37731,
-                      "src": "2078:26:58",
+                      "src": "2117:26:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_struct$_Ledger_$37722_storage",
                         "typeString": "struct IGOStorage.Ledger storage ref"
@@ -2663,11 +2663,11 @@
                     "isLValue": true,
                     "isPure": false,
                     "lValueRequested": false,
-                    "memberLocation": "2105:11:58",
+                    "memberLocation": "2144:11:58",
                     "memberName": "totalRaised",
                     "nodeType": "MemberAccess",
                     "referencedDeclaration": 37711,
-                    "src": "2078:38:58",
+                    "src": "2117:38:58",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2676,7 +2676,7 @@
                   "functionReturnParameters": 37914,
                   "id": 37920,
                   "nodeType": "Return",
-                  "src": "2071:45:58"
+                  "src": "2110:45:58"
                 }
               ]
             },
@@ -2688,18 +2688,18 @@
             "kind": "function",
             "modifiers": [],
             "name": "totalRaised",
-            "nameLocation": "2006:11:58",
+            "nameLocation": "2045:11:58",
             "overrides": {
               "id": 37911,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
-              "src": "2034:8:58"
+              "src": "2073:8:58"
             },
             "parameters": {
               "id": 37910,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "2017:2:58"
+              "src": "2056:2:58"
             },
             "returnParameters": {
               "id": 37914,
@@ -2713,7 +2713,7 @@
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
                   "scope": 37922,
-                  "src": "2052:7:58",
+                  "src": "2091:7:58",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2724,7 +2724,7 @@
                     "id": 37912,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "2052:7:58",
+                    "src": "2091:7:58",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2733,7 +2733,7 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "2051:9:58"
+              "src": "2090:9:58"
             },
             "scope": 37923,
             "stateMutability": "view",
@@ -2766,7 +2766,7 @@
                 "456:20:58"
               ],
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 38851,
+              "referencedDeclaration": 38850,
               "src": "456:20:58"
             },
             "id": 37766,
@@ -2781,7 +2781,7 @@
                 "482:27:58"
               ],
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 38950,
+              "referencedDeclaration": 38949,
               "src": "482:27:58"
             },
             "id": 37768,
@@ -2811,22 +2811,22 @@
         "linearizedBaseContracts": [
           37923,
           38007,
-          38950,
-          38851,
+          38949,
+          38850,
           37983
         ],
         "name": "IGOReadable",
         "nameLocation": "419:11:58",
         "scope": 37924,
         "usedErrors": [
-          38823,
-          38830,
-          38836,
-          38844,
-          38850,
-          38943,
-          38945,
-          38949
+          38822,
+          38829,
+          38835,
+          38843,
+          38849,
+          38942,
+          38944,
+          38948
         ]
       }
     ],
