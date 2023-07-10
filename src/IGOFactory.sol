@@ -19,12 +19,11 @@ contract IGOFactory is Ownable, ReentrancyGuard {
         IGOStorage.SetUp setUp;
     }
 
-    IGODetail[] public igoDetails;
+    IGODetail[] internal _igoDetails;
+    mapping(string => address) internal _igoNames;
 
     address public defaultVesting;
     bytes public vestingCreationCode;
-    string[] internal _igoNames;
-    mapping(string => address) internal _igos;
 
     event DefaultVestingUpdated(
         address indexed oldDefaultVesting,
@@ -47,7 +46,7 @@ contract IGOFactory is Ownable, ReentrancyGuard {
         IIGOVesting.VestingSetup calldata vestingSetup
     ) external nonReentrant onlyOwner returns (address igo, address vesting) {
         require(
-            address(_igos[igoName]) == address(0),
+            address(_igoNames[igoName]) == address(0),
             "IGOFactory: IGO already exists"
         );
 
@@ -64,9 +63,8 @@ contract IGOFactory is Ownable, ReentrancyGuard {
         setUp.summedMaxTagCap = 0;
         setUp.refundFeeDecimals = contractSetup._decimals;
 
-        _igoNames.push(igoName);
-        _igos[igoName] = igo;
-        igoDetails.push(IGODetail(igoName, igo, vesting, setUp));
+        _igoNames[igoName] = igo;
+        _igoDetails.push(IGODetail(igoName, igo, vesting, setUp));
 
         IGO(igo).initialize(_msgSender(), setUp, tagIds, tags);
         IIGOVesting(vesting).initializeCrowdfunding(
@@ -85,36 +83,22 @@ contract IGOFactory is Ownable, ReentrancyGuard {
         external
         view
         returns (
-            IGO[] memory igos,
+            IGODetail[] memory igos,
             uint256 lastEvaludatedIndex,
             uint256 totalItems
         )
     {
         require(from <= to, "IGOFactory_INDEXES_REVERSED");
 
-        if (to > igoDetails.length) to = igoDetails.length;
+        if (to > _igoDetails.length) to = _igoDetails.length;
 
-        igos = new IGO[](to - from);
+        igos = new IGODetail[](to - from);
         for (uint256 i = from; i < to; ++i) {
-            igos[i - from] = IGO(igoDetails[i].igo);
+            igos[i - from] = _igoDetails[i];
         }
 
         lastEvaludatedIndex = to;
-        totalItems = igoDetails.length;
-    }
-
-    function igoWithName(
-        string calldata igoName
-    ) external view returns (address) {
-        return _igos[igoName];
-    }
-
-    function igoCount() external view returns (uint256) {
-        return _igoNames.length;
-    }
-
-    function igoNames() external view returns (string[] memory) {
-        return _igoNames;
+        totalItems = _igoDetails.length;
     }
 
     function updateDefaultVesting(
