@@ -12,6 +12,63 @@
     },
     "author": "Devan Non <devanon@chainstride.capital>",
     "license": "Apache-2.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Seedifyfund/igo-all-in-one.git"
+    },
+    "release": {
+        "branches": [
+            "main",
+            "next",
+            {
+                "name": "beta",
+                "prerelease": true
+            },
+            {
+                "name": "alpha",
+                "prerelease": true
+            }
+        ],
+        "plugins": [
+            "@semantic-release/commit-analyzer",
+            "@semantic-release/release-notes-generator",
+            [
+                "@saithodev/semantic-release-backmerge",
+                {
+                    "backmergeBranches": [
+                        "dev"
+                    ]
+                }
+            ],
+            [
+                "@semantic-release/exec",
+                {
+                    "verifyReleaseCmd": "echo ${nextRelease.version} > VERSION"
+                }
+            ],
+            "@semantic-release/changelog",
+            "@semantic-release/npm",
+            "@semantic-release/git",
+            [
+                "@semantic-release/github",
+                {
+                    "successComment": false
+                }
+            ]
+        ],
+        "prepare": [
+            "@semantic-release/changelog",
+            "@semantic-release/npm",
+            {
+                "path": "@semantic-release/git",
+                "assets": [
+                    "package.json",
+                    "CHANGELOG.md"
+                ],
+                "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+            }
+        ]
+    },
     "devDependencies": {
         "@commitlint/cli": "^17.0.2",
         "@commitlint/config-conventional": "^17.0.2",
