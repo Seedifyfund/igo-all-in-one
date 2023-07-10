@@ -16,7 +16,7 @@ contract IGOFactory is Ownable, ReentrancyGuard {
         string name;
         address igo;
         address vesting;
-        IGO.SetUp setUp;
+        IGOStorage.SetUp setUp;
     }
 
     IGODetail[] public igoDetails;
@@ -81,16 +81,16 @@ contract IGOFactory is Ownable, ReentrancyGuard {
     function getIgosDetails(
         uint256 from,
         uint256 to
-    ) external view returns (IGO[], uint256 lastEvaludatedIndex) {
+    ) external view returns (IGO[] memory igos, uint256 lastEvaludatedIndex) {
         require(from < to, "IGOFactory_INDEXES_REVERSED");
         require(to <= igoDetails.length, "IGOFactory_OUT_OF_BOUNDS");
 
-        IGO[] memory igos = new IGO[](to - from);
+        igos = new IGO[](to - from);
         for (uint256 i = from; i < to; ++i) {
             igos[i - from] = IGO(igoDetails[i].igo);
         }
 
-        return (igos, to);
+        lastEvaludatedIndex = to;
     }
 
     function igoWithName(
