@@ -10,6 +10,7 @@ library IGOStorage {
         address vestingContract;
         address paymentToken;
         address permit2;
+        // maximum amount of paymentToken that can be raised
         uint256 grandTotal;
         // sum of maxTagCap OF all existing tags, can be lower than
         // `grandTotal` and maximum equal to `grandTotal`
@@ -25,10 +26,10 @@ library IGOStorage {
 
     // Only updated by users interactions
     struct Ledger {
-        ISharedInternal.Stage stage;
+        ISharedInternal.Status status;
         uint256 totalRaised;
         mapping(string => uint256) raisedInTag;
-        mapping(address => mapping(string => uint256)) boughtByIn;
+        mapping(address => mapping(string => uint256)) allocationReservedByIn;
     }
 
     struct IGOStruct {

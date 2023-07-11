@@ -13,7 +13,7 @@ contract IGO_Test__canPaymentTokenOrPriceBeUpdated is IGOSetUp_internal {
             abi.encodeWithSelector(IGOWritable_ProjectTokenPrice_ZERO.selector)
         );
         instance.exposed_canPaymentTokenOrPriceBeUpdated(
-            Stage.NOT_STARTED,
+            Status.NOT_STARTED,
             address(0),
             address(0),
             10,
@@ -31,7 +31,7 @@ contract IGO_Test__canPaymentTokenOrPriceBeUpdated is IGOSetUp_internal {
             )
         );
         instance.exposed_canPaymentTokenOrPriceBeUpdated(
-            Stage.PAUSED,
+            Status.PAUSED,
             address(bytes20("token")),
             address(bytes20("try-update-token")),
             10 ether,
@@ -44,7 +44,7 @@ contract IGO_Test__canPaymentTokenOrPriceBeUpdated is IGOSetUp_internal {
             )
         );
         instance.exposed_canPaymentTokenOrPriceBeUpdated(
-            Stage.OPENED,
+            Status.OPENED,
             address(0),
             address(0),
             10,
@@ -57,7 +57,7 @@ contract IGO_Test__canPaymentTokenOrPriceBeUpdated is IGOSetUp_internal {
             )
         );
         instance.exposed_canPaymentTokenOrPriceBeUpdated(
-            Stage.PAUSED,
+            Status.PAUSED,
             address(bytes20("token")),
             address(bytes20("try-update-token")),
             10 ether,
@@ -69,7 +69,7 @@ contract IGO_Test__canPaymentTokenOrPriceBeUpdated is IGOSetUp_internal {
         // only price updtae
         assertTrue(
             instance.exposed_canPaymentTokenOrPriceBeUpdated(
-                Stage.NOT_STARTED,
+                Status.NOT_STARTED,
                 address(0),
                 address(0),
                 0,
@@ -79,7 +79,7 @@ contract IGO_Test__canPaymentTokenOrPriceBeUpdated is IGOSetUp_internal {
         // only token update
         assertTrue(
             instance.exposed_canPaymentTokenOrPriceBeUpdated(
-                Stage.NOT_STARTED,
+                Status.NOT_STARTED,
                 address(0),
                 address(bytes20("token")),
                 1 ether,
@@ -89,7 +89,7 @@ contract IGO_Test__canPaymentTokenOrPriceBeUpdated is IGOSetUp_internal {
         // update token & price
         assertTrue(
             instance.exposed_canPaymentTokenOrPriceBeUpdated(
-                Stage.NOT_STARTED,
+                Status.NOT_STARTED,
                 address(bytes20("token")),
                 address(bytes20("token-update")),
                 1 ether,
@@ -101,7 +101,7 @@ contract IGO_Test__canPaymentTokenOrPriceBeUpdated is IGOSetUp_internal {
     function test__canPaymentTokenOrPriceBeUpdated_IGO_LaterStage() public {
         assertTrue(
             instance.exposed_canPaymentTokenOrPriceBeUpdated(
-                Stage.OPENED,
+                Status.OPENED,
                 address(bytes20("token-update")),
                 address(bytes20("token-update")),
                 12378 ether,
@@ -111,7 +111,7 @@ contract IGO_Test__canPaymentTokenOrPriceBeUpdated is IGOSetUp_internal {
 
         assertTrue(
             instance.exposed_canPaymentTokenOrPriceBeUpdated(
-                Stage.PAUSED,
+                Status.PAUSED,
                 address(bytes20("token-update")),
                 address(bytes20("token-update")),
                 12378 ether,

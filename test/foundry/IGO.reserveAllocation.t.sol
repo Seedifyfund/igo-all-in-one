@@ -30,11 +30,11 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
         uint256 balanceAfterBuy = token.balanceOf(buyer);
         assertEq(
             balanceAfterBuy,
-            balanceBeforeBuy - allocations[0].paymentTokenAmount
+            balanceBeforeBuy - allocations[0].maxAllocation
         );
         assertEq(
             token.balanceOf(vestingContract),
-            allocations[0].paymentTokenAmount
+            allocations[0].maxAllocation
         );
     }
 
@@ -42,19 +42,22 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
         public
     {
         _setUpTestData();
-        uint256 amount = allocations[0].paymentTokenAmount;
+        uint256 amount = allocations[0].maxAllocation;
         uint256 firstPart = amount / 4;
 
         /////////////////// buy first 25% of allocation ///////////////////
         _reserveAllocation(firstPart, allocations[0], lastProof);
-        // verify `ledger.boughtByIn[allocation.account][tagId]` has been updated
-        assertEq(instance.boughtByIn(buyer, allocations[0].tagId), firstPart);
+        // verify `ledger.allocationReservedByIn[allocation.account][tagId]` has been updated
+        assertEq(
+            instance.allocationReservedByIn(buyer, allocations[0].tagId),
+            firstPart
+        );
         /////////////////// buys the rest of their allocation ///////////////////
         amount -= firstPart;
         _reserveAllocation(amount, allocations[0], lastProof);
         assertEq(
-            instance.boughtByIn(buyer, allocations[0].tagId),
-            allocations[0].paymentTokenAmount
+            instance.allocationReservedByIn(buyer, allocations[0].tagId),
+            allocations[0].maxAllocation
         );
     }
 
@@ -64,7 +67,7 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
         _reserveAllocation(allocations[0], lastProof);
 
         Tag memory tag = instance.tag(allocations[0].tagId);
-        assertEq(uint256(tag.stage), uint256(Stage.COMPLETED));
+        assertEq(uint256(tag.status), uint256(Status.COMPLETED));
     }
 
     function test_reserveAllocation_WithSpecificTagToken() public {
@@ -74,11 +77,11 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
         deal(
             address(tagToken),
             allocations[0].account,
-            allocations[0].paymentTokenAmount
+            allocations[0].maxAllocation
         );
         assertEq(
             tagToken.balanceOf(allocations[0].account),
-            allocations[0].paymentTokenAmount
+            allocations[0].maxAllocation
         );
         // unlimited allowance to permit2
         vm.prank(allocations[0].account);
@@ -92,7 +95,7 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
 
         assertEq(
             tagToken.balanceOf(vestingContract),
-            allocations[0].paymentTokenAmount
+            allocations[0].maxAllocation
         );
         assertEq(tagToken.balanceOf(allocations[0].account), 0);
     }

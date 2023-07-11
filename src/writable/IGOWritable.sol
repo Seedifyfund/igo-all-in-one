@@ -38,7 +38,7 @@ contract IGOWritable is
         _requireAllocationNotExceededInTag(
             amount,
             allocation.account,
-            allocation.paymentTokenAmount,
+            allocation.maxAllocation,
             tagId
         );
         _requireAuthorizedAccount(allocation.account);

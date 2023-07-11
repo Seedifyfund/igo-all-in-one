@@ -1,29 +1,35 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
-import {IGOVesting} from "vesting-schedule/IGOVesting.sol";
+import {IIGOVesting} from "vesting-schedule/interfaces/IIGOVesting.sol";
+import {IGO} from "./IGO.sol";
+import {ISharedInternal} from "./shared/ISharedInternal.sol";
 
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 import {ReentrancyGuard} from "openzeppelin-contracts/security/ReentrancyGuard.sol";
-
-import {IGO} from "./IGO.sol";
 
 import {IGOStorage} from "./IGOStorage.sol";
 
 /// @dev Contract to deploy IGOs one the fly, in one transaction
 contract IGOFactory is Ownable, ReentrancyGuard {
-    address public defaultIgo;
-    address public defaultVesting;
-    string[] internal _igoNames;
-    mapping(string => address) internal _igos;
+    struct IGODetail {
+        string name;
+        address igo;
+        address vesting;
+        IGOStorage.SetUp setUp;
+    }
 
-    event DefaultIgoUpdated(
-        address indexed oldDefaultIgo,
-        address indexed newDefaultIgo
-    );
+    IGODetail[] internal _igoDetails;
+    mapping(string => address) internal _igoNames;
+
+    address public defaultVesting;
+    bytes public vestingCreationCode;
+
     event DefaultVestingUpdated(
         address indexed oldDefaultVesting,
-        address indexed newDefaultVesting
+        bytes oldVestingCreationCode,
+        address indexed newDefaultVesting,
+        bytes indexed newVestingCreationCode
     );
     event IGOCreated(
         string indexed igoName,
@@ -31,85 +37,89 @@ contract IGOFactory is Ownable, ReentrancyGuard {
         address indexed vesting
     );
 
-    constructor() {
-        defaultIgo = address(new IGO());
-        defaultVesting = address(new IGOVesting());
-    }
-
     function createIGO(
         string calldata igoName,
         IGOStorage.SetUp memory setUp,
         string[] calldata tagIds,
-        IGO.Tag[] calldata tags,
-        IGOVesting.ContractSetup calldata contractSetup,
-        IGOVesting.VestingSetup calldata vestingSetup
+        ISharedInternal.Tag[] calldata tags,
+        IIGOVesting.ContractSetup calldata contractSetup,
+        IIGOVesting.VestingSetup calldata vestingSetup
     ) external nonReentrant onlyOwner returns (address igo, address vesting) {
         require(
-            address(_igos[igoName]) == address(0),
+            address(_igoNames[igoName]) == address(0),
             "IGOFactory: IGO already exists"
         );
 
-        // slither-disable-next-line too-many-digits
-        bytes memory bytecode = type(IGO).creationCode;
         bytes32 salt = keccak256(abi.encodePacked(_msgSender(), igoName));
-        assembly {
-            igo := create2(0, add(bytecode, 32), mload(bytecode), salt)
-        }
 
-        // slither-disable-next-line too-many-digits
-        bytecode = type(IGOVesting).creationCode;
+        igo = address(new IGO());
+
+        bytes memory code = vestingCreationCode;
         assembly {
-            vesting := create2(0, add(bytecode, 32), mload(bytecode), salt)
+            vesting := create2(0, add(code, 32), mload(code), salt)
         }
 
         setUp.vestingContract = vesting;
         setUp.summedMaxTagCap = 0;
         setUp.refundFeeDecimals = contractSetup._decimals;
 
-        _igoNames.push(igoName);
-        _igos[igoName] = igo;
+        _igoNames[igoName] = igo;
+        _igoDetails.push(IGODetail(igoName, igo, vesting, setUp));
 
         IGO(igo).initialize(_msgSender(), setUp, tagIds, tags);
-        IGOVesting(vesting).initializeCrowdfunding(
+        IIGOVesting(vesting).initializeCrowdfunding(
             contractSetup,
             vestingSetup
         );
-        IGOVesting(vesting).transferOwnership(igo);
+        IIGOVesting(vesting).transferOwnership(igo);
 
         emit IGOCreated(igoName, igo, vesting);
     }
 
-    function igoWithName(
-        string calldata igoName
-    ) external view returns (address) {
-        return _igos[igoName];
-    }
+    function getIgosDetails(
+        uint256 from,
+        uint256 to
+    )
+        external
+        view
+        returns (
+            IGODetail[] memory igos,
+            uint256 lastEvaludatedIndex,
+            uint256 totalItems
+        )
+    {
+        require(from <= to, "IGOFactory_INDEXES_REVERSED");
 
-    function igoCount() external view returns (uint256) {
-        return _igoNames.length;
-    }
+        if (to > _igoDetails.length) to = _igoDetails.length;
 
-    function igoNames() external view returns (string[] memory) {
-        return _igoNames;
-    }
+        igos = new IGODetail[](to - from);
+        for (uint256 i = from; i < to; ++i) {
+            igos[i - from] = _igoDetails[i];
+        }
 
-    function updateDefaultIgo(address newDefaultIgo) external onlyOwner {
-        require(
-            newDefaultIgo != address(0),
-            "IGOFactory__defaultIgo_ZERO_ADDRESS"
-        );
-        emit DefaultIgoUpdated(defaultIgo, newDefaultIgo);
-        defaultIgo = newDefaultIgo;
+        lastEvaludatedIndex = to;
+        totalItems = _igoDetails.length;
     }
 
     function updateDefaultVesting(
-        address newDefaultVesting
+        address newDefaultVesting,
+        bytes memory newVestingCreationCode
     ) external onlyOwner {
         require(
             newDefaultVesting != address(0),
             "IGOFactory__defaultVesting_ZERO_ADDRESS"
         );
-        emit DefaultVestingUpdated(defaultVesting, newDefaultVesting);
+        require(
+            newVestingCreationCode.length > 0,
+            "IGOFactory__defaultVesting_ZERO_CODE"
+        );
+        emit DefaultVestingUpdated(
+            defaultVesting,
+            vestingCreationCode,
+            newDefaultVesting,
+            newVestingCreationCode
+        );
         defaultVesting = newDefaultVesting;
+        vestingCreationCode = newVestingCreationCode;
     }
 }

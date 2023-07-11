@@ -7,16 +7,35 @@ import {IRestrictedWritableInternal} from "./IRestrictedWritableInternal.sol";
 import {IGOStorage} from "../../IGOStorage.sol";
 
 contract RestrictedWritableInternal is IRestrictedWritableInternal {
+    function _setTag(
+        uint256 grandTotal,
+        uint256 summedMaxTagCap,
+        uint256 oldMaxTagCap,
+        ISharedInternal.Tag calldata tag_,
+        string calldata tagId_
+    ) internal returns (uint256) {
+        summedMaxTagCap -= oldMaxTagCap;
+        summedMaxTagCap += tag_.maxTagCap;
+
+        _isSummedMaxTagCapLteGrandTotal(summedMaxTagCap, grandTotal);
+
+        // if tag does not exist, push to ids
+        if (oldMaxTagCap == 0) IGOStorage.layout().tags.ids.push(tagId_);
+        IGOStorage.layout().tags.data[tagId_] = tag_;
+
+        return summedMaxTagCap;
+    }
+
     function _setTags(
         string[] calldata tagIdentifiers_,
         ISharedInternal.Tag[] calldata tags_
     ) internal {
-        IGOStorage.Tags storage tags = IGOStorage.layout().tags;
-
         require(
             tagIdentifiers_.length == tags_.length,
             "IGOWritable: tags arrays length"
         );
+
+        IGOStorage.Tags storage tags = IGOStorage.layout().tags;
 
         uint256 length = tagIdentifiers_.length;
         uint256 grandTotal = IGOStorage.layout().setUp.grandTotal;
@@ -27,33 +46,20 @@ contract RestrictedWritableInternal is IRestrictedWritableInternal {
         //slither-disable-next-line uninitialized-local
         for (uint256 i; i < length; ++i) {
             oldTagData = tags.data[tagIdentifiers_[i]];
-            require(_isValidTag(tags_[i]), "INVALID_TAG");
+            _verifyTag(tags_[i], oldTagData);
 
-            _canPaymentTokenOrPriceBeUpdated(
-                oldTagData.stage,
-                oldTagData.paymentToken,
-                tags_[i].paymentToken,
-                oldTagData.projectTokenPrice,
-                tags_[i].projectTokenPrice
+            summedMaxTagCap = _setTag(
+                grandTotal,
+                summedMaxTagCap,
+                oldTagData.maxTagCap,
+                tags_[i],
+                tagIdentifiers_[i]
             );
-
-            /**
-             * @dev if tag is new, oldTagData.maxTagCap is 0, avoid extra as
-             *      subtraction only cost 3 gas
-             */
-            summedMaxTagCap -= oldTagData.maxTagCap;
-            summedMaxTagCap += tags_[i].maxTagCap;
-
-            _isSummedMaxTagCapLteGrandTotal(summedMaxTagCap, grandTotal);
-
-            // if tag does not exist, push to ids
-            if (oldTagData.maxTagCap == 0) tags.ids.push(tagIdentifiers_[i]);
-            tags.data[tagIdentifiers_[i]] = tags_[i];
         }
         IGOStorage.layout().setUp.summedMaxTagCap = summedMaxTagCap;
     }
 
-    function _isValidTag(
+    function _notEmptyTag(
         ISharedInternal.Tag calldata tag_
     ) internal view returns (bool) {
         return
@@ -72,13 +78,13 @@ contract RestrictedWritableInternal is IRestrictedWritableInternal {
      *      see `IGOWritable.reserveAllocation` --> paymentToken.
      */
     function _canPaymentTokenOrPriceBeUpdated(
-        ISharedInternal.Stage stage,
+        ISharedInternal.Status status,
         address oldPaymentToken,
         address newPaymentToken,
         uint256 oldProjectTokenPrice,
         uint256 newProjectTokenPrice
     ) internal pure {
-        if (stage == ISharedInternal.Stage.NOT_STARTED) {
+        if (status == ISharedInternal.Status.NOT_STARTED) {
             if (newProjectTokenPrice == 0) {
                 revert IGOWritable_ProjectTokenPrice_ZERO();
             }
@@ -99,5 +105,19 @@ contract RestrictedWritableInternal is IRestrictedWritableInternal {
                 summedMaxTagCap - grandTotal
             );
         }
+    }
+
+    function _verifyTag(
+        ISharedInternal.Tag calldata tag_,
+        ISharedInternal.Tag memory oldTag
+    ) internal view {
+        require(_notEmptyTag(tag_), "EMPTY_TAG");
+        _canPaymentTokenOrPriceBeUpdated(
+            oldTag.status,
+            oldTag.paymentToken,
+            tag_.paymentToken,
+            oldTag.projectTokenPrice,
+            tag_.projectTokenPrice
+        );
     }
 }

@@ -2,7 +2,7 @@
 pragma solidity ^0.8.17;
 
 interface ISharedInternal {
-    enum Stage {
+    enum Status {
         NOT_STARTED,
         OPENED,
         COMPLETED,
@@ -10,7 +10,7 @@ interface ISharedInternal {
     }
 
     struct Tag {
-        Stage stage;
+        Status status;
         // contains wallet and allocation per wallet
         bytes32 merkleRoot;
         uint128 startAt;

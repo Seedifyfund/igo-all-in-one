@@ -12,8 +12,6 @@ interface IRestrictedWritable {
 
     function updateGrandTotal(uint256 grandTotal_) external;
 
-    function updateDefaultPaymentToken(address token_) external;
-
     /// @dev Retrieve any ERC20 sent to the contract by mistake.
     function recoverLostERC20(address token, address to) external;
 

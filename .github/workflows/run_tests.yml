@@ -1,6 +1,10 @@
 name: testing actions
 
-on: [push, pull_request]
+on:
+    push:
+        branches:
+            - dev
+    pull_request: {}
 
 env:
     FOUNDRY_PROFILE: ci
@@ -24,7 +28,8 @@ jobs:
               run: |
                   forge install solidstate-network/solidstate-solidity \
                   foundry-rs/forge-std Openzeppelin/openzeppelin-contracts \
-                  rari-capital/solmate Uniswap/permit2 --no-commit
+                  rari-capital/solmate Uniswap/permit2 \
+                  vesting-schedule=Decubate-com/igo-all-in-one --no-commit
 
             - name: Install packages (ehters required)
               run: npm i --unsafe-perm ethers@5.7.2 dotenv merkletreejs
