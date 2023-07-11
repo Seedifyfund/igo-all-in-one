@@ -1,0 +1,5 @@
+IGOFactory_getIgosDetails_test:test_getIgosDetails_100_Results_default() (gas: 2329951)
+IGOFactory_getIgosDetails_test:test_getIgosDetails_200_Results() (gas: 4744690)
+IGOFactory_getIgosDetails_test:test_getIgosDetails_500_Results() (gas: 12341932)
+IGOFactory_getIgosDetails_test:test_getIgosDetails_5_Results() (gas: 155437)
+IGOFactory_getIgosDetails_test:test_getIgosDetails_From_50_to_149() (gas: 2329784)
