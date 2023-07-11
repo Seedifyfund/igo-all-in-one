@@ -1,6 +1,10 @@
 name: prettier & linters
 
-on: [push, pull_request]
+on:
+    push:
+        branches:
+            - dev
+    pull_request: {}
 
 jobs:
     prettier:

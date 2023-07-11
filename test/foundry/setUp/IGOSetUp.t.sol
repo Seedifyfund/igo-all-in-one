@@ -4,6 +4,7 @@ pragma solidity ^0.8.17;
 import "forge-std/Test.sol";
 
 import {IIGOVesting} from "vesting-schedule/interfaces/IIGOVesting.sol";
+import {IGOVesting} from "vesting-schedule/IGOVesting.sol";
 
 import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
 
@@ -50,6 +51,10 @@ contract IGOSetUp is
         super.setUp();
 
         factory = new IGOFactory();
+        factory.updateDefaultVesting(
+            address(new IGOVesting()),
+            type(IGOVesting).creationCode
+        );
 
         token = new ERC20("Mock", "MCK");
 
@@ -122,7 +127,7 @@ contract IGOSetUp is
 
             tags.push(
                 Tag(
-                    Stage.NOT_STARTED,
+                    Status.NOT_STARTED,
                     bytes32("etc"),
                     uint128(block.timestamp) + lastStart,
                     uint128(block.timestamp) + lastEnd,
@@ -160,7 +165,7 @@ contract IGOSetUp is
         deal(
             address(token),
             allocations[0].account,
-            allocations[0].paymentTokenAmount + 10_000 ether
+            allocations[0].maxAllocation + 10_000 ether
         );
     }
 
@@ -192,7 +197,7 @@ contract IGOSetUp is
     ) internal {
         __reserveAllocation(
             address(token),
-            allocation.paymentTokenAmount,
+            allocation.maxAllocation,
             allocation,
             proof
         );
@@ -205,7 +210,7 @@ contract IGOSetUp is
     ) internal {
         __reserveAllocation(
             tagToken,
-            allocation.paymentTokenAmount,
+            allocation.maxAllocation,
             allocation,
             proof
         );
@@ -238,10 +243,10 @@ contract IGOSetUp is
         _generateLeaves(allocations);
         _generateMerkleRootAndProofForLeaf(0);
 
-        // update merkle root & stage
+        // update merkle root & status
         tags[0].merkleRoot = merkleRoot;
-        tags[0].stage = Stage.OPENED;
-        tags[0].maxTagCap = allocations[0].paymentTokenAmount;
+        tags[0].status = Status.OPENED;
+        tags[0].maxTagCap = allocations[0].maxAllocation;
         tags[0].paymentToken = token_;
         instance.updateSetTag(tagIdentifiers[0], tags[0]);
 

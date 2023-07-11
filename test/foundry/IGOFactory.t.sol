@@ -4,6 +4,7 @@ pragma solidity ^0.8.17;
 import "forge-std/Test.sol";
 
 import {IIGOVesting} from "vesting-schedule/interfaces/IIGOVesting.sol";
+import {IGOVesting} from "vesting-schedule/IGOVesting.sol";
 
 import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
 
@@ -30,6 +31,10 @@ contract IGOFactory_test is Test, ISharedInternal {
 
     function setUp() public {
         factory = new IGOFactory();
+        factory.updateDefaultVesting(
+            address(new IGOVesting()),
+            type(IGOVesting).creationCode
+        );
 
         token = new ERC20("Mock", "MCK");
 
@@ -67,10 +72,15 @@ contract IGOFactory_test is Test, ISharedInternal {
 
     /// @dev Check variables have updated accordingly
     function test_igoFactory() public {
-        assertEq(address(instance), address(factory.igoWithName("test")));
-        assertEq(factory.igoCount(), 1);
-        assertEq(factory.igoNames()[0], "test");
-        // string[] memory names = factory.igoNames();
+        (
+            IGOFactory.IGODetail[] memory igos,
+            uint256 lastEvaludatedIndex,
+            uint256 totalItems
+        ) = factory.getIgosDetails(0, 1);
+
+        assertEq(totalItems, 1);
+        assertEq(lastEvaludatedIndex, 1);
+        assertEq(igos[0].name, "test");
     }
 
     function test_createIGO_CheckOwnerOf_FactoryAndDeployedIGO() public {

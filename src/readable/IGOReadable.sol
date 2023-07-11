@@ -15,15 +15,16 @@ contract IGOReadable is
     ISharedInternal
 {
     /// @inheritdoc IIGOReadable
-    function boughtByIn(
+    function allocationReservedByIn(
         address account,
         string calldata tagId
     ) external view override returns (uint256) {
-        return IGOStorage.layout().ledger.boughtByIn[account][tagId];
+        return
+            IGOStorage.layout().ledger.allocationReservedByIn[account][tagId];
     }
 
-    function igoStage() external view override returns (Stage) {
-        return IGOStorage.layout().ledger.stage;
+    function igoStatus() external view override returns (Status) {
+        return IGOStorage.layout().ledger.status;
     }
 
     function raisedInTag(

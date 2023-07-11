@@ -1,6 +1,7 @@
 # Foundry
 cache/
 out/
+broadcast/
 
 # JS
 node_modules/
@@ -16,3 +17,6 @@ typechain-types/
 
 .bash_history
 .env
+
+# VS Code
+.vscode-upload.json

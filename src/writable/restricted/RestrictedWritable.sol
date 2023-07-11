@@ -25,11 +25,11 @@ contract RestrictedWritable is
     using SafeERC20 for IERC20;
 
     function openIGO() external override onlyOwner {
-        IGOStorage.layout().ledger.stage = ISharedInternal.Stage.OPENED;
+        IGOStorage.layout().ledger.status = ISharedInternal.Status.OPENED;
     }
 
     function pauseIGO() external override onlyOwner {
-        IGOStorage.layout().ledger.stage = ISharedInternal.Stage.PAUSED;
+        IGOStorage.layout().ledger.status = ISharedInternal.Status.PAUSED;
     }
 
     function updateGrandTotal(
@@ -41,13 +41,6 @@ contract RestrictedWritable is
             grandTotal_
         );
         IGOStorage.layout().setUp.grandTotal = grandTotal_;
-    }
-
-    function updateDefaultPaymentToken(
-        address token_
-    ) external override onlyOwner {
-        require(token_ != address(0), "Token_ZERO_ADDRESS");
-        IGOStorage.layout().setUp.paymentToken = token_;
     }
 
     /// @inheritdoc IRestrictedWritable
@@ -66,32 +59,18 @@ contract RestrictedWritable is
         string calldata tagId_,
         ISharedInternal.Tag calldata tag_
     ) external override onlyOwner {
-        require(_isValidTag(tag_), "INVALID_TAG");
         ISharedInternal.Tag memory oldTagData = IGOStorage.layout().tags.data[
             tagId_
         ];
-        uint256 grandTotal = IGOStorage.layout().setUp.grandTotal;
-        uint256 summedMaxTagCap = IGOStorage.layout().setUp.summedMaxTagCap;
+        _verifyTag(tag_, oldTagData);
 
-        _canPaymentTokenOrPriceBeUpdated(
-            oldTagData.stage,
-            oldTagData.paymentToken,
-            tag_.paymentToken,
-            oldTagData.projectTokenPrice,
-            tag_.projectTokenPrice
+        IGOStorage.layout().setUp.summedMaxTagCap = _setTag(
+            IGOStorage.layout().setUp.grandTotal,
+            IGOStorage.layout().setUp.summedMaxTagCap,
+            oldTagData.maxTagCap,
+            tag_,
+            tagId_
         );
-
-        summedMaxTagCap -= oldTagData.maxTagCap;
-        summedMaxTagCap += tag_.maxTagCap;
-
-        _isSummedMaxTagCapLteGrandTotal(summedMaxTagCap, grandTotal);
-
-        // if tag does not exist, push to ids
-        if (oldTagData.maxTagCap == 0) {
-            IGOStorage.layout().tags.ids.push(tagId_);
-        }
-        IGOStorage.layout().tags.data[tagId_] = tag_;
-        IGOStorage.layout().setUp.summedMaxTagCap = summedMaxTagCap;
     }
 
     /// @inheritdoc IRestrictedWritable
@@ -104,14 +83,14 @@ contract RestrictedWritable is
 
     //////////////////////////// TAG SINGLE UPDATE ////////////////////////////
     function openTag(string calldata tagId) external override onlyOwner {
-        IGOStorage.layout().tags.data[tagId].stage = ISharedInternal
-            .Stage
+        IGOStorage.layout().tags.data[tagId].status = ISharedInternal
+            .Status
             .OPENED;
     }
 
     function pauseTag(string calldata tagId) external override onlyOwner {
-        IGOStorage.layout().tags.data[tagId].stage = ISharedInternal
-            .Stage
+        IGOStorage.layout().tags.data[tagId].status = ISharedInternal
+            .Status
             .PAUSED;
     }
 
