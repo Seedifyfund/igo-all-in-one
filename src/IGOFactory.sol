@@ -12,6 +12,8 @@ import {IGOStorage} from "./IGOStorage.sol";
 
 /// @dev Contract to deploy IGOs one the fly, in one transaction
 contract IGOFactory is Ownable, ReentrancyGuard {
+    uint256 public maxLoop = 100;
+
     struct IGODetail {
         string name;
         address igo;
@@ -90,14 +92,17 @@ contract IGOFactory is Ownable, ReentrancyGuard {
     {
         require(from <= to, "IGOFactory_INDEXES_REVERSED");
 
-        if (to > _igoDetails.length) to = _igoDetails.length;
+        unchecked {
+            if ((to - from) > maxLoop) to = from + maxLoop;
 
-        igos = new IGODetail[](to - from);
-        for (uint256 i = from; i < to; ++i) {
-            igos[i - from] = _igoDetails[i];
+            igos = new IGODetail[](to - from);
+            for (uint256 i = from; i < to; ++i) {
+                igos[i - from] = _igoDetails[i];
+            }
+            // loop end when i == to, but last call is _igoDetails[to - 1]
+            lastEvaludatedIndex = --to;
         }
 
-        lastEvaludatedIndex = to;
         totalItems = _igoDetails.length;
     }
 
@@ -121,5 +126,9 @@ contract IGOFactory is Ownable, ReentrancyGuard {
         );
         defaultVesting = newDefaultVesting;
         vestingCreationCode = newVestingCreationCode;
+    }
+
+    function setMaxLoop(uint256 newMaxLoop) external onlyOwner {
+        maxLoop = newMaxLoop;
     }
 }

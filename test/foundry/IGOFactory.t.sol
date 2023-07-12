@@ -79,7 +79,7 @@ contract IGOFactory_test is Test, ISharedInternal {
         ) = factory.getIgosDetails(0, 1);
 
         assertEq(totalItems, 1);
-        assertEq(lastEvaludatedIndex, 1);
+        assertEq(lastEvaludatedIndex, 0);
         assertEq(igos[0].name, "test");
     }
 
