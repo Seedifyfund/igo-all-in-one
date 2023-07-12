@@ -66,7 +66,8 @@ contract IGOWritable is
             allocation.account,
             amount,
             paymentToken,
-            (amount * tag.projectTokenPrice) / 1e18,
+            // calculate the amount of igo tokens to be received
+            (amount * 1e18) / allocation.tag.projectTokenPrice,
             allocation.refundFee
         );
 
