@@ -59,8 +59,7 @@ contract IGOSetUp_internal is
                     uint128(block.timestamp) + lastStart,
                     uint128(block.timestamp) + lastEnd,
                     maxTagAllocation,
-                    address(0),
-                    1 ether
+                    address(0)
                 )
             );
 
@@ -76,7 +75,8 @@ contract IGOSetUp_internal is
                     tagIdentifiers[i % tagIdentifiers.length],
                     makeAddr(string.concat("address", Strings.toString(i))),
                     1_000 ether,
-                    30 * (10 ** 2) // 30%, refund fee with 2 decimals
+                    30 * (10 ** 2), // 30%, refund fee with 2 decimals
+                    1 ether
                 )
             );
         }

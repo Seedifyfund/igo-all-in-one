@@ -15,9 +15,7 @@ contract IGOWritable_Mock is IGOWritable, IGOReadable {
         _canPaymentTokenOrPriceBeUpdated(
             status,
             oldPaymentToken,
-            newPaymentToken,
-            oldProjectTokenPrice,
-            newProjectTokenPrice
+            newPaymentToken
         );
         return true;
     }

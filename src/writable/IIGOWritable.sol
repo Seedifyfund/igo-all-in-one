@@ -8,7 +8,8 @@ import {IGOStorage} from "../IGOStorage.sol";
 
 interface IIGOWritable {
     /**
-     * @param amount Amount of tokens to buy in this transaction.
+     * @param amount Amount of tokens to buy in this transaction, expressed in
+                     IGOStorgae.SetUp.paymentToken.
      * @param allocation Allocation reserved to a specfic tag for a wallet.
      * @param proof Merkle proof to verify the allocation.
      * @param permission Permission granted by user off-chain.

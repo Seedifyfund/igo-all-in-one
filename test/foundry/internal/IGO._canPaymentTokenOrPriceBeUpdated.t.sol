@@ -26,9 +26,7 @@ contract IGO_Test__canPaymentTokenOrPriceBeUpdated is IGOSetUp_internal {
     {
         // try update token
         vm.expectRevert(
-            abi.encodeWithSelector(
-                IGOWritable_NoPaymentTokenOrPriceUpdate.selector
-            )
+            abi.encodeWithSelector(IGOWritable_NoPaymentTokenUpdate.selector)
         );
         instance.exposed_canPaymentTokenOrPriceBeUpdated(
             Status.PAUSED,
@@ -39,9 +37,7 @@ contract IGO_Test__canPaymentTokenOrPriceBeUpdated is IGOSetUp_internal {
         );
         // try update price
         vm.expectRevert(
-            abi.encodeWithSelector(
-                IGOWritable_NoPaymentTokenOrPriceUpdate.selector
-            )
+            abi.encodeWithSelector(IGOWritable_NoPaymentTokenUpdate.selector)
         );
         instance.exposed_canPaymentTokenOrPriceBeUpdated(
             Status.OPENED,
@@ -52,9 +48,7 @@ contract IGO_Test__canPaymentTokenOrPriceBeUpdated is IGOSetUp_internal {
         );
         // try update token and price
         vm.expectRevert(
-            abi.encodeWithSelector(
-                IGOWritable_NoPaymentTokenOrPriceUpdate.selector
-            )
+            abi.encodeWithSelector(IGOWritable_NoPaymentTokenUpdate.selector)
         );
         instance.exposed_canPaymentTokenOrPriceBeUpdated(
             Status.PAUSED,
