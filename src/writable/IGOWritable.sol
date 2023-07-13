@@ -56,28 +56,23 @@ contract IGOWritable is
             maxTagCap
         );
 
-        address paymentToken = tag.paymentToken;
-        paymentToken = paymentToken != address(0)
-            ? paymentToken
-            : setUp.paymentToken;
-
         IIGOVesting(setUp.vestingContract).setCrowdfundingWhitelist(
             tagId,
             allocation.account,
             amount,
-            paymentToken,
+            setUp.paymentToken,
             // calculate the amount of igo tokens to be received
             (amount * 1e18) / allocation.igoTokenPerPaymentToken,
             allocation.refundFee
         );
 
-        _reserveAllocation(setUp, paymentToken, amount, permission);
+        _reserveAllocation(setUp, amount, permission);
 
         emit AllocationReserved(
             tagId,
             allocation.account,
             amount,
-            paymentToken
+            setUp.paymentToken
         );
     }
 

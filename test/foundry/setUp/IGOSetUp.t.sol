@@ -131,8 +131,7 @@ contract IGOSetUp is
                     bytes32("etc"),
                     uint128(block.timestamp) + lastStart,
                     uint128(block.timestamp) + lastEnd,
-                    maxTagAllocation,
-                    address(0)
+                    maxTagAllocation
                 )
             );
 
@@ -170,11 +169,16 @@ contract IGOSetUp is
     }
 
     function _setUpTestData() internal {
-        __setUpTestData(address(0));
-    }
+        _generateLeaves(allocations);
+        _generateMerkleRootAndProofForLeaf(0);
 
-    function _setUpTestData(address token_) internal {
-        __setUpTestData(token_);
+        // update merkle root & status
+        tags[0].merkleRoot = merkleRoot;
+        tags[0].status = Status.OPENED;
+        tags[0].maxTagCap = allocations[0].maxAllocation;
+        instance.updateSetTag(tagIdentifiers[0], tags[0]);
+
+        instance.openIGO();
     }
 
     function _increaseMaxTagCapBy(uint256 by) internal {
@@ -237,20 +241,6 @@ contract IGOSetUp is
 
         vm.prank(allocation.account);
         instance.reserveAllocation(amount, allocation, proof, permission);
-    }
-
-    function __setUpTestData(address token_) private {
-        _generateLeaves(allocations);
-        _generateMerkleRootAndProofForLeaf(0);
-
-        // update merkle root & status
-        tags[0].merkleRoot = merkleRoot;
-        tags[0].status = Status.OPENED;
-        tags[0].maxTagCap = allocations[0].maxAllocation;
-        tags[0].paymentToken = token_;
-        instance.updateSetTag(tagIdentifiers[0], tags[0]);
-
-        instance.openIGO();
     }
 
     function test() public {}

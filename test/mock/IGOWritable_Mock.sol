@@ -5,15 +5,6 @@ import {IGOWritable} from "../../src/writable/IGOWritable.sol";
 import {IGOReadable} from "../../src/readable/IGOReadable.sol";
 
 contract IGOWritable_Mock is IGOWritable, IGOReadable {
-    function exposed_canPaymentTokenBeUpdated(
-        Status status,
-        address oldPaymentToken,
-        address newPaymentToken
-    ) external pure returns (bool) {
-        _canPaymentTokenBeUpdated(status, oldPaymentToken, newPaymentToken);
-        return true;
-    }
-
     function exposed_closeIGO() external {
         _closeIGO();
     }

@@ -67,8 +67,7 @@ contract IGOFactory_createIGO_testnet is Script, ISharedInternal {
             merkleRoot: bytes32("merkleroot"),
             startAt: uint128(block.timestamp + 1 hours),
             endAt: uint128(block.timestamp + 1 hours + 1 days),
-            maxTagCap: 1_000_000,
-            paymentToken: token
+            maxTagCap: 1_000_000
         });
 
         //slither-disable-next-line unused-return

@@ -58,8 +58,7 @@ contract IGOSetUp_internal is
                     bytes32("etc"),
                     uint128(block.timestamp) + lastStart,
                     uint128(block.timestamp) + lastEnd,
-                    maxTagAllocation,
-                    address(0)
+                    maxTagAllocation
                 )
             );
 

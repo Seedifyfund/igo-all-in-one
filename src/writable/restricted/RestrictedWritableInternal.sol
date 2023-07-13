@@ -46,7 +46,7 @@ contract RestrictedWritableInternal is IRestrictedWritableInternal {
         //slither-disable-next-line uninitialized-local
         for (uint256 i; i < length; ++i) {
             oldTagData = tags.data[tagIdentifiers_[i]];
-            _verifyTag(tags_[i], oldTagData);
+            require(_notEmptyTag(tags_[i]), "EMPTY_TAG");
 
             summedMaxTagCap = _setTag(
                 grandTotal,
@@ -69,25 +69,6 @@ contract RestrictedWritableInternal is IRestrictedWritableInternal {
             tag_.maxTagCap > 0;
     }
 
-    /**
-     * @notice Token used for payment can only be updated before a tag is
-     *         opened. Even if a tag is paused these variables can not be
-     *         updated anymore.
-     *
-     * @dev If `paymentToken` is address(0) default IGO payment token is used,
-     *      see `IGOWritable.reserveAllocation` --> paymentToken.
-     */
-    function _canPaymentTokenBeUpdated(
-        ISharedInternal.Status status,
-        address oldPaymentToken,
-        address newPaymentToken
-    ) internal pure {
-        if (status != ISharedInternal.Status.NOT_STARTED) {
-            if (oldPaymentToken != newPaymentToken)
-                revert IGOWritable_NoPaymentTokenUpdate();
-        }
-    }
-
     function _isSummedMaxTagCapLteGrandTotal(
         uint256 summedMaxTagCap,
         uint256 grandTotal
@@ -97,17 +78,5 @@ contract RestrictedWritableInternal is IRestrictedWritableInternal {
                 summedMaxTagCap - grandTotal
             );
         }
-    }
-
-    function _verifyTag(
-        ISharedInternal.Tag calldata tag_,
-        ISharedInternal.Tag memory oldTag
-    ) internal view {
-        require(_notEmptyTag(tag_), "EMPTY_TAG");
-        _canPaymentTokenBeUpdated(
-            oldTag.status,
-            oldTag.paymentToken,
-            tag_.paymentToken
-        );
     }
 }
