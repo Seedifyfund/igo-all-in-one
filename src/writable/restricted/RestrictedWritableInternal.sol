@@ -77,7 +77,7 @@ contract RestrictedWritableInternal is IRestrictedWritableInternal {
      * @dev If `paymentToken` is address(0) default IGO payment token is used,
      *      see `IGOWritable.reserveAllocation` --> paymentToken.
      */
-    function _canPaymentTokenOrPriceBeUpdated(
+    function _canPaymentTokenBeUpdated(
         ISharedInternal.Status status,
         address oldPaymentToken,
         address newPaymentToken
@@ -104,7 +104,7 @@ contract RestrictedWritableInternal is IRestrictedWritableInternal {
         ISharedInternal.Tag memory oldTag
     ) internal view {
         require(_notEmptyTag(tag_), "EMPTY_TAG");
-        _canPaymentTokenOrPriceBeUpdated(
+        _canPaymentTokenBeUpdated(
             oldTag.status,
             oldTag.paymentToken,
             tag_.paymentToken
