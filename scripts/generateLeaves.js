@@ -17,7 +17,7 @@ async function main(allocations_) {
 
     const decodedAllocations = coder.decode(
         [
-            'Allocation(string tagId,address account,uint256 maxAllocation, uint256 refundFee)[]',
+            'Allocation(string tagId,address account,uint256 maxAllocation, uint256 refundFee, uint256 igoTokenPerPaymentToken)[]',
         ],
         allocationArray
     );
@@ -35,7 +35,7 @@ async function main(allocations_) {
     for (let i = 0; i < length; ++i) {
         rawEncoded = coder.encode(
             [
-                'Allocation(string tagId,address account,uint256 maxAllocation, uint256 refundFee)',
+                'Allocation(string tagId,address account,uint256 maxAllocation, uint256 refundFee, uint256 igoTokenPerPaymentToken)',
             ],
             [
                 [
@@ -43,6 +43,7 @@ async function main(allocations_) {
                     allocations[i].account,
                     allocations[i].maxAllocation,
                     allocations[i].refundFee,
+                    allocations[i].igoTokenPerPaymentToken,
                 ],
             ]
         );

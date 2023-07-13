@@ -132,8 +132,7 @@ contract IGOSetUp is
                     uint128(block.timestamp) + lastStart,
                     uint128(block.timestamp) + lastEnd,
                     maxTagAllocation,
-                    address(0),
-                    1 ether
+                    address(0)
                 )
             );
 
@@ -154,7 +153,8 @@ contract IGOSetUp is
                     tagIdentifiers[i % tagIdentifiers.length],
                     addr,
                     1_000 ether,
-                    30 * (10 ** contractSetup._decimals) // 30%, refund fee
+                    30 * (10 ** contractSetup._decimals), // 30%, refund fee
+                    1 ether
                 )
             );
             vm.prank(addr);

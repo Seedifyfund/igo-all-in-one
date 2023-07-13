@@ -68,8 +68,7 @@ contract IGOFactory_createIGO_testnet is Script, ISharedInternal {
             startAt: uint128(block.timestamp + 1 hours),
             endAt: uint128(block.timestamp + 1 hours + 1 days),
             maxTagCap: 1_000_000,
-            paymentToken: token,
-            projectTokenPrice: 1 ether
+            paymentToken: token
         });
 
         //slither-disable-next-line unused-return

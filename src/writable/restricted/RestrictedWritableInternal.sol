@@ -70,29 +70,21 @@ contract RestrictedWritableInternal is IRestrictedWritableInternal {
     }
 
     /**
-     * @notice Token used for payment and price of token project can only
-     *         be updated before a tag is opened. Even if a tag is paused
-     *         these variables can not be updated anymore.
+     * @notice Token used for payment can only be updated before a tag is
+     *         opened. Even if a tag is paused these variables can not be
+     *         updated anymore.
      *
      * @dev If `paymentToken` is address(0) default IGO payment token is used,
      *      see `IGOWritable.reserveAllocation` --> paymentToken.
      */
-    function _canPaymentTokenOrPriceBeUpdated(
+    function _canPaymentTokenBeUpdated(
         ISharedInternal.Status status,
         address oldPaymentToken,
-        address newPaymentToken,
-        uint256 oldProjectTokenPrice,
-        uint256 newProjectTokenPrice
+        address newPaymentToken
     ) internal pure {
-        if (status == ISharedInternal.Status.NOT_STARTED) {
-            if (newProjectTokenPrice == 0) {
-                revert IGOWritable_ProjectTokenPrice_ZERO();
-            }
-        } else {
-            if (
-                oldPaymentToken != newPaymentToken ||
-                oldProjectTokenPrice != newProjectTokenPrice
-            ) revert IGOWritable_NoPaymentTokenOrPriceUpdate();
+        if (status != ISharedInternal.Status.NOT_STARTED) {
+            if (oldPaymentToken != newPaymentToken)
+                revert IGOWritable_NoPaymentTokenUpdate();
         }
     }
 
@@ -112,12 +104,10 @@ contract RestrictedWritableInternal is IRestrictedWritableInternal {
         ISharedInternal.Tag memory oldTag
     ) internal view {
         require(_notEmptyTag(tag_), "EMPTY_TAG");
-        _canPaymentTokenOrPriceBeUpdated(
+        _canPaymentTokenBeUpdated(
             oldTag.status,
             oldTag.paymentToken,
-            tag_.paymentToken,
-            oldTag.projectTokenPrice,
-            tag_.projectTokenPrice
+            tag_.paymentToken
         );
     }
 }

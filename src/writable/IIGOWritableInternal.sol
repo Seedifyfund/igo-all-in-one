@@ -11,6 +11,9 @@ interface IIGOWritableInternal {
         uint256 maxAllocation;
         // take IGOStorage.IGOStruct.SetUp.refundFeeDecimals into account
         uint256 refundFee;
+        // price per token of the project behind the IGO, expressed in
+        // `IGOSTorage.SetUp.paymentToken` (any ERC20)
+        uint256 igoTokenPerPaymentToken;
     }
 
     struct BuyPermission {
