@@ -70,36 +70,6 @@ contract IGO_Test_reserveAllocation is IGOSetUp {
         assertEq(uint256(tag.status), uint256(Status.COMPLETED));
     }
 
-    function test_reserveAllocation_WithSpecificTagToken() public {
-        ERC20 tagToken = new ERC20("tagToken", "TAG");
-        _setUpTestData(address(tagToken));
-        // mint tagToken to allocation[0].account
-        deal(
-            address(tagToken),
-            allocations[0].account,
-            allocations[0].maxAllocation
-        );
-        assertEq(
-            tagToken.balanceOf(allocations[0].account),
-            allocations[0].maxAllocation
-        );
-        // unlimited allowance to permit2
-        vm.prank(allocations[0].account);
-        tagToken.approve(address(permit2), type(uint256).max);
-
-        _reserveAllocationWithTagToken(
-            address(tagToken),
-            allocations[0],
-            lastProof
-        );
-
-        assertEq(
-            tagToken.balanceOf(vestingContract),
-            allocations[0].maxAllocation
-        );
-        assertEq(tagToken.balanceOf(allocations[0].account), 0);
-    }
-
     function test_recoverLostERC20() public {
         address sender = makeAddr("address0");
         uint256 lost = 1_000 ether;

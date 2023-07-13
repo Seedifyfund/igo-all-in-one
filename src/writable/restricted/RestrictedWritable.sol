@@ -62,7 +62,7 @@ contract RestrictedWritable is
         ISharedInternal.Tag memory oldTagData = IGOStorage.layout().tags.data[
             tagId_
         ];
-        _verifyTag(tag_, oldTagData);
+        require(_notEmptyTag(tag_), "EMPTY_TAG");
 
         IGOStorage.layout().setUp.summedMaxTagCap = _setTag(
             IGOStorage.layout().setUp.grandTotal,

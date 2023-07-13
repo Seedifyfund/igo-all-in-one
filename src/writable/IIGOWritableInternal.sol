@@ -7,7 +7,7 @@ interface IIGOWritableInternal {
     struct Allocation {
         string tagId;
         address account;
-        // maximum amount the user can spend, expressed in IGOStruct.SetUp.paymentToken OR Tag.paymentToken
+        // maximum amount the user can spend, expressed in IGOStruct.SetUp.paymentToken
         uint256 maxAllocation;
         // take IGOStorage.IGOStruct.SetUp.refundFeeDecimals into account
         uint256 refundFee;

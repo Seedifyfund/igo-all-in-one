@@ -18,7 +18,6 @@ contract IGOWritableInternal is IIGOWritableInternal {
     /// @dev sends ERC20 from `msg.sender` to vesting schedule
     function _reserveAllocation(
         IGOStorage.SetUp memory setUp,
-        address paymentToken,
         uint256 amount,
         BuyPermission calldata permission
     ) internal {
@@ -29,7 +28,7 @@ contract IGOWritableInternal is IIGOWritableInternal {
         ISignatureTransfer.SignatureTransferDetails memory transferDetails;
 
         permitted = ISignatureTransfer.TokenPermissions({
-            token: paymentToken,
+            token: setUp.paymentToken,
             amount: amount
         });
         permit = ISignatureTransfer.PermitTransferFrom({
